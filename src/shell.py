@@ -2,6 +2,7 @@
 import os
 import sys
 import stat
+import subprocess
 def listDir(args, showHidden=False):
 	contents = os.listdir(os.getcwd())
 	if contents:
@@ -35,14 +36,22 @@ def statFile(args):
 	else:
 		sys.stdout.write('an unknown item.\n')
 
+def run(args):
+	fileName = ''.join(args)
+	sys.stdout.write('You try to operate ' + fileName + ':\n')
+	subprocess.call(os.path.abspath(fileName))
 
 def quitShell(args):
 	print 'Goodbye!'
 	exit()
 
 def changeDir(args):
-	os.chdir(''.join(args))
-	print 'You are in', os.getcwd()
+	pathName = ''.join(args)
+	if os.path.exists(pathName):
+		os.chdir()
+		sys.stdout.write('You are now in ' + os.getcwd())
+	else:
+		sys.stdout.write('You bump into a wall when you try to get to ' + pathName + '.\n')
 
 print 'Welcome to compsoc'
 while True:
@@ -56,7 +65,8 @@ while True:
 			'search': lambda a:listDir(arguments,True),
 			'move': changeDir,
 			'go': changeDir,
-			'examine': statFile
+			'examine': statFile,
+			'operate': run
 	}
 	if command in commandList:
 		commandList[command](arguments)
