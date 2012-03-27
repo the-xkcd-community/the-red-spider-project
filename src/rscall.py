@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# Copyright 2012 Neil Forrester
+# See License.txt
+
 import os
 import sys
 
