@@ -217,7 +217,8 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	# some handy paths
-	rs_root = os.getenv('RED_SPIDER_ROOT')
+	rs_root = os.getenv('RED_SPIDER_ROOT','.')
+
 	work_path = rs_root + '/work'
 	cache_path = work_path + '/xkcd-fetch'
 	comic_data_path = cache_path + '/comic-data.txt'
