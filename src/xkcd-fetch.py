@@ -10,17 +10,6 @@ import codecs
 import htmlentitydefs
 import signal
 
-# returns True if it can stat the file, False if it can't.
-def file_exists(filename):
-	try:
-		os.stat(filename)
-		return True
-	except OSError as ex:
-		if ex.errno == 2:
-			return False
-		else:
-			raise ex
-
 # doesn't pause the first time it is called, pauses for a set time on each subsequent call
 def sleep_if_necessary():
 	global first_cache_miss
@@ -80,7 +69,7 @@ def read_comic(lines):
 	comic.transcript = comic.transcript[1:] # strip the leading \n
 
 	lines.pop(0)
-	if file_exists(cache_path + '/' + comic.image_name):
+	if os.path.exists(cache_path + '/' + comic.image_name):
 		return comic
 	else:
 		return None
@@ -118,10 +107,10 @@ def download_comic(comics, comic_number):
 		comics[comic_number].transcript = remove_escapes(transcript_line_match.group(1))
 
 	image_path = cache_path + '/' + comics[comic_number].image_name
-	if not file_exists(image_path):
+	if not os.path.exists(image_path):
 		urlretrieve('http://imgs.xkcd.com/comics/' + comics[comic_number].image_name, image_path)
 
-	assert file_exists(image_path)
+	assert os.path.exists(image_path)
 
 # reads the cache from the comic data file into memory
 def read_cache():
@@ -231,11 +220,11 @@ if __name__ == "__main__":
 	signal.signal(signal.SIGINT, sigint_handler)
 
 	# if files don't exist, create them
-	if not file_exists(work_path):
+	if not os.path.exists(work_path):
 		os.mkdir(work_path)
-	if not file_exists(cache_path):
+	if not os.path.exists(cache_path):
 		os.mkdir(cache_path)
-	if not file_exists(comic_data_path):
+	if not os.path.exists(comic_data_path):
 		comic_data_file = codecs.open(comic_data_path, 'w', 'utf-8')
 		comic_data_file.write('')
 		comic_data_file.close()
