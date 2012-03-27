@@ -204,7 +204,8 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	# some handy paths
-	work_path = '../work'
+	rs_root = os.getenv('RED_SPIDER_ROOT')
+	work_path = rs_root + '/work'
 	cache_path = work_path + '/xkcd-fetch'
 	comic_data_path = cache_path + '/comic-data.txt'
 
@@ -261,7 +262,7 @@ if __name__ == "__main__":
 			if not args.cache_all:
 				download_archive(comics)
 			if not sigint:
-				comic_list.appned(fetch(comics, max(comics.keys())))
+				comic_list.append(fetch(comics, max(comics.keys())))
 		if not sigint:
 			output_lines = []
 			for comic in comic_list:
