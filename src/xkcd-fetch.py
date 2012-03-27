@@ -8,6 +8,7 @@ import os
 import sys
 import codecs
 import htmlentitydefs
+import signal
 
 def file_exists(filename):
 	try:
@@ -75,6 +76,9 @@ def read_comic(lines):
 def download_comic(comics, comic_number):
 	sleep_if_necessary()
 
+	if not args.quiet:
+		sys.stderr.write('Downloading comic ' + repr(comic_number) + '\n')
+
 	url = 'http://www.xkcd.com'
 	url = url + '/' + repr(comic_number)
 
@@ -131,9 +135,6 @@ def write_cache(comics):
 	comic_data_file.close()
 
 def fetch(comics, comic_number):
-	if comic_number == 0: # a comic number of 0 indicates the most recent comic
-		download_archive(comics)
-		comic_number = max(comics.keys())
 	if not(comic_number in comics):
 		download_archive(comics)
 		if not(comic_number in comics):
@@ -144,6 +145,9 @@ def fetch(comics, comic_number):
 
 def download_archive(comics):
 	sleep_if_necessary()
+
+	if not args.quiet:
+		sys.stderr.write('Downloading comic list\n')
 
 	url = 'http://www.xkcd.com/archive'
 
@@ -173,16 +177,27 @@ def download_archive(comics):
 		raw_html = raw_html[archive_line_match.end():]
 
 parser = argparse.ArgumentParser(description = 'Downloads, caches, and returns xkcd comics')
+parser.add_argument('-a', '--cache-all',
+                    action = 'store_true',
+                    help = 'Make sure that all the comics are downloaded into the cache.')
+parser.add_argument('-q', '--quiet',
+                    action = 'store_true',
+                    help = 'Suppress download status output on standard error.')
 parser.add_argument('-s', '--sleep-time',
                     metavar = 'TIME',
                     default = 1.0,
                     type = float,
-                    help = 'Time (in seconds) to sleep between fetches in order to respect the server. Defaults to 1.0 seconds.')
+                    help = 'Time (in seconds) to sleep between comic downloads in order to respect the server. Defaults to 1.0 seconds.')
 parser.add_argument('comic_nums',
                     metavar = 'N',
                     type = int,
                     nargs = '*',
-                    help = 'Comic number to download. Defaults to the most recent comic. Ignored if -a specified')
+                    help = 'Comic number to fetch. Defaults to the most recent comic.')
+
+def sigint_handler(signal, frame):
+	sys.stderr.write('Received SIGINT, stopping and cleaning up.\n')
+	global sigint
+	sigint = True
 
 args = parser.parse_args()
 
@@ -191,6 +206,9 @@ cache_path = work_path + '/xkcd-fetch'
 comic_data_path = cache_path + '/comic-data.txt'
 
 first_cache_miss = True
+sigint = False
+
+signal.signal(signal.SIGINT, sigint_handler)
 
 if not file_exists(work_path):
 	os.mkdir(work_path)
@@ -208,11 +226,32 @@ archive_line = re.compile('^[^\n]*<a href="/(\d+)/" title="(\d{4,4}-\d{1,2}-\d{1
 
 comics = read_cache()
 
-if len(args.comic_nums) > 0:
-	fetch(comics, args.comic_nums[0])
-	for num in args.comic_nums[1:]:
-		fetch(comics, num)
-else:
-	fetch(comics, 0) # a comic number of 0 indicates the most recent comic
+if not sigint:
+	if args.cache_all:
+		download_archive(comics)
+		for num in sorted(comics.keys()):
+			if sigint:
+				break
+			fetch(comics, num)
+
+if not sigint:
+	comic_list = []
+	if len(args.comic_nums) > 0:
+		comic_list.append(fetch(comics, args.comic_nums[0]))
+		for num in args.comic_nums[1:]:
+			if sigint:
+				break
+			comic_list.append(fetch(comics, num))
+	else:
+		if not args.cache_all:
+			download_archive(comics)
+		if not sigint:
+			comic_list.appned(fetch(comics, max(comics.keys())))
+	if not sigint:
+		output_lines = []
+		for comic in comic_list:
+			comic.write_comic(output_lines)
+		for line in output_lines:
+			sys.stdout.write(line + '\n')
 
 write_cache(comics)
