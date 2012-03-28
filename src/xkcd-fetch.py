@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 # Copyright 2012 Neil Forrester
-# See License.txt
+# Licensed under the Red Spider Project License.
+# See the License.txt that shipped with your copy of this software for details.
 
 from urllib import urlretrieve
 import re
