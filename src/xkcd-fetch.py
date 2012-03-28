@@ -13,6 +13,10 @@ import sys
 import codecs
 import htmlentitydefs
 import signal
+import random
+
+# needed by sleep_if_necessary()
+first_cache_miss = True
 
 # doesn't pause the first time it is called, pauses for a set time on each subsequent call
 def sleep_if_necessary():
@@ -186,15 +190,30 @@ def download_archive(comics):
 
 		raw_html = raw_html[archive_line_match.end():]
 
+# some handy paths
+rs_root = os.getenv('RED_SPIDER_ROOT','.')
+work_path = rs_root + '/work'
+cache_path = work_path + '/xkcd-fetch'
+comic_data_path = cache_path + '/comic-data.txt'
+
 if __name__ == "__main__":
 	# set up command line arguments
 	parser = argparse.ArgumentParser(description = 'Downloads, caches, and returns xkcd comics')
 	parser.add_argument('-a', '--cache-all',
 			    action = 'store_true',
 			    help = 'Make sure that all the comics are downloaded into the cache.')
+	parser.add_argument('-l', '--latest',
+			    action = 'store_true',
+			    help = 'Return the latest comic.')
+	parser.add_argument('-n', '--no-stdin',
+			    action = 'store_true',
+			    help = 'Don\'t return any comics, just make sure the specified comics are in the cache.')
 	parser.add_argument('-q', '--quiet',
 			    action = 'store_true',
 			    help = 'Suppress download status output on standard error.')
+	parser.add_argument('-r', '--random',
+			    action = 'store_true',
+			    help = 'Return a random comic.')
 	parser.add_argument('-s', '--sleep-time',
 			    metavar = 'TIME',
 			    default = 1.0,
@@ -206,16 +225,6 @@ if __name__ == "__main__":
 			    nargs = '*',
 			    help = 'Comic number to fetch. Defaults to the most recent comic.')
 	args = parser.parse_args()
-
-	# some handy paths
-	rs_root = os.getenv('RED_SPIDER_ROOT','.')
-
-	work_path = rs_root + '/work'
-	cache_path = work_path + '/xkcd-fetch'
-	comic_data_path = cache_path + '/comic-data.txt'
-
-	# needed by sleep_if_necessary()
-	first_cache_miss = True
 
 	# handle SIGINT gracefully
 	sigint = False
@@ -255,19 +264,31 @@ if __name__ == "__main__":
 
 	if not sigint:
 		comic_list = []
-		if len(args.comic_nums) > 0:
-			# if we were told which comics to grab
+		if args.latest:
+			# fetch the latest comic
+			if not args.cache_all:
+				download_archive(comics)
+			if not sigint:
+				comic_list.append(fetch(comics, max(comics.keys())))
+		elif args.random:
+			# fetch a random comic
+			if not sigint:
+				comic_list.append(fetch(comics, random.choice(comics.keys())))
+		elif len(args.comic_nums) > 0:
+			# if we were told which comics to grab on the command line
 			comic_list.append(fetch(comics, args.comic_nums[0]))
 			for num in args.comic_nums[1:]:
 				if sigint:
 					break
 				comic_list.append(fetch(comics, num))
-		else:
-			# lacking specific instructions, fetch the latest comic
-			if not args.cache_all:
-				download_archive(comics)
-			if not sigint:
-				comic_list.append(fetch(comics, max(comics.keys())))
+		elif not args.no_stdin:
+			# lacking specific instructions, fetch the comics specified on standard input
+			line = sys.stdin.readline()
+			while (line):
+				if sigint:
+					break
+				comic_list.append(fetch(comics, int(line)))
+				line = sys.stdin.readline()
 		if not sigint:
 			output_lines = []
 			for comic in comic_list:
