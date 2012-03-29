@@ -23,7 +23,7 @@ if __name__ == "__main__":
 	# if files don't exist, exit
 	if not os.path.exists(xf.comic_data_path):
 		sys.stderr.write("No comic data found.\n" +
-		                 "Is RED_SPIDER_ROOT set?" +
+		                 "Is RED_SPIDER_ROOT set?\n" +
 		                 "Have you run xkcd-fetch yet?\n")
 		sys.exit(1)
 
@@ -36,5 +36,6 @@ if __name__ == "__main__":
 	for num in comics.keys():
 		if any(map(regex.search, [comics[num].comic_title,
 		                          comics[num].title_text,
-		                          comics[num].transcript])):
+		                          comics[num].transcript,
+		                          comics[num].news])):
 			print num

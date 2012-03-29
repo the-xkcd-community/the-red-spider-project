@@ -28,20 +28,6 @@ def sleep_if_necessary():
 		sleep(args.sleep_time)
 	first_cache_miss = False
 
-# replaces ugly things like &#33; with !
-def remove_escapes(string):
-	def remove_one(match):
-		ref = match.group(0)
-		if ref[:2] == "&#":
-			if ref[:3] == "&#x":
-				return unichr(int(ref[3:-1], 16))
-			else:
-				return unichr(int(ref[2:-1]))
-		else:
-			ref = unichr(htmlentitydefs.name2codepoint[ref[1:-1]])
-		return ref
-	return re.sub("&#?\w+;", remove_one, string)
-
 # a class for holding comics
 #  number      - the comic number
 #  comic_title - the title of the comic
@@ -49,43 +35,37 @@ def remove_escapes(string):
 #  title_text  - the title (mouseover) text
 #  date        - the date of the comic (stored as a string)
 #  transcript  - the transcript, if available
+#  news        - the news, if available
 class Comic:
 	# adds some lines to the end of a list of lines of output, representing the comic, in a form that can be read by read_comic()
 	def write_comic(self, lines):
-		lines.append(repr(self.number))
-		lines.append(self.comic_title)
-		lines.append(self.image_name)
-		lines.append(self.title_text)
-		lines.append(self.date)
-		lines.append('<transcript>')
-		lines.append(self.transcript)
-		lines.append('</transcript>')
-		lines.append('')
+		json_dict = {}
+		json_dict['number'] = self.number
+		json_dict['comic_title'] = self.comic_title
+		json_dict['image_name'] = self.image_name
+		json_dict['title_text'] = self.title_text
+		json_dict['date'] = self.date
+		json_dict['transcript'] = self.transcript
+		json_dict['news'] = self.news
+		lines.append(json.dumps(json_dict))
 
 # takes a list of lines read from the comic data file, pops some off the front, and returns a Comic object.
 def read_comic(lines):
 	comic = Comic()
-	comic.number = int(lines.pop(0))
-	comic.comic_title = lines.pop(0).rstrip()
-	comic.image_name = lines.pop(0).rstrip()
-	comic.title_text = lines.pop(0).rstrip()
-	comic.date = lines.pop(0).rstrip()
-	assert '<transcript>' == lines.pop(0).rstrip()
-
-	line = lines.pop(0).rstrip()
-	comic.transcript = ''
-	while line != '</transcript>':
-		comic.transcript = comic.transcript + '\n' + line
-		line = lines.pop(0).rstrip()
-	comic.transcript = comic.transcript[1:] # strip the leading \n
-
-	lines.pop(0)
+	json_dict = json.loads(lines.pop(0))
+	comic.number = json_dict['number']
+	comic.comic_title = json_dict['comic_title']
+	comic.image_name = json_dict['image_name']
+	comic.title_text = json_dict['title_text']
+	comic.date = json_dict['date']
+	comic.transcript = json_dict['transcript']
+	comic.news = json_dict['news']
 	if os.path.exists(cache_path + '/' + comic.image_name):
 		return comic
 	else:
 		return None
 
-# downloads the image, title text, and transcript for the specified comic, and stores the data in the cache.
+# downloads the image, title text, transcript, and news for the specified comic, and stores the data in the cache.
 def download_comic(comics, comic_number):
 	sleep_if_necessary()
 
@@ -105,15 +85,18 @@ def download_comic(comics, comic_number):
 
 	json_dict = json.loads(json_string)
 	
-	assert comic_number == json_dict["num"]
+	assert comic_number == json_dict['num']
 
-	image_re_match = re.search(image_re, json_dict["img"])
+	image_re_match = re.search(image_re, json_dict['img'])
 	comics[comic_number].image_name = image_re_match.group(1)
 
-	comics[comic_number].title_text = json_dict["alt"]
+	comics[comic_number].title_text = json_dict['alt']
 
 	if "transcript" in json_dict:
-		comics[comic_number].transcript = json_dict["transcript"]
+		comics[comic_number].transcript = json_dict['transcript']
+
+	if "news" in json_dict:
+		comics[comic_number].news = json_dict['news']
 
 	image_path = cache_path + '/' + comics[comic_number].image_name
 	if not os.path.exists(image_path):
@@ -188,11 +171,12 @@ def download_archive(comics):
 			comics[num].image_name = ''
 			comics[num].title_text = ''
 			comics[num].transcript = ''
+			comics[num].news = ''
 
 		raw_html = raw_html[archive_line_match.end():]
 
 # some handy paths
-rs_root = os.getenv('RED_SPIDER_ROOT','.')
+rs_root = os.getenv('RED_SPIDER_ROOT','..')
 work_path = rs_root + '/work'
 cache_path = work_path + '/xkcd-fetch'
 comic_data_path = cache_path + '/comic-data.txt'
