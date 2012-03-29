@@ -4,6 +4,8 @@
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+# Acknowledgements: PM 2Ring suggested JSON.
+
 from urllib import urlretrieve
 import re
 import argparse
@@ -14,6 +16,7 @@ import codecs
 import htmlentitydefs
 import signal
 import random
+import json
 
 # needed by sleep_if_necessary()
 first_cache_miss = True
@@ -91,28 +94,26 @@ def download_comic(comics, comic_number):
 
 	url = 'http://www.xkcd.com'
 	url = url + '/' + repr(comic_number)
+	url = url + '/info.0.json'
 
-	scratch_filename = cache_path + '/raw.html'
+	scratch_filename = cache_path + '/latest.json'
 	urlretrieve(url, scratch_filename)
-	raw = codecs.open(scratch_filename, 'r', 'utf-8')
-	raw_html = raw.read()
-	raw.close()
+	json_file = codecs.open(scratch_filename, 'r', 'utf-8')
+	json_string = json_file.read()
+	json_file.close()
 	os.remove(scratch_filename)
 
-	comic_line_match = re.search(comic_line, raw_html)
-	permalink_line_match = re.search(permalink_line, raw_html)
-	transcript_line_match = re.search(transcript_line, raw_html)
-
-	if not(comic_line_match) or not(permalink_line_match):
-		return None
+	json_dict = json.loads(json_string)
 	
-	assert comic_number == int(permalink_line_match.group(1))
+	assert comic_number == json_dict["num"]
 
-	comics[comic_number].image_name = comic_line_match.group(1)
-	comics[comic_number].title_text = remove_escapes(comic_line_match.group(2))
+	image_re_match = re.search(image_re, json_dict["img"])
+	comics[comic_number].image_name = image_re_match.group(1)
 
-	if transcript_line_match:
-		comics[comic_number].transcript = remove_escapes(transcript_line_match.group(1))
+	comics[comic_number].title_text = json_dict["alt"]
+
+	if "transcript" in json_dict:
+		comics[comic_number].transcript = json_dict["transcript"]
 
 	image_path = cache_path + '/' + comics[comic_number].image_name
 	if not os.path.exists(image_path):
@@ -245,9 +246,7 @@ if __name__ == "__main__":
 		comic_data_file.close()
 
 	# handy regexes
-	comic_line = re.compile('^[^\n]*<img src="http://imgs\.xkcd\.com/comics/(\S*)" title="([^\n]*)" alt="([^\n]*)" />[^\n]*$', re.MULTILINE);
-	permalink_line = re.compile('^[^\n]*<h3>Permanent link to this comic: http://xkcd\.com/(\d+)/</h3>[^\n]*$', re.MULTILINE);
-	transcript_line = re.compile('^[^\n]*<div id="transcript" style="display: none">(.*?)</div>[^\n]*$', re.MULTILINE | re.DOTALL);
+	image_re = re.compile('^http://imgs\.xkcd\.com/comics/(.*)$');
 	archive_line = re.compile('^[^\n]*<a href="/(\d+)/" title="(\d{4,4}-\d{1,2}-\d{1,2})">([^\n]*)</a><br/>[^\n]*$', re.MULTILINE);
 
 	# read the cache from the file
