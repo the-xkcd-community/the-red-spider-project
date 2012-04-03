@@ -1,6 +1,21 @@
 Welcome to the red spider project. We have fun here.
 
 
+### Why ###
+
+Because we like to combine our love for the xkcd comic with our love for coding, and we want to share the experience.
+
+
+### Who ###
+
+Currently, "we" are all members of the [xkcd forums](http://forums.xkcd.com). However, anyone is welcome to join in.
+
+
+### How ###
+
+
+
+
 ### THE GOAL ###
 
 -    To have an enjoyable time collaborating with fellow xkcdians on an ongoing coding project.
