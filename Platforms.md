@@ -6,6 +6,7 @@ outlines how to have them supported.
 
 Anything on branch `master` should be stable and support at least the
 following platforms:
+
  -  Windows (XP SP3 and up);
  -  Mac OS X (10.5 and up);
  -  Ubuntu (10.04 and up, as well as equivalent Mint distributions).
@@ -20,10 +21,10 @@ you want to test for a new platform.
 
 When you think it's time to merge your stuff into master, [submit an
 issue to the main project on
-GitHub](https://github.com/the-xkcd-community/the-red-spider-project/
-issues). Tell us where we can find your branch and which platforms
-still need to be tested. When your branch appears all clear, merge it
-into your own master branch and submit a pull request.
+GitHub](https://github.com/the-xkcd-community/the-red-spider-project/issues).
+Tell us where we can find your branch and which platforms still need
+to be tested. When your branch appears all clear, merge it into your
+own master branch and submit a pull request.
 
 
 ### Reporting failing platform support ###
