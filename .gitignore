@@ -18,6 +18,11 @@ cabal-dev/
 dist/
 log/
 
+# Python-related #
+##################
+*.pyc
+*.pyo
+
 # Compiled source #
 ###################
 *.com
