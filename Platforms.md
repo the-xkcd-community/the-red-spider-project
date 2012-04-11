@@ -23,8 +23,9 @@ When you think it's time to merge your stuff into master, [submit an
 issue to the main project on
 GitHub](https://github.com/the-xkcd-community/the-red-spider-project/issues).
 Tell us where we can find your branch and which platforms still need
-to be tested. When your branch appears all clear, merge it into your
-own master branch and submit a pull request.
+to be tested. Also make sure that it's clear *how* to perform the
+testing. When your branch appears all clear, merge it into your own
+master branch and submit a pull request.
 
 
 ### Reporting failing platform support ###
