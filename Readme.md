@@ -45,7 +45,7 @@ __Platform support__: for the time being we'll just try to make sure that our st
 
 __Testing__: we use the issue tracker from GitHub to ask each other a favour. See Platforms.md for more information.
 
-__Branching__: `master` is our sacred branch: it's supposed to contain only reasonably well-behaved programs (say, stable, portable and easy to quit). Nonetheless you're encouraged to merge often into `master`. Do whatever you want in the other branches, but please do observe some common rules of sensibility. For example, don't merge everything into everything.
+__Branching__: `master` is our sacred branch. It's supposed to contain only reasonably well-behaved programs (say, stable, portable and easy to quit). Nonetheless you're encouraged to merge often into `master`. Do whatever you want in the other branches, but please do observe some common rules of sensibility. For example, don't merge everything into everything.
 
 __Building__: currently there is no build system yet, but we're looking for something portable. Apart from compiling things, it should also just copy interpreted scripts straight to the binary directory (and strip off their file extensions on Unixy systems). Perhaps CMake.
 
