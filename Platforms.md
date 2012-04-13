@@ -7,14 +7,18 @@ outlines how to have them supported.
 Anything on branch `master` should be stable and support at least the
 following platforms:
 
- -  Windows (XP SP3 and up);
- -  Mac OS X (10.5 and up);
- -  Ubuntu (10.04 and up, as well as equivalent Mint distributions).
+ -  Windows (XP SP3 and up) with cmd.exe;
+ -  Mac OS X (10.5 and up) with bash;
+ -  Ubuntu (10.04 and up, as well as equivalent Mint distributions)
+    with bash.
 
 Exceptions are possible, please discuss such cases with the others.
 
-More platforms can be added if testers are available. Let us know if
-you want to test for a new platform.
+Other platforms might work too, we just don't take effort to ensure
+that. For example PowerShell on Windows works, though inconveniently.
+
+More platform support can be added if testers are available. Let us
+know if you want to test for a new platform.
 
 
 ### Ensuring that your program supports these platforms ###
