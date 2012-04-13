@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright 2012 Neil Forrester
 # Licensed under the Red Spider Project License.
@@ -84,7 +84,7 @@ def download_comic(comics, comic_number):
 	os.remove(scratch_filename)
 
 	json_dict = json.loads(json_string)
-	
+
 	assert comic_number == json_dict['num']
 
 	image_re_match = re.search(image_re, json_dict['img'])
