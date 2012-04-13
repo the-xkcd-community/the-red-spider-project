@@ -110,8 +110,6 @@ Finally, here's the really exciting stuff. You'll need to do some or all of the 
 
 Once your branch has been fully merged into the master branch, others can start using your work. Of course, nothing stops you from forking another branch to add more features in the meanwhile!
 
-**Note**: merging other unfinished branches into your own is *not* "integrating your stuff with the rest of the project". In fact, it makes it harder. Read the second page of the xkcd forums thread if you need clarification.
-
 
 #### Editing somebody else's stuff ####
 
