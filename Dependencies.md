@@ -11,6 +11,8 @@ In order to use Git with this project, you need:
  -  [Git](http://git-scm.com/), and
  -  a [GitHub account](https://github.com/).
 
+[Git Immersion](http://gitimmersion.com/) provides a nice and quick Git tutorial.
+
 **Note**: if you just want to have a copy of the source code and you're not planning to contribute in any way, you can do without Git and just download a zip file from the project page.
 
 
