@@ -77,9 +77,7 @@ There's nothing to be installed yet.
 
 #### Running the software ####
 
-For now, you'll probably just `cd` your way to the `src` directory and execute something like the following, assuming that you want to run `programX` (you can leave out the `./` parts in Windows):
-
-    ./rscall.py ./programX
+For now, you'll probably just `cd` your way to the `src` directory and execute `./rsshell.py` (you can leave out the `./` part in Windows). After that you can run any other program from the `src` directory. Leave the subshell with `exit`.
 
 You'll at least need to have Python installed. If you want to run the (unfinished) `advbrowser` you'll also need PHP. Things will almost certainly change so we'll keep this updated.
 
