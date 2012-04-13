@@ -7,10 +7,9 @@ outlines how to have them supported.
 Anything on branch `master` should be stable and support at least the
 following platforms:
 
- -  Windows (XP SP3 and up) with cmd.exe;
- -  Mac OS X (10.5 and up) with bash;
- -  Ubuntu (10.04 and up, as well as equivalent Mint distributions)
-    with bash.
+ -  Windows with cmd.exe (tested on Windows 7);
+ -  Mac OS X with bash (tested on 10.6);
+ -  Linux with bash (tested on Fedora 16).
 
 Exceptions are possible, please discuss such cases with the others.
 
