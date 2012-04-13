@@ -56,9 +56,11 @@ __Programs__: so far concrete work has been done on `rsshell`, which is supposed
 __Communication__: we have our little [thread at the xkcd forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for updates, discussion and archaeology, and there's the [issue tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues). Some of the many other options are to comment on commits or to write something on the wiki.
 
 
-### Howto's ###
+### How to ###
 
 Here's the place to find, submit or edit guidelines, rules of thumb, suggested procedures, and so on and so forth.
+
+A general rule of thumb: look at what the others do.
 
 
 #### Obtaining the project ####
