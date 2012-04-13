@@ -41,7 +41,7 @@ We only just started out, really. (Perhaps this section will contain more intere
 
 __License__: we have a liberal license which might strongly remind you of the MIT license (that's not a coincidence). See License.txt for more information.
 
-__Platform support__: for the time being we'll just try to make sure that our stuff runs on the most popular platforms.
+__Platform support__: for the time being we'll just try to make sure that our stuff runs on the most popular platforms. You'll need to install some additional software, see Dependencies.md for more information.
 
 __Testing__: we use the issue tracker from GitHub to ask each other a favour. See Platforms.md for more information.
 
@@ -77,9 +77,7 @@ There's nothing to be installed yet.
 
 #### Running the software ####
 
-For now, you'll probably just `cd` your way to the `src` directory and execute `./rsshell.py` (you can leave out the `./` part in Windows). After that you can run any other program from the `src` directory. Leave the subshell with `exit`.
-
-You'll at least need to have Python installed. If you want to run the (unfinished) `advbrowser` you'll also need PHP. Things will almost certainly change so we'll keep this updated.
+For now, you'll probably just `cd` your way to the `src` directory and execute `./rsshell.py` (you can leave out the `./` part in Windows). After that you can run any other program from the `src` directory. Leave the subshell with `exit`. Things will almost certainly change so we'll keep this updated.
 
 
 #### Creating something of your own ####
