@@ -4,17 +4,6 @@ The Red Spider Project
 [https://github.com/the-xkcd-community/the-red-spider-project]
 
 
-In this file:
-
- -  __Why__
- -  __Who__
- -  __How__
- -  __When__
- -  __What__
- -  __Howto's__
- -  __Credits__
-
-
 ### Why ###
 
 Because we like to combine our love for the xkcd comic with our love for coding, and we want to share the experience.
