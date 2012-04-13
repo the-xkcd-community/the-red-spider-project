@@ -15,6 +15,8 @@ Exceptions are possible, please discuss such cases with the others.
 
 Other platforms might work too, we just don't take effort to ensure
 that. For example PowerShell on Windows works, though inconveniently.
+If you want to use Bash on Windows (for example Git Bash), you'll have
+to add tools like `python` to your PATH.
 
 More platform support can be added if testers are available. Let us
 know if you want to test for a new platform.
