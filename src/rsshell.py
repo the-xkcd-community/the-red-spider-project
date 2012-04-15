@@ -16,8 +16,18 @@ Ideas for future changes (unordered):
 import os
 import sys
 
+def find_red_spider_root():
+    this_path = os.path.dirname(os.path.abspath(sys.argv[0]))
+    parent, subdir = os.path.split(this_path)
+    if subdir == 'bin' or subdir == 'src':
+        return parent
+    else:
+        return this_path
+
+red_spider_root = find_red_spider_root()
+
 def set_red_spider_root():
-	os.putenv('RED_SPIDER_ROOT', os.path.split(os.path.abspath(os.path.dirname(sys.argv[0])))[0])
+	os.putenv('RED_SPIDER_ROOT', red_spider_root)
 
 def main (argv = None):
     set_red_spider_root()
