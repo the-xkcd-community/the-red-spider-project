@@ -27,7 +27,18 @@ def find_red_spider_root():
 red_spider_root = find_red_spider_root()
 
 def set_red_spider_root():
+	global red_spider_root
+	if os.name == 'nt':  # Windows
+	    config_path = os.getenv('APPDATA') + '\\xkcdRedSpider\\config.txt'
+	else:                # POSIX assumed
+	    config_path = os.getenv('HOME') + '/.config/xkcdRedSpider'
+	config_path = os.path.normpath(config_path)
+	if os.path.exists(config_path):
+	    config = open(config_path)
+	    red_spider_root = config.readline()
+	    config.close()
 	os.putenv('RED_SPIDER_ROOT', red_spider_root)
+	print('RED_SPIDER_ROOT =', red_spider_root)
 
 def main (argv = None):
     set_red_spider_root()
