@@ -7,6 +7,14 @@ Initial setup script for the Red Spider Project
 Copyright 2012 Julian Gonggrijp
 Licensed under the Red Spider Project License.
 See the License.txt that shipped with your copy of this software for details.
+
+
+Note: some of the program logic can be made more elegant if we make it
+os.chdir(red_spider_root) soon after verify_root().
+
+A -q option to make it less verbous would probably be nice. Until we have a
+dedicated 'update' command we'll need to run the setup every time one of the
+commands has been changed on master.
 '''
 
 from future_builtins import zip, map
