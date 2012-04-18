@@ -36,11 +36,11 @@ __Testing__: we use the issue tracker from GitHub to ask each other a favour. Se
 
 __Branching__: `master` is our sacred branch. It's supposed to contain only reasonably well-behaved programs (say, stable, portable and easy to quit). Nonetheless you're encouraged to merge often into `master`. Do whatever you want in the other branches, but please do observe some common rules of sensibility. For example, don't merge everything into everything.
 
-__Building__: currently there is no build system yet, but we're looking for something portable. Apart from compiling things, it should also just copy interpreted scripts straight to the binary directory (and strip off their file extensions on Unixy systems). Perhaps CMake.
+__Building__: currently we have a crude but effective setup script that copies executable scripts to the right locations and pre-compiles Python modules. In the future, we hope to use a more professional build tool which can do that *and* compile things. Perhaps CMake.
 
 __Directory layout__: we chose `src`, `include`, `doc`, `test`, `build`, `lib`, `bin`, `config` and `work` (if the names don't tell you what they're meant for, don't hesitate to ask). Programs will be pooled enjoyably together unless a single program consists of many files within the same directory (for some subjective value of "many"), in which case we'll give it a dedicated subdirectory.
 
-__Programs__: so far concrete work has been done on `rsshell`, which is supposed to launch a convenient environment for other Red Spider programs, as well as on an xkcd comic fetcher, an xkcd comic regex searcher, an adventure shell and an adventure web browser. More ideas are waiting to be implemented.
+__Programs__: so far concrete work has been done on `rsshell`, which launches a convenient environment for other Red Spider programs, as well as on an xkcd comic fetcher, an xkcd comic regex searcher, an adventure shell and an adventure web browser. More ideas are waiting to be implemented.
 
 __Communication__: we have our little [thread at the xkcd forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for updates, discussion and archaeology, and there's the [issue tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues). Some of the many other options are to comment on commits or to write something on the wiki.
 
@@ -63,12 +63,12 @@ Alternatively, if you plan to contribute to the project you may create a GitHub 
 
 #### Installing the software ####
 
-There's nothing to be installed yet.
+Run `./setup.py` from the root directory of your copy of the Red Spider Project (you can leave out the `./` part in Windows). Read what it says and follow the instructions.
 
 
 #### Running the software ####
 
-For now, you'll probably just `cd` your way to the `src` directory and execute `./rsshell.py` (you can leave out the `./` part in Windows). After that you can run any other program from the `src` directory. Leave the subshell with `exit`. Things will almost certainly change so we'll keep this updated.
+Run the `rsshell` command that you installed with `setup.py`. After that you can run any program from the `bin` directory by just typing its name. Alternatively, you may also `cd` to the `src` directory and execute development versions of the programs in there. Leave the subshell with `exit`.
 
 
 #### Creating something of your own ####
