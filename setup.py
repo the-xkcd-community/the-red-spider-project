@@ -23,8 +23,6 @@ from os.path import exists, join, split, splitext
 import shutil
 import py_compile
 import sys
-sys.path.append('./src')
-import rsshell
 
 executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
 
@@ -44,7 +42,7 @@ def main ( ):
     print(farewell_msg)
 
 def verify_root ( ):
-    root_path = rsshell.red_spider_root
+    root_path = find_red_spider_root()
     user_path = raw_input(root_guess_msg.format(root_path))
     if user_path:
         user_path = os.path.abspath(os.path.expanduser(user_path))
@@ -59,6 +57,9 @@ def verify_root ( ):
         print(root_rw_fail_message)
         sys.exit(2)
     return root_path
+
+def find_red_spider_root():
+    return os.path.dirname(os.path.abspath(sys.argv[0]))
 
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
