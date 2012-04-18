@@ -17,7 +17,7 @@ import os
 from os.path import join, exists
 import sys
 
-def set_red_spider_root():
+def get_red_spider_root():
     if os.name == 'nt':  # Windows
         config_path = os.getenv('APPDATA') + '\\xkcdRedSpider\\config.txt'
     else:                # POSIX assumed
@@ -32,7 +32,7 @@ def set_red_spider_root():
     return red_spider_root
 
 def set_environment():
-    rs_root = set_red_spider_root()
+    rs_root = get_red_spider_root()
     bin_dir = join(rs_root, 'bin')
     lib_dir = join(rs_root, 'lib')
     env_prepend('PATH', bin_dir)
