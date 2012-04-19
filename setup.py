@@ -9,12 +9,13 @@ Licensed under the Red Spider Project License.
 See the License.txt that shipped with your copy of this software for details.
 
 
-Note: some of the program logic can be made more elegant if we make it
-os.chdir(red_spider_root) soon after verify_root().
+A -q option to make it less verbous would probably be nice. Until we
+have a dedicated 'update' command we'll need to run the setup every
+time one of the commands has been changed on master.
 
-A -q option to make it less verbous would probably be nice. Until we have a
-dedicated 'update' command we'll need to run the setup every time one of the
-commands has been changed on master.
+The user shouldn't need to bother to move rsshell somewhere in the
+PATH. In the near future this program should just do that
+automatically.
 '''
 
 from future_builtins import zip, map
@@ -24,6 +25,13 @@ import shutil
 import py_compile
 import sys
 
+bin_dir     = 'bin'
+lib_dir     = 'lib'
+build_dir   = 'build'
+src_dir     = 'src'
+inc_dir     = 'include'
+cfg_dir     = 'config'
+
 executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
 
 python_modules = 'src/xkcd-fetch.py'.split()
@@ -32,13 +40,13 @@ def main ( ):
     print(welcome_msg)
     red_spider_root = verify_root()
     save_user_config(red_spider_root)
-    build_dir = join(red_spider_root, 'build')
+    os.chdir(red_spider_root)
     # existence of the build dir is the natural indicator of a previous install
     user_pref = raw_input(
         reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
     )
     if (user_pref.find('y') != -1 or user_pref.find('Y') != -1):
-        install(red_spider_root)
+        install()
     print(farewell_msg)
 
 def verify_root ( ):
@@ -82,15 +90,11 @@ def save_user_config (rs_root):
     config_handle.close()
     print(config_file_stored_msg.format(config_file))
 
-def install (rs_root):
-    # invariant: rs_root exists and is read/writeable
-    src_dir = join(rs_root, 'src')
-    bin_dir = join(rs_root, 'bin')
-    install_rsshell(src_dir, bin_dir)  # creates the dirs if they don't exist
-    lib_dir = join(rs_root, 'lib')
+def install ( ):
+    # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
+    install_rsshell()       # creates bin_dir if it doesn't exist
     if not exists(lib_dir):
         os.mkdir(lib_dir)
-    build_dir = join(rs_root, 'build')
     if not exists(build_dir):
         os.mkdir(build_dir)
     # Installing from within Python works fine as long as we only need to copy
@@ -100,16 +104,15 @@ def install (rs_root):
     # build tool, called from here.
     print(install_patience_msg)
     if os.name == 'nt':  # Windows
-        install_scripts(    src_dir, bin_dir,
-                            executable_scripts, executable_scripts  )
+        install_scripts(executable_scripts, executable_scripts)
     else:                # POSIX assumed
-        install_scripts(    src_dir, bin_dir, executable_scripts,
+        install_scripts(    executable_scripts,
                             map(lambda x: splitext(x)[0], executable_scripts)
                         )
-    install_python_modules(rs_root, lib_dir, python_modules)
+    install_python_modules(python_modules)
     # add more of such steps if that's feasible and no build system is available
 
-def install_rsshell (src_dir, bin_dir):
+def install_rsshell ( ):
     if not exists(src_dir):
         print(no_src_panic_msg)
         sys.exit(1)
@@ -132,7 +135,7 @@ def install_rsshell (src_dir, bin_dir):
             bin_file = splitext(bin_file)[0]
     print(rsshell_install_success_msg.format(bin_file, fname))
 
-def install_scripts (src_dir, bin_dir, src_names, bin_names):
+def install_scripts (src_names, bin_names):
     # if the program reaches this point, src_dir and bin_dir exist for sure
     for src_name, bin_name in zip(src_names, bin_names):
         src_file = join(src_dir, src_name)
@@ -141,14 +144,14 @@ def install_scripts (src_dir, bin_dir, src_names, bin_names):
         else:
             shutil.copy2(src_file, join(bin_dir, bin_name))
 
-def install_python_modules (rs_root, lib_dir, modules):
+def install_python_modules (modules):
     # if the program reaches this point, lib_dir exists for sure
     # ideally the modules in lib should be optimized, but we can fix that later
     for module in modules:
         dir, module_name = module.split('/')
-        source_file = join(rs_root, dir, module_name)
+        source_file = join(dir, module_name)
         if not exists(source_file):
-            print(script_not_found_msg.format(join(dir, module_name)))
+            print(script_not_found_msg.format(source_file))
         else:
             target_file = join(lib_dir, module_name + 'c')
             py_compile.compile(source_file, target_file)
@@ -189,10 +192,10 @@ I think you haven't run the installer before (at least not in this
 root). Would you like me to do it now? (y/n) --> """
 
 no_src_panic_msg = """
-Oh my. There is no 'src' subdirectory within the root?!
+Oh my. There is no '{0}' subdirectory within the root?!
 Please come back when you've checked that everything is in its
 proper place!
-"""
+""".format(src_dir)
 
 no_rsshell_warning_msg = """
 Warning: I couldn't find '{0}' in the root.
