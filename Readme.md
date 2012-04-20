@@ -92,6 +92,7 @@ Where `YYYY` starts off as the current year and `__authors_of_major_contribution
 
 Finally, here's the really exciting stuff. You'll need to do some or all of the following:
 
+ -  If you wrote anything that should be copied to `bin` or `lib` during installation, add it to lists at the top of `setup.py`.
  -  Push your branch to your public fork of the project.
  -  If you edited any Markdown files, check that they render correctly on GitHub.
  -  Ask your fellow project participants for their opinions, if relevant.
