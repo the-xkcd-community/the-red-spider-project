@@ -33,8 +33,12 @@ inc_dir     = 'include'
 cfg_dir     = 'config'
 
 executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
-
 python_modules = 'src/xkcd-fetch.py'.split()
+
+if os.name == 'nt':
+    rsshell_target_dir = join(os.getenv('PROGRAMFILES'), 'Red Spider Project')
+else:
+    rsshell_target_dir = '/usr/local/bin'
 
 def main ( ):
     print(welcome_msg)
@@ -92,7 +96,9 @@ def save_user_config (rs_root):
 
 def install ( ):
     # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
-    install_rsshell()       # creates bin_dir if it doesn't exist
+    install_rsshell()
+    if not exists(bin_dir):
+        os.mkdir(bin_dir)
     if not exists(lib_dir):
         os.mkdir(lib_dir)
     if not exists(build_dir):
@@ -116,23 +122,21 @@ def install_rsshell ( ):
     if not exists(src_dir):
         print(no_src_panic_msg)
         sys.exit(1)
-    if not exists(bin_dir):
-        os.mkdir(bin_dir)
     fname = 'rsshell.py'
     src_file = join(src_dir, fname)
     if not exists(src_file):
         print(no_rsshell_warning_msg.format(join('src', fname)))
         return
-    if os.name != 'nt':  # POSIX assumed
-        fname = splitext(fname)[0]
-    bin_file = join(bin_dir, fname)
-    shutil.copy2(src_file, bin_file)
     if os.name == 'nt':  # Windows
-        if os.getenv('PATHEXT', '').find('.py') != -1:
-            # Python commands can be run without typing the file extension,
-            # like on POSIX with a shebang and the executable bit ON
-            fname = splitext(fname)[0]
-            bin_file = splitext(bin_file)[0]
+        install_rsshell_windows(src_file, fname)
+        return
+    # POSIX assumed from here on
+    fname = splitext(fname)[0]
+    if not os.access(rsshell_target_dir, os.R_OK | os.W_OK):
+        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
+        if not rsshell_target_dir:
+            return
+    shutil.copy2(src_file, join(rsshell_target_dir, fname))
     print(rsshell_install_success_msg.format(bin_file, fname))
 
 def install_scripts (src_names, bin_names):
