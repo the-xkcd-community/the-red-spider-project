@@ -20,7 +20,7 @@ automatically.
 
 from future_builtins import zip, map
 import os
-from os.path import exists, join, split, splitext
+from os.path import exists, join, split, splitext, abspath, expanduser
 from shutil import copy2
 import py_compile
 import sys
@@ -57,10 +57,10 @@ def verify_root ( ):
     root_path = find_red_spider_root()
     user_path = raw_input(root_guess_msg.format(root_path))
     if user_path:
-        user_path = os.path.abspath(os.path.expanduser(user_path))
+        user_path = abspath(expanduser(user_path))
         while not exists(user_path):
             user_path = raw_input(user_path_fail_msg.format(user_path))
-            user_path = os.path.abspath(user_path)
+            user_path = abspath(user_path)
         print(user_path_end_msg.format(user_path))
         # if we want to go paranoid:
         # check_rs_root_contents(user_path)
@@ -71,7 +71,7 @@ def verify_root ( ):
     return root_path
 
 def find_red_spider_root():
-    return os.path.dirname(os.path.abspath(sys.argv[0]))
+    return os.path.dirname(abspath(sys.argv[0]))
 
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
@@ -119,6 +119,7 @@ def install ( ):
     # add more of such steps if that's feasible and no build system is available
 
 def install_rsshell ( ):
+    global rsshell_target_dir
     if not exists(src_dir):
         print(no_src_panic_msg)
         sys.exit(1)
@@ -139,12 +140,12 @@ def install_rsshell ( ):
     rsshell_install_finish(src_file, rsshell_target_dir, fname)
 
 def install_rsshell_windows (src_file, fname):
+    global rsshell_target_dir
     if not os.access(os.getenv('PROGRAMFILES'), os.R_OK | os.W_OK):
         rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
         if not rsshell_target_dir:
             return
     if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
-        os.makedirs(rsshell_target_dir)
         # Assumption: if the target dir doesn't exist it also isn't in the PATH
         # !! We're messing with the Windows Registry here, edit with care !!
         from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
@@ -163,7 +164,28 @@ def install_rsshell_windows (src_file, fname):
         CloseKey(user_env)
     rsshell_install_finish(src_file, rsshell_target_dir, fname)
 
+def handle_lacking_permissions (rsshell_target_dir):
+    choice = raw_input(insufficient_rights_msg.format(rsshell_target_dir))
+    if choice == '1':
+        sys.exit(3)
+    if choice == '2':
+        return ''
+    if choice == '3':
+        alt_path = abspath(expanduser(raw_input(rsshell_path_choice_msg)))
+        while not exists(alt_path):
+            new_path = abspath(expanduser(raw_input(rsshell_newpath_check_msg)))
+            if new_path:
+                alt_path = new_path
+            else:
+                break
+        return alt_path
+    else:
+        print(rsshell_unrecognised_option_msg)
+        return ''
+
 def rsshell_install_finish (src_file, rsshell_target_dir, fname):
+    if not exists(rsshell_target_dir):
+        os.makedirs(rsshell_target_dir)
     bin_file = join(rsshell_target_dir, fname)
     copy2(src_file, bin_file)
     print(rsshell_install_success_msg.format(bin_file, fname))
@@ -234,8 +256,35 @@ no_rsshell_warning_msg = """
 Warning: I couldn't find '{0}' in the root.
 I'll skip the installation of rsshell."""
 
+insufficient_rights_msg = """
+It appears you're running me without administrative rights. The
+consequence is that I can't install rsshell to the usual location,
+{0} .
+There are a few things we could do to solve this problem:
+
+1. Quit, and then re-run me with administrative rights.
+2. Skip installation of rsshell and continue.
+3. Install rsshell somewhere else, where I do have write access
+   (probably in your home directory).
+
+Please enter the number of your choice here: --> """
+
+rsshell_path_choice_msg = """Please enter the path of your choice.
+--> """
+
+rsshell_newpath_check_msg = """
+That path doesn't seem to exist. If you want me to create it just hit
+enter, otherwise please specify another path.
+--> """
+
+rsshell_unrecognised_option_msg = """
+I don't know what you mean, but I'll just assume that you want to skip."""
+
 winreg_path_unexpected_type_msg = """
-Uhoh. Your 'Environment' setting in the Registry is of type {0}, which is not what I expected. I'll try my best to bring this to a good end, but don't be surprised if velociraptors jump out of your fridge tomorrow."""
+Uhoh. Your 'Environment' setting in the Registry is of type {0},
+which is not what I expected. I'll try my best to bring this to a good
+end, but don't be surprised if velociraptors jump out of your fridge
+tomorrow."""
 
 rsshell_install_success_msg = """
 Hey, listen up. I've installed rsshell for you.
