@@ -234,6 +234,9 @@ no_rsshell_warning_msg = """
 Warning: I couldn't find '{0}' in the root.
 I'll skip the installation of rsshell."""
 
+winreg_path_unexpected_type_msg = """
+Uhoh. Your 'Environment' setting in the Registry is of type {0}, which is not what I expected. I'll try my best to bring this to a good end, but don't be surprised if velociraptors jump out of your fridge tomorrow."""
+
 rsshell_install_success_msg = """
 Hey, listen up. I've installed rsshell for you.
 From now on you can run it from
