@@ -12,10 +12,6 @@ See the License.txt that shipped with your copy of this software for details.
 A -q option to make it less verbous would probably be nice. Until we
 have a dedicated 'update' command we'll need to run the setup every
 time one of the commands has been changed on master.
-
-The user shouldn't need to bother to move rsshell somewhere in the
-PATH. In the near future this program should just do that
-automatically.
 '''
 
 from future_builtins import zip, map
@@ -36,7 +32,8 @@ executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
 python_modules = 'src/xkcd-fetch.py'.split()
 
 if os.name == 'nt':
-    rsshell_target_dir = join(os.getenv('PROGRAMFILES'), 'Red Spider Project')
+    rsshell_target_dir = os.getenv('HOME')
+    # intended value: = join(os.getenv('PROGRAMFILES'), 'Red Spider Project')
 else:
     rsshell_target_dir = '/usr/local/bin'
 
@@ -128,41 +125,12 @@ def install_rsshell ( ):
     if not exists(src_file):
         print(no_rsshell_warning_msg.format(join('src', fname)))
         return
-    if os.name == 'nt':
-        install_rsshell_windows(src_file, fname)
-        return
-    # POSIX assumed from here on
-    fname = splitext(fname)[0]
+    if os.name != 'nt':  # POSIX assumed
+        fname = splitext(fname)[0]
     if not os.access(rsshell_target_dir, os.R_OK | os.W_OK):
         rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
         if not rsshell_target_dir:
             return
-    rsshell_install_finish(src_file, rsshell_target_dir, fname)
-
-def install_rsshell_windows (src_file, fname):
-    global rsshell_target_dir
-    if not os.access(os.getenv('PROGRAMFILES'), os.R_OK | os.W_OK):
-        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
-        if not rsshell_target_dir:
-            return
-    if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
-        # Assumption: if the target dir doesn't exist it also isn't in the PATH
-        # !! We're messing with the Windows Registry here, edit with care !!
-        import _winreg
-        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
-        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
-                            0, _winreg.KEY_ALL_ACCESS                   )
-        try:
-            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
-            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
-        except WindowsError:
-            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
-        except AssertionError:
-            print(winreg_path_unexpected_type_msg.format(user_path_type))
-            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
-        user_path = os.pathsep.join((user_path, rsshell_target_dir))
-        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
-        CloseKey(user_env)
     rsshell_install_finish(src_file, rsshell_target_dir, fname)
 
 def handle_lacking_permissions (rsshell_target_dir):
@@ -281,12 +249,6 @@ enter, otherwise please specify another path.
 rsshell_unrecognised_option_msg = """
 I don't know what you mean, but I'll just assume that you want to skip."""
 
-winreg_path_unexpected_type_msg = """
-Uhoh. Your 'Environment' setting in the Registry is of type {0},
-which is not what I expected. I'll try my best to bring this to a good
-end, but don't be surprised if velociraptors jump out of your fridge
-tomorrow."""
-
 rsshell_install_success_msg = """
 Hey, listen up. I've installed rsshell for you.
 From now on you can run it from
@@ -312,3 +274,39 @@ project to somewhere else.
 
 if __name__ == '__main__':
     main()
+
+# This function will remain 'in the fridge' until we find a way to fix
+# the permission issue with Program Files\Red Spider Project. See
+# branch jgonggrijp/setup-windows for the intended usage of this
+# function.
+def install_rsshell_windows (src_file, fname):
+    global rsshell_target_dir
+    if not os.access(os.getenv('PROGRAMFILES'), os.R_OK | os.W_OK):
+        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
+        if not rsshell_target_dir:
+            return
+    if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
+        # Assumption: if the target dir doesn't exist it also isn't in the PATH
+        # !! We're messing with the Windows Registry here, edit with care !!
+        import _winreg
+        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
+        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
+                            0, _winreg.KEY_ALL_ACCESS                   )
+        try:
+            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
+            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
+        except WindowsError:
+            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
+        except AssertionError:
+            print(winreg_path_unexpected_type_msg.format(user_path_type))
+            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
+        user_path = os.pathsep.join((user_path, rsshell_target_dir))
+        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
+        CloseKey(user_env)
+    rsshell_install_finish(src_file, rsshell_target_dir, fname)
+
+winreg_path_unexpected_type_msg = """
+Uhoh. Your 'Environment' setting in the Registry is of type {0},
+which is not what I expected. I'll try my best to bring this to a good
+end, but don't be surprised if velociraptors jump out of your fridge
+tomorrow."""
