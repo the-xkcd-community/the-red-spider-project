@@ -148,6 +148,7 @@ def install_rsshell_windows (src_file, fname):
     if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
         # Assumption: if the target dir doesn't exist it also isn't in the PATH
         # !! We're messing with the Windows Registry here, edit with care !!
+        import _winreg
         from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
         user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
                             0, _winreg.KEY_ALL_ACCESS                   )
@@ -155,7 +156,7 @@ def install_rsshell_windows (src_file, fname):
             user_path, user_path_type = QueryValueEx(user_env, 'PATH')
             assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
         except WindowsError:
-            user_path, user_path_type = '%PATH%', _winreg.REG_EXPAND_SZ
+            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
         except AssertionError:
             print(winreg_path_unexpected_type_msg.format(user_path_type))
             user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
