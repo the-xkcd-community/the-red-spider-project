@@ -21,7 +21,7 @@ automatically.
 from future_builtins import zip, map
 import os
 from os.path import exists, join, split, splitext
-import shutil
+from shutil import copy2
 import py_compile
 import sys
 
@@ -127,7 +127,7 @@ def install_rsshell ( ):
     if not exists(src_file):
         print(no_rsshell_warning_msg.format(join('src', fname)))
         return
-    if os.name == 'nt':  # Windows
+    if os.name == 'nt':
         install_rsshell_windows(src_file, fname)
         return
     # POSIX assumed from here on
@@ -136,7 +136,36 @@ def install_rsshell ( ):
         rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
         if not rsshell_target_dir:
             return
-    shutil.copy2(src_file, join(rsshell_target_dir, fname))
+    rsshell_install_finish(src_file, rsshell_target_dir, fname)
+
+def install_rsshell_windows (src_file, fname):
+    if not os.access(os.getenv('PROGRAMFILES'), os.R_OK | os.W_OK):
+        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
+        if not rsshell_target_dir:
+            return
+    if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
+        os.makedirs(rsshell_target_dir)
+        # Assumption: if the target dir doesn't exist it also isn't in the PATH
+        # !! We're messing with the Windows Registry here, edit with care !!
+        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
+        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
+                            0, _winreg.KEY_ALL_ACCESS                   )
+        try:
+            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
+            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
+        except WindowsError:
+            user_path, user_path_type = '%PATH%', _winreg.REG_EXPAND_SZ
+        except AssertionError:
+            print(winreg_path_unexpected_type_msg.format(user_path_type))
+            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
+        user_path = os.pathsep.join(user_path, rsshell_target_dir)
+        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
+        CloseKey(user_env)
+    rsshell_install_finish(src_file, rsshell_target_dir, fname)
+
+def rsshell_install_finish (src_file, rsshell_target_dir, fname):
+    bin_file = join(rsshell_target_dir, fname)
+    copy2(src_file, bin_file)
     print(rsshell_install_success_msg.format(bin_file, fname))
 
 def install_scripts (src_names, bin_names):
@@ -146,7 +175,7 @@ def install_scripts (src_names, bin_names):
         if not exists(src_file):
             print(script_not_found_msg.format(src_name))
         else:
-            shutil.copy2(src_file, join(bin_dir, bin_name))
+            copy2(src_file, join(bin_dir, bin_name))
 
 def install_python_modules (modules):
     # if the program reaches this point, lib_dir exists for sure
