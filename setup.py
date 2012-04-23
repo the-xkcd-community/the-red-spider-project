@@ -159,7 +159,7 @@ def install_rsshell_windows (src_file, fname):
         except AssertionError:
             print(winreg_path_unexpected_type_msg.format(user_path_type))
             user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
-        user_path = os.pathsep.join(user_path, rsshell_target_dir)
+        user_path = os.pathsep.join((user_path, rsshell_target_dir))
         SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
         CloseKey(user_env)
     rsshell_install_finish(src_file, rsshell_target_dir, fname)
