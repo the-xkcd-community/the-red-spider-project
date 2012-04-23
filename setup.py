@@ -32,7 +32,7 @@ executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
 python_modules = 'src/xkcd-fetch.py'.split()
 
 if os.name == 'nt':
-    rsshell_target_dir = os.getenv('HOME')
+    rsshell_target_dir = expanduser('~')
     # intended value: = join(os.getenv('PROGRAMFILES'), 'Red Spider Project')
 else:
     rsshell_target_dir = '/usr/local/bin'
