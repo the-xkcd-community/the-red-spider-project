@@ -105,11 +105,13 @@ Once your branch has been fully merged into the master branch, others can start 
 
 #### Editing somebody else's stuff ####
 
-First of all, please either make sure that the original author isn't working on it, or that they like to cooperate with you.
+First of all, please check whether the original author is currently working on it. Next, create a new branch to commit your changes to.
 
-If they're not working on it: fork a new branch, edit, have it tested, have it pulled. Business as usual.
+If they're not working on it: edit, have it tested, have it pulled. Business as usual.
 
-If they want to cooperate with you: add their public fork as a remote, have them add your public fork too, discuss, and push/pull your changes back and forth. Other than that, business as usual.
+If you're going to cooperate with them: add their public fork as a remote, have them add your public fork too, discuss, and push/pull your changes back and forth. Other than that, business as usual.
+
+Otherwise: you're about to create a parallel alternative version, so be aware that something special will need to be done before you can merge your changes. Perhaps give your variant of the program a different name.
 
 Depending on the nature of your contributions, you should probably either add your name to the copyright notices of the files you edited or include it in the Authors.txt. For program source files, a guiding question could be the following: "Did I contribute to the program logic?"
 
