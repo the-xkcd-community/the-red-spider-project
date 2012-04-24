@@ -22,6 +22,7 @@ import py_compile
 import sys
 
 bin_dir     = 'bin'
+extbin_dir  = 'extbin'  # stands for 'external binaries'
 lib_dir     = 'lib'
 build_dir   = 'build'
 src_dir     = 'src'
@@ -30,12 +31,6 @@ cfg_dir     = 'config'
 
 executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
 python_modules = 'src/xkcd-fetch.py'.split()
-
-if os.name == 'nt':
-    rsshell_target_dir = expanduser('~')
-    # intended value: = join(os.getenv('PROGRAMFILES'), 'Red Spider Project')
-else:
-    rsshell_target_dir = '/usr/local/bin'
 
 def main ( ):
     print(welcome_msg)
@@ -116,7 +111,6 @@ def install ( ):
     # add more of such steps if that's feasible and no build system is available
 
 def install_rsshell ( ):
-    global rsshell_target_dir
     if not exists(src_dir):
         print(no_src_panic_msg)
         sys.exit(1)
@@ -127,37 +121,41 @@ def install_rsshell ( ):
         return
     if os.name != 'nt':  # POSIX assumed
         fname = splitext(fname)[0]
-    if not os.access(rsshell_target_dir, os.R_OK | os.W_OK):
-        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
-        if not rsshell_target_dir:
-            return
-    rsshell_install_finish(src_file, rsshell_target_dir, fname)
-
-def handle_lacking_permissions (rsshell_target_dir):
-    choice = raw_input(insufficient_rights_msg.format(rsshell_target_dir))
-    if choice == '1':
-        sys.exit(3)
-    if choice == '2':
-        return ''
-    if choice == '3':
-        alt_path = abspath(expanduser(raw_input(rsshell_path_choice_msg)))
-        while not exists(alt_path):
-            new_path = abspath(expanduser(raw_input(rsshell_newpath_check_msg)))
-            if new_path:
-                alt_path = new_path
-            else:
-                break
-        return alt_path
-    else:
-        print(rsshell_unrecognised_option_msg)
-        return ''
-
-def rsshell_install_finish (src_file, rsshell_target_dir, fname):
-    if not exists(rsshell_target_dir):
-        os.makedirs(rsshell_target_dir)
-    bin_file = join(rsshell_target_dir, fname)
+    if not exists(extbin_dir):
+        os.mkdir(extbin_dir)
+        # assumption: if it doesn't exist it also isn't in the PATH
+        append_user_path(abspath(extbin_dir))
+    bin_file = join(extbin_dir, fname)
     copy2(src_file, bin_file)
     print(rsshell_install_success_msg.format(bin_file, fname))
+
+def append_user_path (addition):
+    if os.name == 'nt':
+        # !! We're messing with the Windows Registry here, edit with care !!
+        import _winreg
+        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
+        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
+                            0, _winreg.KEY_ALL_ACCESS                   )
+        try:
+            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
+            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
+        except WindowsError:
+            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
+        except AssertionError:
+            print(winreg_path_unexpected_type_msg.format(user_path_type))
+            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
+        if addition:
+            user_path = os.pathsep.join((user_path, addition))
+        else:
+            user_path = addition
+        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
+        CloseKey(user_env)
+    else:   # POSIX assumed
+        profile = open(expanduser('~/.profile'), 'a')
+        profile.write('\nexport PATH=$PATH:{0}\n'.format(addition))
+        profile.close()
+        # It's sloppy to just append another export statement, but it
+        # works for the time being.
 
 def install_scripts (src_names, bin_names):
     # if the program reaches this point, src_dir and bin_dir exist for sure
@@ -225,38 +223,21 @@ no_rsshell_warning_msg = """
 Warning: I couldn't find '{0}' in the root.
 I'll skip the installation of rsshell."""
 
-insufficient_rights_msg = """
-It appears you're running me without administrative rights. The
-consequence is that I can't install rsshell to the usual location,
-{0} .
-There are a few things we could do to solve this problem:
-
-1. Quit, and then re-run me with administrative rights.
-2. Skip installation of rsshell and continue.
-3. Install rsshell somewhere else, where I do have write access
-   (probably in your home directory).
-
-Please enter the number of your choice here: --> """
-
-rsshell_path_choice_msg = """Please enter the path of your choice.
---> """
-
-rsshell_newpath_check_msg = """
-That path doesn't seem to exist. If you want me to create it just hit
-enter, otherwise please specify another path.
---> """
-
-rsshell_unrecognised_option_msg = """
-I don't know what you mean, but I'll just assume that you want to skip."""
+winreg_path_unexpected_type_msg = """
+Uhoh. Your 'Environment' setting in the Registry is of type {0},
+which is not what I expected. I'll try my best to bring this to a good
+end, but don't be surprised if velociraptors jump out of your fridge
+tomorrow."""
 
 rsshell_install_success_msg = """
-Hey, listen up. I've installed rsshell for you.
-From now on you can run it from
-{0} .
-It will launch a subshell with some convenient environment variables
-that the other programs rely on. If you want you can copy or move it
-to some place where your shell can always find it (i.e. in your PATH)
-so you can always get there by just punching '{1}' into your leopard."""
+Hey, listen up. I've installed rsshell for you in {0} .
+I also added it to your PATH, so from your next logon onwards you can
+run it by just punching '{1}' into your leopard. It will launch a
+subshell with some convenient environment variables that the other
+programs rely on.
+
+Note: on unixy systems, opening a new terminal window counts as a new
+logon as well."""
 
 install_patience_msg = """
 Please wait while I install the rest..."""
@@ -274,39 +255,3 @@ project to somewhere else.
 
 if __name__ == '__main__':
     main()
-
-# This function will remain 'in the fridge' until we find a way to fix
-# the permission issue with Program Files\Red Spider Project. See
-# branch jgonggrijp/setup-windows for the intended usage of this
-# function.
-def install_rsshell_windows (src_file, fname):
-    global rsshell_target_dir
-    if not os.access(os.getenv('PROGRAMFILES'), os.R_OK | os.W_OK):
-        rsshell_target_dir = handle_lacking_permissions(rsshell_target_dir)
-        if not rsshell_target_dir:
-            return
-    if not exists(rsshell_target_dir):  # Windows gets somewhat scary here
-        # Assumption: if the target dir doesn't exist it also isn't in the PATH
-        # !! We're messing with the Windows Registry here, edit with care !!
-        import _winreg
-        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
-        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
-                            0, _winreg.KEY_ALL_ACCESS                   )
-        try:
-            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
-            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
-        except WindowsError:
-            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
-        except AssertionError:
-            print(winreg_path_unexpected_type_msg.format(user_path_type))
-            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
-        user_path = os.pathsep.join((user_path, rsshell_target_dir))
-        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
-        CloseKey(user_env)
-    rsshell_install_finish(src_file, rsshell_target_dir, fname)
-
-winreg_path_unexpected_type_msg = """
-Uhoh. Your 'Environment' setting in the Registry is of type {0},
-which is not what I expected. I'll try my best to bring this to a good
-end, but don't be surprised if velociraptors jump out of your fridge
-tomorrow."""
