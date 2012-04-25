@@ -131,8 +131,9 @@ def install_rsshell ( ):
 
 def extend_user_env (name, value, mode):
     '''Add 'value' to 'name' in the user's environment settings that
-    are loaded at login. 'mode' determines what to do with any pre-
-    existing value:
+    are loaded at login. This function writes to HKEY_CURRENT_USER in
+    the Registry on Windows and to ~/.profile on unixy systems. 'mode'
+    determines what to do with any pre-existing value:
      a  append the new value to the old
      p  prepend the new value to the old
      o  overwrite the old value with the new
@@ -149,7 +150,7 @@ def extend_user_env (name, value, mode):
 
 def extend_user_env_windows (name, value, mode):
     '''NEVER call this function directly.
-    Use the platform-neutral 'extend_user_env' instead.'''
+    Use the safer and platform-neutral 'extend_user_env' instead.'''
     # !! We're messing with the Windows Registry here, edit with care !!
     import _winreg
     from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
@@ -160,9 +161,6 @@ def extend_user_env_windows (name, value, mode):
         assert old_value_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
     except WindowsError:
         old_value, old_value_type = '', _winreg.REG_SZ
-    except AssertionError:
-        print(winreg_path_unexpected_type_msg.format(old_value_type))
-        old_value, old_value_type = str(old_value), _winreg.REG_EXPAND_SZ
     if not old_value or mode == 'o':
         new_value = value
     elif mode == 'a':
@@ -178,7 +176,7 @@ def extend_user_env_windows (name, value, mode):
 
 def extend_user_env_posix (name, value, mode):
     '''NEVER call this function directly.
-    Use the platform-neutral 'extend_user_env' instead.'''
+    Use the safer and platform-neutral 'extend_user_env' instead.'''
     # It's sloppy to just append another export statement, but it
     # works for the time being.
     profile = open(expanduser('~/.profile'), 'a')
