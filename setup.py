@@ -35,7 +35,7 @@ python_modules = 'src/xkcd-fetch.py'.split()
 def main ( ):
     print(welcome_msg)
     red_spider_root = verify_root()
-    save_user_config(red_spider_root)
+    extend_user_env('RED_SPIDER_ROOT', red_spider_root, 'o')
     os.chdir(red_spider_root)
     # existence of the build dir is the natural indicator of a previous install
     user_pref = raw_input(
@@ -52,7 +52,7 @@ def verify_root ( ):
         user_path = abspath(expanduser(user_path))
         while not exists(user_path):
             user_path = raw_input(user_path_fail_msg.format(user_path))
-            user_path = abspath(user_path)
+            user_path = abspath(expanduser(user_path))
         print(user_path_end_msg.format(user_path))
         # if we want to go paranoid:
         # check_rs_root_contents(user_path)
@@ -68,66 +68,6 @@ def find_red_spider_root():
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
     pass
-
-def save_user_config (rs_root):
-    if os.name == 'nt':  # Windows
-        config_folder = join(os.getenv('APPDATA'), 'xkcdRedSpider')
-        config_file = join(config_folder, 'config.txt')
-    else:                # POSIX assumed
-        config_folder = join(os.getenv('HOME'), '.config')
-        config_file = join(config_folder, 'xkcdRedSpider')
-    # We could go fancy and use JSON to store the external
-    # configuration, but simple plaintext will do for the time being.
-    # Afterall, we're storing only one string!
-    if not exists(config_folder):
-        os.mkdir(config_folder)
-    config_handle = open(config_file, 'w')
-    config_handle.write(rs_root)  # no line ending; probably important
-    config_handle.close()
-    print(config_file_stored_msg.format(config_file))
-
-def install ( ):
-    # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
-    install_rsshell()
-    if not exists(bin_dir):
-        os.mkdir(bin_dir)
-    if not exists(lib_dir):
-        os.mkdir(lib_dir)
-    if not exists(build_dir):
-        os.mkdir(build_dir)
-    # Installing from within Python works fine as long as we only need to copy
-    # some files, but this will become unmanageable if we also have to compile
-    # C++, Haskell, etcetera.
-    # So in the future the part below should be taken care of by some external
-    # build tool, called from here.
-    print(install_patience_msg)
-    if os.name == 'nt':  # Windows
-        install_scripts(executable_scripts, executable_scripts)
-    else:                # POSIX assumed
-        install_scripts(    executable_scripts,
-                            map(lambda x: splitext(x)[0], executable_scripts)
-                        )
-    install_python_modules(python_modules)
-    # add more of such steps if that's feasible and no build system is available
-
-def install_rsshell ( ):
-    if not exists(src_dir):
-        print(no_src_panic_msg)
-        sys.exit(1)
-    fname = 'rsshell.py'
-    src_file = join(src_dir, fname)
-    if not exists(src_file):
-        print(no_rsshell_warning_msg.format(join('src', fname)))
-        return
-    if os.name != 'nt':  # POSIX assumed
-        fname = splitext(fname)[0]
-    if not exists(extbin_dir):
-        os.mkdir(extbin_dir)
-        # assumption: if it doesn't exist it also isn't in the PATH
-        extend_user_env('PATH', abspath(extbin_dir), 'a')
-    bin_file = join(extbin_dir, fname)
-    copy2(src_file, bin_file)
-    print(rsshell_install_success_msg.format(bin_file, fname))
 
 def extend_user_env (name, value, mode):
     '''Add 'value' to 'name' in the user's environment settings that
@@ -188,6 +128,49 @@ def extend_user_env_posix (name, value, mode):
         profile.write('\nexport {0}={1}\n'.format(name, value))
     profile.close()
 
+def install ( ):
+    # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
+    install_rsshell()
+    if not exists(bin_dir):
+        os.mkdir(bin_dir)
+    if not exists(lib_dir):
+        os.mkdir(lib_dir)
+    if not exists(build_dir):
+        os.mkdir(build_dir)
+    # Installing from within Python works fine as long as we only need to copy
+    # some files, but this will become unmanageable if we also have to compile
+    # C++, Haskell, etcetera.
+    # So in the future the part below should be taken care of by some external
+    # build tool, called from here.
+    print(install_patience_msg)
+    if os.name == 'nt':  # Windows
+        install_scripts(executable_scripts, executable_scripts)
+    else:                # POSIX assumed
+        install_scripts(    executable_scripts,
+                            map(lambda x: splitext(x)[0], executable_scripts)
+                        )
+    install_python_modules(python_modules)
+    # add more of such steps if that's feasible and no build system is available
+
+def install_rsshell ( ):
+    if not exists(src_dir):
+        print(no_src_panic_msg)
+        sys.exit(1)
+    fname = 'rsshell.py'
+    src_file = join(src_dir, fname)
+    if not exists(src_file):
+        print(no_rsshell_warning_msg.format(join('src', fname)))
+        return
+    if os.name != 'nt':  # POSIX assumed
+        fname = splitext(fname)[0]
+    if not exists(extbin_dir):
+        os.mkdir(extbin_dir)
+        # assumption: if it doesn't exist it also isn't in the PATH
+        extend_user_env('PATH', abspath(extbin_dir), 'a')
+    bin_file = join(extbin_dir, fname)
+    copy2(src_file, bin_file)
+    print(rsshell_install_success_msg.format(bin_file, fname))
+
 def install_scripts (src_names, bin_names):
     # if the program reaches this point, src_dir and bin_dir exist for sure
     for src_name, bin_name in zip(src_names, bin_names):
@@ -233,9 +216,6 @@ Damn. I don't have sufficient permissions to use that path.
 That ends it, then.
 """
 
-config_file_stored_msg = """
-I stored the path to {0} ."""
-
 reinstall_choice_msg = """
 It seems that you have run the installer before.
 Would you like me to reinstall everything anyway? (y/n) --> """
@@ -254,12 +234,6 @@ no_rsshell_warning_msg = """
 Warning: I couldn't find '{0}' in the root.
 I'll skip the installation of rsshell."""
 
-winreg_path_unexpected_type_msg = """
-Uhoh. Your 'Environment' setting in the Registry is of type {0},
-which is not what I expected. I'll try my best to bring this to a good
-end, but don't be surprised if velociraptors jump out of your fridge
-tomorrow."""
-
 rsshell_install_success_msg = """
 Hey, listen up. I've installed rsshell for you in {0} .
 I also added it to your PATH, so from your next logon onwards you can
@@ -267,8 +241,12 @@ run it by just punching '{1}' into your leopard. It will launch a
 subshell with some convenient environment variables that the other
 programs rely on.
 
+In addition the root has been saved to RED_SPIDER_ROOT, so after your
+next logon that one will be permanently available as well.
+
 Note: on unixy systems, opening a new terminal window counts as a new
-logon as well."""
+logon. If you run me often, you may want to clean up your .profile
+once in a while..."""
 
 install_patience_msg = """
 Please wait while I install the rest..."""
@@ -286,3 +264,10 @@ project to somewhere else.
 
 if __name__ == '__main__':
     main()
+
+# Not used anymore, but kept here for future reference. ;-)"
+winreg_path_unexpected_type_msg = """
+Uhoh. Your 'Environment' setting in the Registry is of type {0},
+which is not what I expected. I'll try my best to bring this to a good
+end, but don't be surprised if velociraptors jump out of your fridge
+tomorrow."""

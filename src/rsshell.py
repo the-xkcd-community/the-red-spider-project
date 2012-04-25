@@ -21,17 +21,10 @@ from os.path import join, exists
 import sys
 
 def get_red_spider_root():
-    if os.name == 'nt':  # Windows
-        config_path = os.getenv('APPDATA') + '\\xkcdRedSpider\\config.txt'
-    else:                # POSIX assumed
-        config_path = os.getenv('HOME') + '/.config/xkcdRedSpider'
-    config_path = os.path.normpath(config_path)
-    if not exists(config_path):
+    red_spider_root = os.getenv('RED_SPIDER_ROOT')
+    if not red_spider_root:
         print need_setup_msg
         sys.exit(1)
-    config = open(config_path)
-    red_spider_root = config.readline()
-    config.close()
     return red_spider_root
 
 def set_environment():
@@ -62,7 +55,7 @@ def main (argv = None):
         return os.system(os.getenv('SHELL', 'bash'))
 
 need_setup_msg = """
-No configuration file found. Go run the setup script first.
+RED_SPIDER_ROOT has not been set. Go run the setup script first.
 """
 
 if __name__ == "__main__":
