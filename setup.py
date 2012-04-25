@@ -124,38 +124,71 @@ def install_rsshell ( ):
     if not exists(extbin_dir):
         os.mkdir(extbin_dir)
         # assumption: if it doesn't exist it also isn't in the PATH
-        append_user_path(abspath(extbin_dir))
+        extend_user_env('PATH', abspath(extbin_dir), 'a')
     bin_file = join(extbin_dir, fname)
     copy2(src_file, bin_file)
     print(rsshell_install_success_msg.format(bin_file, fname))
 
-def append_user_path (addition):
+def extend_user_env (name, value, mode):
+    '''Add 'value' to 'name' in the user's environment settings that
+    are loaded at login. 'mode' determines what to do with any pre-
+    existing value:
+     a  append the new value to the old
+     p  prepend the new value to the old
+     o  overwrite the old value with the new
+
+    You should only write values to the user environment that are
+    normally stored as strings, i.e. REG_SZ or REG_EXPAND_SZ in the
+    Windows registry.'''
+    if mode not in ('a', 'o', 'p'):
+        raise ValueError("mode must be 'a', 'o' or 'p'")
     if os.name == 'nt':
-        # !! We're messing with the Windows Registry here, edit with care !!
-        import _winreg
-        from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
-        user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
-                            0, _winreg.KEY_ALL_ACCESS                   )
-        try:
-            user_path, user_path_type = QueryValueEx(user_env, 'PATH')
-            assert user_path_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
-        except WindowsError:
-            user_path, user_path_type = '', _winreg.REG_EXPAND_SZ
-        except AssertionError:
-            print(winreg_path_unexpected_type_msg.format(user_path_type))
-            user_path, user_path_type = str(user_path), _winreg.REG_EXPAND_SZ
-        if addition:
-            user_path = os.pathsep.join((user_path, addition))
-        else:
-            user_path = addition
-        SetValueEx(user_env, 'PATH', 0, user_path_type, user_path)
-        CloseKey(user_env)
-    else:   # POSIX assumed
-        profile = open(expanduser('~/.profile'), 'a')
-        profile.write('\nexport PATH=$PATH:{0}\n'.format(addition))
-        profile.close()
-        # It's sloppy to just append another export statement, but it
-        # works for the time being.
+        extend_user_env_windows(name, value, mode)
+    else:
+        extend_user_env_posix(name, value, mode)
+
+def extend_user_env_windows (name, value, mode):
+    '''NEVER call this function directly.
+    Use the platform-neutral 'extend_user_env' instead.'''
+    # !! We're messing with the Windows Registry here, edit with care !!
+    import _winreg
+    from _winreg import OpenKey, QueryValueEx, SetValueEx, CloseKey
+    user_env = OpenKey( _winreg.HKEY_CURRENT_USER, 'Environment',
+                        0, _winreg.KEY_ALL_ACCESS                   )
+    try:
+        old_value, old_value_type = QueryValueEx(user_env, name)
+        assert old_value_type in (_winreg.REG_SZ, _winreg.REG_EXPAND_SZ)
+    except WindowsError:
+        old_value, old_value_type = '', _winreg.REG_SZ
+    except AssertionError:
+        print(winreg_path_unexpected_type_msg.format(old_value_type))
+        old_value, old_value_type = str(old_value), _winreg.REG_EXPAND_SZ
+    if not old_value or mode == 'o':
+        new_value = value
+    elif mode == 'a':
+        new_value = os.pathsep.join((old_value, value))
+    else: # mode == 'p'
+        new_value = os.pathsep.join((value, old_value))
+    if old_value_type == _winreg.REG_SZ and value.find('%') != -1:
+        new_value_type = _winreg.REG_EXPAND_SZ
+    else:
+        new_value_type = old_value_type
+    SetValueEx(user_env, name, 0, new_value_type, new_value)
+    CloseKey(user_env)
+
+def extend_user_env_posix (name, value, mode):
+    '''NEVER call this function directly.
+    Use the platform-neutral 'extend_user_env' instead.'''
+    # It's sloppy to just append another export statement, but it
+    # works for the time being.
+    profile = open(expanduser('~/.profile'), 'a')
+    if mode == 'a':
+        profile.write('\nexport {0}=${0}:{1}\n'.format(name, value))
+    elif mode == 'p':
+        profile.write('\nexport {0}={1}:${0}\n'.format(name, value))
+    else: # mode == 'o'
+        profile.write('\nexport {0}={1}\n'.format(name, value))
+    profile.close()
 
 def install_scripts (src_names, bin_names):
     # if the program reaches this point, src_dir and bin_dir exist for sure
