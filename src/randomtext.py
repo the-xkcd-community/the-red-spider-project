@@ -51,19 +51,36 @@ class textGenerator(object):
       else:
         self.cache[key] = [word3]
 
+  """
+  def appendKeywords(self, wordlist):
+    _KEYWORDS = ['Ferret', 'Black Hat Guy', 'Nihilist']
+    for keyword in _KEYWORDS:
+      wordlist.append(keyword)
+    shuffledList = wordlist
+    listSize = len(wordlist)
+    while listSize > 0:
+      sourceElem = random.randint(0, listSize)
+      targetElem = random.randint(0, listSize)
+      shuffledList[targetElem] = wordlist[sourceElem]
+      listSize -= 1
+    return shuffledList
+  """
+
   def generate_random_text(self, size=15):
+    print ('Generating random garbage. Increasing entropy.\n')
     seed = random.randint(0, self.word_size - 3)
     seed_word, next_word = self.words[seed], self.words[seed+1]
     word1, word2 = seed_word, next_word
-    gen_words = []
+    generated_words = []
     for i in xrange(size):
-      gen_words.append(word1)
+      generated_words.append(word1)
       word1, word2 = word2, random.choice(self.cache[(word1, word2)])
-      gen_words.append(word2)
-    return ' '.join(gen_words)
+      generated_words.append(word2)
+    return ' '.join(generated_words)
+    #return ' '.join(self.appendKeywords(generated_words))
 
 def _usage():
-  print 'Usage: python randomtext.py [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]'
+  print ('Usage: python randomtext.py [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
 
 def writeFile(toWrite, path):
   try:
@@ -71,14 +88,23 @@ def writeFile(toWrite, path):
   except IOError:
     print toWrite
 
+def openFile(path, mode):
+  try:
+    openfile = open(path, mode)
+  except IOError:
+    print ('Couldn\'t open the file.\nAre you sure you entered the correct path?')
+    sys.exit(-1)
+  return openfile
+
 def main():
   if len(sys.argv) < 3 or len(sys.argv) > 4:
     _usage()
     sys.exit(-1)
   filePath = sys.argv[1]
-  if not os.path.exists(filePath):
-    raise IOError('Path not found. Are you sure you entered the correct path?\n')
-  textWriter = textGenerator(open(filePath, 'r'))
+  while not os.path.exists(filePath):
+    print ('Path not found. Are you sure you entered the correct path?\n')
+    filePath = raw_input('Enter the correct path: ')
+  textWriter = textGenerator(openFile(filePath, 'r'))
   textSize = int(sys.argv[2])
   while (textSize < 0):
     textSize = int(raw_input('Enter a number > 0 for the words to be generated. '))
