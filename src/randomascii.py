@@ -67,7 +67,10 @@ class AsciiGenerator(object):
       for width in xrange(0, self.image.size[0]):
         lum = 255 - self.image.getpixel((width, height))
         row = bisect(zonebounds, lum)
-        possibles = greyscale[row]
+        try:
+         possibles = greyscale[row]
+        except IndexError:
+         continue
         asciiString = asciiString + possibles[random.randint(0, len(possibles) - 1)]
       asciiString = asciiString + '\n'
     return asciiString
@@ -108,6 +111,7 @@ def main():
     curr_dir = raw_input('Path not found. Please, try again: ')
   imageList = generateImageList(curr_dir)
   imageToPrint = chooseRandomImage(imageList)
+  print imageToPrint
   asciiString = AsciiGenerator(imageToPrint)
   if asciiString:
     print asciiString
