@@ -26,24 +26,27 @@ _HEIGHT = 160
 _WIDTH = 65
 
 # The following strings represent
-# 7 tonal ranges, from lighter to darker, so that they
+# 10 tonal ranges, from lighter to darker, so that they
 # are the greyscale.
+# The greyscale was picked from: http://local.wasp.uwa.edu.au/~pbourke/dataformats/asciiart/
 
 greyscale = [
             " ",
-            " ",
-            ".,-",
-            "_ivc=!/|\\~",
-            "gjez2]/(YL)t[+T7Vf",
-            "mdK4ZGbNDXY5P*Q",
-            "W8KMA",
-            "#%$"
+            ".",
+            ":",
+            "-",
+            "=",
+            "+",
+            "*",
+            "#",
+            "%",
+            "@"
             ]
 
-# There are 7 luminosity bands, of equal sizes. They can be changed accordingly;
+# There are 10 luminosity bands, of equal sizes. They can be changed accordingly;
 # for instance, to boost contrast.
 
-zonebounds=[36,72,108,144,180,216,252]
+zonebounds=[25,50,75,100,125,150,175,200,225,250]
 
 class AsciiGenerator(object):
   #This assumes that correct path checking was done previously.
