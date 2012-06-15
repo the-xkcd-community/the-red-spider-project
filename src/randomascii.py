@@ -32,7 +32,7 @@ _WIDTH = 65
 
 greyscale = [
             " ",
-            ".",
+            "@",
             ":",
             "-",
             "=",
@@ -40,13 +40,13 @@ greyscale = [
             "*",
             "#",
             "%",
-            "@"
+            "."
             ]
 
 # There are 10 luminosity bands, of equal sizes. They can be changed accordingly;
 # for instance, to boost contrast.
 
-zonebounds=[25,50,75,100,125,150,175,200,225,250]
+zonebounds=[25, 50, 75, 100, 125, 150, 175, 200, 225, 250]
 
 class AsciiGenerator(object):
   #This assumes that correct path checking was done previously.
