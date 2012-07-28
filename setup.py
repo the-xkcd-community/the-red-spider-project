@@ -186,6 +186,7 @@ def install_python_modules (modules):
     for module in modules:
         dir, module_name = module.split('/')
         source_file = join(dir, module_name)
+        # note: on Windows, join(dir, module_name) != module
         if not exists(source_file):
             print(script_not_found_msg.format(source_file))
         else:
