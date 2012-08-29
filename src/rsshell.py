@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 
 # Copyright 2012 Neil Forrester, Julian Gonggrijp
 # Licensed under the Red Spider Project License.
