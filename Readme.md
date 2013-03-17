@@ -92,9 +92,12 @@ life clone. More ideas are waiting to be implemented.
 __Communication__: we have our little [thread at the xkcd
 forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for
 updates, discussion and archaeology, and there's the [issue
-tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues).
-Some of the many other options are to comment on commits or to write
-something on the wiki.
+tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues)
+for bugs, requests and testing. In addition you can chat away at our
+IRC channel (#redspider at irc.foonetic.net) or contribute to the
+[wiki](https://github.com/the-xkcd-community/the-red-spider-project/wiki)
+(soon to be more useful). For very specific things we sometimes
+comment on each other's commits on GitHub.
 
 
 ### How to ###
