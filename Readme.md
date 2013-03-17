@@ -84,8 +84,10 @@ in which case we'll give it a dedicated subdirectory.
 __Programs__: so far concrete work has been done on `rsshell`, which
 launches a convenient environment for other Red Spider programs, as
 well as on an xkcd comic fetcher, an xkcd comic regex searcher, an
-adventure shell and an adventure web browser. More ideas are waiting
-to be implemented.
+adventure shell, an adventure web browser, a lines-of-code hacker
+level calculator, a random text generator, an ascii art generator, an
+xkcd comic wallpaper changing app and an advanced Conway's game of
+life clone. More ideas are waiting to be implemented.
 
 __Communication__: we have our little [thread at the xkcd
 forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for
