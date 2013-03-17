@@ -52,13 +52,15 @@ information.
 
 __Testing__: we use the issue tracker from GitHub to ask each other a
 favour. See Platforms.md for more information.
+**Note**: nothing is thoroughly tested, we just make sure that things
+behave as expected under expected conditions.
 
 __Branching__: `master` is our sacred branch. It's supposed to contain
-only reasonably well-behaved programs (say, stable, portable and easy
-to quit). Nonetheless you're encouraged to merge often into `master`.
-Do whatever you want in the other branches, but please do observe some
-common rules of sensibility. For example, don't merge everything into
-everything.
+only reasonably well-behaved programs (say: more or less stable,
+portable and easy to quit). Nonetheless you're encouraged to merge
+often into `master`. Do whatever you want in the other branches, but
+please do observe some common rules of sensibility. For example, don't
+merge everything into everything.
 
 __Building__: currently we have a crude but effective setup script
 that copies executable scripts to the right locations and pre-compiles
