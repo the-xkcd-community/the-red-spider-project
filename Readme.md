@@ -12,7 +12,7 @@ for coding, and we want to share the experience.
 
 ### Who ###
 
-Currently, "we" are all members of the [xkcd
+Currently, "we" are mostly members of the [xkcd
 forums](http://forums.xkcd.com). However, anyone is welcome to join
 in.
 
@@ -35,8 +35,15 @@ Other than that, it's basically liberty above all things!
 
 ### When ###
 
-We only just started out, really. (Perhaps this section will contain
-more interesting historical information in the future.)
+We started in March 2012. In the first few months we spent most of our
+effort on the infrastructure. In July we were treated to some splendid
+logo designs and we got a homepage. In December we launched our IRC
+channel. In the meanwhile several members have been working on various
+subprojects, mostly in short bursts of activity.
+
+In the near future we may expect wiki content, a few big improvements
+to the infrastructure, and an overarching role playing game, among
+other things.
 
 
 ### What ###
@@ -45,7 +52,7 @@ __License__: we have a liberal license which might strongly remind you
 of the MIT license (that's not a coincidence). See License.txt for
 more information.
 
-__Platform support__: for the time being we'll just try to make sure
+__Platform support__: for the time being we just try to make sure
 that our stuff runs on the most popular platforms. You'll need to
 install some additional software, see Dependencies.md for more
 information.
@@ -198,11 +205,11 @@ logic?"
 
 ### Credits ###
 
-Julian coined the idea, qubital set up the GitHub repository and Neil
-wrote most of the initial infrastructure code. Please also refer to
-the copyright notices in the source files and to the Authors.txt,
-which lists all the authors who decided not to add their name to some
-file they edited.
+Julian coined the idea, qubital set up the GitHub repository, Neil
+wrote most of the initial infrastructure code and Joey designed the
+logo proposals. Please also refer to the copyright notices in the
+source files and to the Authors.txt, which lists all the authors who
+decided not to add their name to some file they edited.
 
 Please add your name to the Authors.txt if it isn't in there while it
 should.
