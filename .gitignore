@@ -1,5 +1,6 @@
 # Base directories
 /bin
+/extbin
 /lib
 /build
 /work
