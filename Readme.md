@@ -1,7 +1,7 @@
 The Red Spider Project
 ----------------------
 
-[https://github.com/the-xkcd-community/the-red-spider-project]
+[http://the-xkcd-community.github.com/the-red-spider-project]
 
 
 ### Why ###
@@ -12,7 +12,7 @@ for coding, and we want to share the experience.
 
 ### Who ###
 
-Currently, "we" are all members of the [xkcd
+Currently, "we" are mostly members of the [xkcd
 forums](http://forums.xkcd.com). However, anyone is welcome to join
 in.
 
@@ -35,8 +35,15 @@ Other than that, it's basically liberty above all things!
 
 ### When ###
 
-We only just started out, really. (Perhaps this section will contain
-more interesting historical information in the future.)
+We started in March 2012. In the first few months we spent most of our
+effort on the infrastructure. In July we were treated to some splendid
+logo designs and we got a homepage. In December we launched our IRC
+channel. In the meanwhile several members have been working on various
+subprojects, mostly in short bursts of activity.
+
+In the near future we may expect wiki content, a few big improvements
+to the infrastructure, and an overarching role playing game, among
+other things.
 
 
 ### What ###
@@ -45,20 +52,22 @@ __License__: we have a liberal license which might strongly remind you
 of the MIT license (that's not a coincidence). See License.txt for
 more information.
 
-__Platform support__: for the time being we'll just try to make sure
+__Platform support__: for the time being we just try to make sure
 that our stuff runs on the most popular platforms. You'll need to
 install some additional software, see Dependencies.md for more
 information.
 
 __Testing__: we use the issue tracker from GitHub to ask each other a
 favour. See Platforms.md for more information.
+**Note**: nothing is thoroughly tested, we just make sure that things
+behave as expected under expected conditions.
 
 __Branching__: `master` is our sacred branch. It's supposed to contain
-only reasonably well-behaved programs (say, stable, portable and easy
-to quit). Nonetheless you're encouraged to merge often into `master`.
-Do whatever you want in the other branches, but please do observe some
-common rules of sensibility. For example, don't merge everything into
-everything.
+only reasonably well-behaved programs (say: more or less stable,
+portable and easy to quit). Nonetheless you're encouraged to merge
+often into `master`. Do whatever you want in the other branches, but
+please do observe some common rules of sensibility. For example, don't
+merge everything into everything.
 
 __Building__: currently we have a crude but effective setup script
 that copies executable scripts to the right locations and pre-compiles
@@ -75,15 +84,20 @@ in which case we'll give it a dedicated subdirectory.
 __Programs__: so far concrete work has been done on `rsshell`, which
 launches a convenient environment for other Red Spider programs, as
 well as on an xkcd comic fetcher, an xkcd comic regex searcher, an
-adventure shell and an adventure web browser. More ideas are waiting
-to be implemented.
+adventure shell, an adventure web browser, a lines-of-code hacker
+level calculator, a random text generator, an ascii art generator, an
+xkcd comic wallpaper changing app and an advanced Conway's game of
+life clone. More ideas are waiting to be implemented.
 
 __Communication__: we have our little [thread at the xkcd
 forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for
 updates, discussion and archaeology, and there's the [issue
-tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues).
-Some of the many other options are to comment on commits or to write
-something on the wiki.
+tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues)
+for bugs, requests and testing. In addition you can chat away at our
+IRC channel (#redspider at irc.foonetic.net) or contribute to the
+[wiki](https://github.com/the-xkcd-community/the-red-spider-project/wiki)
+(soon to be more useful). For very specific things we sometimes
+comment on each other's commits on GitHub.
 
 
 ### How to ###
@@ -196,11 +210,11 @@ logic?"
 
 ### Credits ###
 
-Julian coined the idea, qubital set up the GitHub repository and Neil
-wrote most of the initial infrastructure code. Please also refer to
-the copyright notices in the source files and to the Authors.txt,
-which lists all the authors who decided not to add their name to some
-file they edited.
+Julian coined the idea, qubital set up the GitHub repository, Neil
+wrote most of the initial infrastructure code and Joey designed the
+logo proposals. Please also refer to the copyright notices in the
+source files and to the Authors.txt, which lists all the authors who
+decided not to add their name to some file they edited.
 
 Please add your name to the Authors.txt if it isn't in there while it
 should.
