@@ -73,7 +73,7 @@ Red Spider Project.
 """
 
 teleport_msg = """
-You have been teleported to {1}.
+You have been teleported to {0}.
 When you exit the Red Spider shell you'll be delivered back to your
 prior location.
 """
