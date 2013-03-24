@@ -19,6 +19,7 @@ Ideas for future changes (unordered):
 import os
 from os.path import join, exists
 import sys
+from subprocess import call
 
 def get_red_spider_root():
     red_spider_root = os.getenv('RED_SPIDER_ROOT')
@@ -55,14 +56,14 @@ def main (argv = None):
     root = get_red_spider_root()
     set_environment(root)
     if argv and len(argv) > 1:                  # call the requested program
-        result = os.system(" ".join(argv[1:]))  # !! splits quoted arguments
+        result = call(argv[1:])
     else:
         prior_location = os.getcwd()
         set_workdir(root)
         if os.name == 'nt':                     # Windows
-            result = os.system(os.getenv('COMSPEC', 'cmd.exe'))
+            result = call(os.getenv('COMSPEC', 'cmd.exe'))
         else:                                   # POSIX assumed
-            result = os.system(os.getenv('SHELL', 'bash'))
+            result = call(os.getenv('SHELL', 'bash'))
         os.chdir(prior_location)
     return result
 
