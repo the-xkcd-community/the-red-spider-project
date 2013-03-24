@@ -38,6 +38,14 @@ def set_environment():
         env_append('PATHEXT', '.py')
     os.putenv('RED_SPIDER_ROOT', rs_root)
     print 'RED_SPIDER_ROOT =', rs_root
+    set_workdir(rs_root)
+
+def set_workdir (rs_root):
+    work_dir = join(rs_root, 'work')
+    if not exists(work_dir):
+        os.mkdir(work_dir)
+    os.chdir(work_dir)
+    print teleport_msg.format(work_dir)
 
 def env_prepend (varname, addition):
     os.putenv(varname, os.pathsep.join([addition, os.getenv(varname, '')]))
@@ -58,6 +66,12 @@ def main (argv = None):
 welcome_msg = """\
 Welcome to the Red Spider shell, your portal into the world of the
 Red Spider Project.
+"""
+
+teleport_msg = """
+You have been teleported to {1}.
+When you exit the Red Spider shell you'll be delivered back to your
+prior location.
 """
 
 need_setup_msg = """
