@@ -22,7 +22,6 @@ def get_red_spider_root():
     if not red_spider_root:
         print need_setup_msg
         sys.exit(1)
-    print welcome_msg
     return red_spider_root
 
 def set_environment (rs_root):
@@ -50,6 +49,7 @@ def env_append (varname, addition):
 
 def main (argv = None):
     root = get_red_spider_root()
+    print welcome_msg
     set_environment(root)
     if argv and len(argv) > 1:                  # call the requested program
         result = call(argv[1:])
