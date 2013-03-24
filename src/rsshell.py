@@ -6,14 +6,10 @@
 
 '''
 Ideas for future changes (unordered):
- -  use the subprocess module instead of os.system;
- -  cd to RED_SPIDER_ROOT/work, mkdir if it doesn't exist;
  -  use the argparse module;
  -  move computation of environment variables to the setup script as
     well, store them in a JSON file in config and let rsshell retrieve
-    them;
- -  show a short info message on launch (more than just the root and
-    'call exit if you want your normal shell back').
+    them.
 '''
 
 import os
