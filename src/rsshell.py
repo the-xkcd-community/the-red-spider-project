@@ -59,7 +59,6 @@ def main (argv = None):
     if argv and len(argv) > 1:                  # call the requested program
         result = os.system(" ".join(argv[1:]))
     else:
-        print 'Call "exit" if you want to return to your normal shell'
         if os.name == 'nt':                     # Windows
             result = os.system(os.getenv('COMSPEC', 'cmd.exe'))
         else:                                   # POSIX assumed
@@ -73,9 +72,11 @@ Red Spider Project.
 """
 
 teleport_msg = """
-You have been teleported to {0}.
+You have been teleported to
+    {0} .
+
 When you exit the Red Spider shell you'll be delivered back to your
-prior location.
+prior location. Call "exit" to make that happen.
 """
 
 need_setup_msg = """
