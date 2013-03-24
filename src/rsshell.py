@@ -63,7 +63,7 @@ def main (argv = None):
         os.chdir(prior_location)
     return result
 
-welcome_msg = """\
+welcome_msg = """
 Welcome to the Red Spider shell, your portal into the world of the
 Red Spider Project.
 """
