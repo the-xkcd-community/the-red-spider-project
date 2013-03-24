@@ -28,8 +28,7 @@ def get_red_spider_root():
     print welcome_msg
     return red_spider_root
 
-def set_environment():
-    rs_root = get_red_spider_root()
+def set_environment (rs_root):
     bin_dir = join(rs_root, 'bin')
     lib_dir = join(rs_root, 'lib')
     env_prepend('PATH', bin_dir)
@@ -38,7 +37,6 @@ def set_environment():
         env_append('PATHEXT', '.py')
     os.putenv('RED_SPIDER_ROOT', rs_root)
     print 'RED_SPIDER_ROOT =', rs_root
-    set_workdir(rs_root)
 
 def set_workdir (rs_root):
     work_dir = join(rs_root, 'work')
@@ -54,16 +52,18 @@ def env_append (varname, addition):
     os.putenv(varname, os.pathsep.join([os.getenv(varname, ''), addition]))
 
 def main (argv = None):
-    prior_location = os.getcwd()
-    set_environment()
+    root = get_red_spider_root()
+    set_environment(root)
     if argv and len(argv) > 1:                  # call the requested program
-        result = os.system(" ".join(argv[1:]))
+        result = os.system(" ".join(argv[1:]))  # !! splits quoted arguments
     else:
+        prior_location = os.getcwd()
+        set_workdir(root)
         if os.name == 'nt':                     # Windows
             result = os.system(os.getenv('COMSPEC', 'cmd.exe'))
         else:                                   # POSIX assumed
             result = os.system(os.getenv('SHELL', 'bash'))
-    os.chdir(prior_location)
+        os.chdir(prior_location)
     return result
 
 welcome_msg = """\
