@@ -54,14 +54,18 @@ def env_append (varname, addition):
     os.putenv(varname, os.pathsep.join([os.getenv(varname, ''), addition]))
 
 def main (argv = None):
+    prior_location = os.getcwd()
     set_environment()
     if argv and len(argv) > 1:                  # call the requested program
-        return os.system(" ".join(argv[1:]))
-    print 'Call "exit" if you want to return to your normal shell'
-    if os.name == 'nt':                         # Windows
-        return os.system(os.getenv('COMSPEC', 'cmd.exe'))
-    else:                                       # POSIX assumed
-        return os.system(os.getenv('SHELL', 'bash'))
+        result = os.system(" ".join(argv[1:]))
+    else:
+        print 'Call "exit" if you want to return to your normal shell'
+        if os.name == 'nt':                     # Windows
+            result = os.system(os.getenv('COMSPEC', 'cmd.exe'))
+        else:                                   # POSIX assumed
+            result = os.system(os.getenv('SHELL', 'bash'))
+    os.chdir(prior_location)
+    return result
 
 welcome_msg = """\
 Welcome to the Red Spider shell, your portal into the world of the
