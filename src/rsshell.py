@@ -43,7 +43,7 @@ def set_workdir (rs_root):
     if not exists(work_dir):
         os.mkdir(work_dir)
     os.chdir(work_dir)
-    print teleport_msg.format(work_dir)
+    print teleport_msg
 
 def env_prepend (varname, addition):
     os.putenv(varname, os.pathsep.join([addition, os.getenv(varname, '')]))
@@ -71,13 +71,14 @@ Welcome to the Red Spider shell, your portal into the world of the
 Red Spider Project.
 """
 
+variable_wrap = ('%', '%') if os.name == 'nt' else ('$', '')
+
 teleport_msg = """
-You have been teleported to
-    {0} .
+You have been teleported to {1}RED_SPIDER_ROOT{2}{0}work .
 
 When you exit the Red Spider shell you'll be delivered back to your
 prior location. Call "exit" to make that happen.
-"""
+""".format(os.path.sep, *variable_wrap)
 
 need_setup_msg = """
 RED_SPIDER_ROOT has not been set. Go run the setup script first.
