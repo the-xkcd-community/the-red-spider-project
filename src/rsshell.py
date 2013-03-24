@@ -25,6 +25,7 @@ def get_red_spider_root():
     if not red_spider_root:
         print need_setup_msg
         sys.exit(1)
+    print welcome_msg
     return red_spider_root
 
 def set_environment():
@@ -53,6 +54,11 @@ def main (argv = None):
         return os.system(os.getenv('COMSPEC', 'cmd.exe'))
     else:                                       # POSIX assumed
         return os.system(os.getenv('SHELL', 'bash'))
+
+welcome_msg = """\
+Welcome to the Red Spider shell, your portal into the world of the
+Red Spider Project.
+"""
 
 need_setup_msg = """
 RED_SPIDER_ROOT has not been set. Go run the setup script first.
