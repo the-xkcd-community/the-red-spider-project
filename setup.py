@@ -169,7 +169,11 @@ def install_rsshell ( ):
         extend_user_env('PATH', abspath(extbin_dir), 'a')
     bin_file = join(extbin_dir, fname)
     copy2(src_file, bin_file)
-    print(rsshell_install_success_msg.format(bin_file, fname))
+    if os.name == 'nt' and '.py' not in os.getenv('PATHEXT'):
+        fwd = open(splitext(bin_file)[0] + '.cmd', 'w')
+        fwd.write(windows_rsshell_forward_script.format(abspath(bin_file)))
+        fwd.close()
+    print(rsshell_install_success_msg.format(bin_file))
 
 def install_scripts (src_names, bin_names):
     # if the program reaches this point, src_dir and bin_dir exist for sure
@@ -192,6 +196,11 @@ def install_python_modules (modules):
         else:
             target_file = join(lib_dir, module_name + 'c')
             py_compile.compile(source_file, target_file)
+
+windows_rsshell_forward_script = """
+@echo off
+start "rsshell" /b {0}
+"""
 
 welcome_msg = """
 Hi. I'll setup the Red Spider Project for you."""
@@ -238,7 +247,7 @@ I'll skip the installation of rsshell."""
 rsshell_install_success_msg = """
 Hey, listen up. I've installed rsshell for you in {0} .
 I also added it to your PATH, so from your next logon onwards you can
-run it by just punching '{1}' into your leopard. It will launch a
+run it by just punching 'rsshell' into your leopard. It will launch a
 subshell with some convenient environment variables that the other
 programs rely on.
 
