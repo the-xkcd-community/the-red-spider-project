@@ -32,14 +32,12 @@ def set_environment (rs_root):
     if os.name == 'nt':  # Windows
         env_append('PATHEXT', '.py')
     os.putenv('RED_SPIDER_ROOT', rs_root)
-    print 'RED_SPIDER_ROOT =', rs_root
 
 def set_workdir (rs_root):
     work_dir = join(rs_root, 'work')
     if not exists(work_dir):
         os.mkdir(work_dir)
     os.chdir(work_dir)
-    print teleport_msg
 
 def env_prepend (varname, addition):
     os.putenv(varname, os.pathsep.join([addition, os.getenv(varname, '')]))
@@ -49,13 +47,13 @@ def env_append (varname, addition):
 
 def main (argv = None):
     root = get_red_spider_root()
-    print welcome_msg
     set_environment(root)
     if argv and len(argv) > 1:                  # call the requested program
         result = call(argv[1:])
     else:
         prior_location = os.getcwd()
         set_workdir(root)
+        print welcome_msg.format(root, os.path.sep, *variable_wrap)
         if os.name == 'nt':                     # Windows
             result = call(os.getenv('COMSPEC', 'cmd.exe'))
         else:                                   # POSIX assumed
@@ -66,16 +64,16 @@ def main (argv = None):
 welcome_msg = """
 Welcome to the Red Spider shell, your portal into the world of the
 Red Spider Project.
-"""
 
-variable_wrap = ('%', '%') if os.name == 'nt' else ('$', '')
+RED_SPIDER_ROOT = {0}
 
-teleport_msg = """
-You have been teleported to {1}RED_SPIDER_ROOT{2}{0}work .
+You have been teleported to {2}RED_SPIDER_ROOT{3}{1}work .
 
 When you exit the Red Spider shell you'll be delivered back to your
 prior location. Call "exit" to make that happen.
-""".format(os.path.sep, *variable_wrap)
+"""
+
+variable_wrap = ('%', '%') if os.name == 'nt' else ('$', '')
 
 need_setup_msg = """
 RED_SPIDER_ROOT has not been set. Go run the setup script first.
