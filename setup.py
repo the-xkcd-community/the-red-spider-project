@@ -1,7 +1,7 @@
 #! /usr/bin/env python2
 from __future__ import print_function
 
-__doc__ = ''' setup.py
+''' setup.py
 Initial setup script for the Red Spider Project
 
 Copyright 2012 Julian Gonggrijp
@@ -41,12 +41,12 @@ def main ( ):
     user_pref = raw_input(
         reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
     )
-    if (user_pref.find('y') != -1 or user_pref.find('Y') != -1):
+    if 'y' in user_pref or 'Y' in user_pref:
         install()
     print(farewell_msg)
 
 def verify_root ( ):
-    root_path = find_red_spider_root()
+    root_path = os.path.dirname(abspath(sys.argv[0]))
     user_path = raw_input(root_guess_msg.format(root_path))
     if user_path:
         user_path = abspath(expanduser(user_path))
@@ -61,9 +61,6 @@ def verify_root ( ):
         print(root_rw_fail_message)
         sys.exit(2)
     return root_path
-
-def find_red_spider_root():
-    return os.path.dirname(abspath(sys.argv[0]))
 
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
@@ -254,8 +251,8 @@ programs rely on.
 In addition the root has been saved to RED_SPIDER_ROOT, so after your
 next logon that one will be permanently available as well.
 
-Note: on unixy systems, opening a new terminal window counts as a new
-logon. If you run me often, you may want to clean up your .profile
+Note for unixy systems: opening a new terminal window might count as a
+new logon. If you run me often, you may want to clean up ~/.profile
 once in a while..."""
 
 install_patience_msg = """
