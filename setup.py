@@ -4,7 +4,7 @@ from __future__ import print_function
 __doc__ = ''' setup.py
 Initial setup script for the Red Spider Project
 
-Copyright 2012 Julian Gonggrijp
+Copyright 2012, 2013 Julian Gonggrijp
 Licensed under the Red Spider Project License.
 See the License.txt that shipped with your copy of this software for details.
 

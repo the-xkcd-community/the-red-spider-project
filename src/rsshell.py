@@ -1,6 +1,6 @@
 #! /usr/bin/env python2
 
-# Copyright 2012 Neil Forrester, Julian Gonggrijp
+# Copyright 2012, 2013 Neil Forrester, Julian Gonggrijp
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
