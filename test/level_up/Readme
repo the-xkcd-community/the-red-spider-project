@@ -1,17 +1,15 @@
 level_up testing version 1
 
-level_up tracks your code-writing progress, giving you a cheery mesage to the effect
-that you have gained a level in a particular language whenever the number of lines of
-code in a folder you select passes an arbitrary benchmark.
+level_up tracks your code-writing progress, giving you a cheery mesage to the
+effect that you have gained a level in a particular language whenever the
+number of lines of code in a folder you select passes an arbitrary benchmark.
 
 Dependencies:
     python3
     Tcl/Tk
 
 To test:
-    Install py.test, and call it for the proper python version from this directory.
-    A message should pop up indicating that you have advanced to level 2 in C, and
-    py.test should tell you that none of the unit tests failed.
+    `python3 -m unittest test_level_up.py'
 
     If everything works, add your system information to the list below. If not, 
     email Alex at <ahammel87@gmail.com>, or report it to the Red Spider Project
