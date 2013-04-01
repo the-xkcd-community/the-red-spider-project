@@ -1,5 +1,5 @@
 import level_up
-import pytest
+import unittest
 import glob
 import os
 
@@ -47,82 +47,85 @@ Ruby 2
 Scheme 2
 Smalltalk 2""", file=f)
 
-def test_level():
-    test_cases = [(0, 0),
-                  (1, 1),
-                  (249, 1),
-                  (250, 2),
-                  (5000, 6)]
-    for score, level in test_cases:
-        assert level_up.level(score) == level
+
+class TestLevelUpFunctions(unittest.TestCase):
+
+    def test_level(self):
+        test_cases = [(0, 0),
+                      (1, 1),
+                      (249, 1),
+                      (250, 2),
+                      (5000, 6)]
+        for score, level in test_cases:
+            self.assertEqual(level_up.level(score), level)
 
 
-def test_language():
-    """Tests that the language function correctly deduces the language
-    of a source code file from it's extension, or raises a LanguageError
-    if the language is unsupported.
+    def test_language(self):
+        """Tests that the language function correctly deduces the language
+        of a source code file from it's extension, or raises a LanguageError
+        if the language is unsupported.
 
-    """
-    for f in test_files[0]:    # First item is a folder
-        with pytest.raises(level_up.LanguageError):
-            level_up.language(f)
+        """
+        for f in test_files[0]:    # First item is a folder
+            self.assertRaises(level_up.LanguageError, level_up.language, f)
 
-    assert set([level_up.language(f) for f in test_files[1:]]) == \
-           set(su_langs)
-           
-
-def test_line_count():
-    """All the files in the test folder have two lines of code and some
-    comments.
-
-    """
-    assert line_counts == {level_up.language(f): level_up.line_count(f) \
-                                for f in test_files[1:]}
-
-def test_get_line_counts():
-    """Tests that the get_line_counts function works as intended. If there are
-    too few lines for a certain language, the function isn't descending into
-    subdirectories properly. If there are too many, it isn't ignoring hidden
-    folders.
-
-    """
-    assert subdir_line_counts == level_up.get_line_counts("./test")
+        self.assertEqual(set([level_up.language(f) for f in test_files[1:]]),
+                         set(su_langs))
 
 
-def test_get_scores():
-    """Tests that the get_scores function works as intended: esp. that it
-    ignores hidden folders.
+    def test_line_count(self):
+        """All the files in the test folder have two lines of code and some
+        comments.
 
-    """
-    assert level_up.get_scores("test") == \
-            {x: subdir_line_counts[x] / level_up.C_EQUIV_KLOC[x] \
-            for x in subdir_line_counts}
+        """
+        self.assertEqual(line_counts,
+                         {level_up.language(f): level_up.line_count(f)
+                            for f in test_files[1:]})
+
+    def test_get_line_counts(self):
+        """Tests that the get_line_counts function works as intended. If there
+        are too few lines for a certain language, the function isn't descending
+        into subdirectories properly. If there are too many, it isn't ignoring
+        hidden folders.
+
+        """
+        self.assertEqual(subdir_line_counts, level_up.get_line_counts("./test"))
 
 
-def test_update_score_file():
-    level_up.update_score_file(subdir_line_counts, test_score_file,
-                               head=test_dir)
-    machine_score_file = open(test_score_file)
-    by_hand_score_file = open(my_score_file)
-    assert machine_score_file.readlines() ==\
-         by_hand_score_file.readlines()
-    machine_score_file.close()
-    by_hand_score_file.close()
+    def test_get_scores(self):
+        """Tests that the get_scores function works as intended: esp. that it
+        ignores hidden folders.
 
-def test_read_score_file():
-    assert level_up.read_score_file(my_score_file) == \
-            (test_dir, subdir_line_counts)
+        """
+        self.assertEqual(level_up.get_scores("test"),
+                         {x: subdir_line_counts[x] / level_up.C_EQUIV_KLOC[x]
+                             for x in subdir_line_counts})
 
-def test_initialize_score_file():
-    level_up.initialize_score_file("test_c" ,my_score_file_c)
-    assert level_up.read_score_file(my_score_file_c) ==\
-        (os.path.abspath("test_c"), {"C": 5})
 
-def test_update_scores():
-    with open(os.path.join("test_c", "temp.c"), "w") as f:
-        for n in range(0,250):
-            print("A line of C", file=f)
-    level_up.update_scores(my_score_file_c)
-    assert level_up.read_score_file(my_score_file_c) ==\
-        (os.path.abspath("test_c"), {"C": 255})
-    os.remove(os.path.join("test_c", "temp.c"))
+    def test_update_score_file(self):
+        level_up.update_score_file(subdir_line_counts, test_score_file,
+                                   head=test_dir)
+        machine_score_file = open(test_score_file)
+        by_hand_score_file = open(my_score_file)
+        self.assertEqual(machine_score_file.readlines(),
+                         by_hand_score_file.readlines())
+        machine_score_file.close()
+        by_hand_score_file.close()
+
+    def test_read_score_file(self):
+        self.assertEqual(level_up.read_score_file(my_score_file),
+                         (test_dir, subdir_line_counts))
+
+    def test_initialize_score_file(self):
+        level_up.initialize_score_file("test_c" ,my_score_file_c)
+        self.assertEqual(level_up.read_score_file(my_score_file_c),
+                         (os.path.abspath("test_c"), {"C": 5}))
+
+    def test_update_scores(self):
+        with open(os.path.join("test_c", "temp.c"), "w") as f:
+            for n in range(0,250):
+                print("A line of C", file=f)
+        level_up.update_scores(my_score_file_c)
+        self.assertEqual(level_up.read_score_file(my_score_file_c),
+                         (os.path.abspath("test_c"), {"C": 255}))
+        os.remove(os.path.join("test_c", "temp.c"))
