@@ -7,14 +7,19 @@ outlines how to have them supported.
 Anything on branch `master` should be stable and support at least the
 following platforms:
 
- -  Windows (XP SP3 and up);
- -  Mac OS X (10.5 and up);
- -  Ubuntu (10.04 and up, as well as equivalent Mint distributions).
+ -  Windows with cmd.exe (tested on Windows 7);
+ -  Mac OS X with bash (tested on 10.6);
+ -  Linux with bash (tested on Fedora 16).
 
 Exceptions are possible, please discuss such cases with the others.
 
-More platforms can be added if testers are available. Let us know if
-you want to test for a new platform.
+Other platforms might work too, we just don't take effort to ensure
+that. For example PowerShell on Windows works, though inconveniently.
+If you want to use Bash on Windows (for example Git Bash), you'll have
+to add tools like `python` to your PATH.
+
+More platform support can be added if testers are available. Let us
+know if you want to test for a new platform.
 
 
 ### Ensuring that your program supports these platforms ###
@@ -23,8 +28,9 @@ When you think it's time to merge your stuff into master, [submit an
 issue to the main project on
 GitHub](https://github.com/the-xkcd-community/the-red-spider-project/issues).
 Tell us where we can find your branch and which platforms still need
-to be tested. When your branch appears all clear, merge it into your
-own master branch and submit a pull request.
+to be tested. Also make sure that it's clear *how* to perform the
+testing. When your branch appears all clear, merge it into your own
+master branch and submit a pull request.
 
 
 ### Reporting failing platform support ###

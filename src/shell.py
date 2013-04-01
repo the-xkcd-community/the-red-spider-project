@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 import os
 import sys
 import stat
@@ -47,10 +47,10 @@ def quitShell(args):
 
 def changeDir(args):
 	pathName = ''.join(args)
-	if os.path.exists(pathName):
-		os.chdir()
-		sys.stdout.write('You are now in ' + os.getcwd())
-	else:
+	try:
+		os.chdir(pathName)
+		sys.stdout.write('You are now in ' + os.getcwd() + '.\n')
+	except:
 		sys.stdout.write('You bump into a wall when you try to get to ' + pathName + '.\n')
 
 print 'Welcome to compsoc'
