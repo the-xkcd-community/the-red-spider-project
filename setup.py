@@ -196,7 +196,7 @@ def install_python_modules (modules):
 
 windows_rsshell_forward_script = """
 @echo off
-start "rsshell" /b {0}
+start "rsshell" /b /wait {0}
 """
 
 welcome_msg = """
