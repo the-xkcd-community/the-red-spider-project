@@ -4,16 +4,13 @@ Platforms
 [https://github.com/the-xkcd-community/the-red-spider-project]
 
 
-### Target platforms ###
+Anything on the integration branch should have been tested on a recent version of each of the following platforms:
 
-Anything on branch `master` should be stable and support at least the
-following platforms:
+ -  Windows with cmd.exe;
+ -  Mac OS X with bash;
+ -  Linux with bash.
 
- -  Windows with cmd.exe (tested on Windows 7);
- -  Mac OS X with bash (tested on 10.6);
- -  Linux with bash (tested on Fedora 16).
-
-Exceptions are possible, please discuss such cases with the others.
+Exceptions can be made. "Testing" does not mean "fully tested and stable"; sometimes it is only verified that the software behaves as expected under expected circumstances.
 
 Other platforms might work too, we just don't take effort to ensure
 that. For example PowerShell on Windows works, though inconveniently.
