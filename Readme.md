@@ -48,17 +48,6 @@ other things.
 
 ### What ###
 
-__License__: we have a liberal license which might strongly remind you
-of the MIT license (that's not a coincidence). See License.txt for
-more information.
-
-__Platform support__: for the time being we just try to make sure
-that our stuff runs on the most popular platforms. You'll need to
-install some additional software, see Dependencies.md for more
-information.
-
-__Testing__: we use the issue tracker from GitHub to ask each other a
-favour. See Platforms.md for more information.
 **Note**: nothing is thoroughly tested, we just make sure that things
 behave as expected under expected conditions.
 
