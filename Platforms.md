@@ -1,5 +1,7 @@
-This document lists the platforms that should be supported, and
-outlines how to have them supported.
+Platforms
+---------
+
+[https://github.com/the-xkcd-community/the-red-spider-project]
 
 
 ### Target platforms ###
