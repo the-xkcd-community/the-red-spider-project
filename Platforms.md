@@ -20,20 +20,3 @@ to add tools like `python` to your PATH.
 
 More platform support can be added if testers are available. Let us
 know if you want to test for a new platform.
-
-
-### Ensuring that your program supports these platforms ###
-
-When you think it's time to merge your stuff into master, [submit an
-issue to the main project on
-GitHub](https://github.com/the-xkcd-community/the-red-spider-project/issues).
-Tell us where we can find your branch and which platforms still need
-to be tested. Also make sure that it's clear *how* to perform the
-testing. When your branch appears all clear, merge it into your own
-master branch and submit a pull request.
-
-
-### Reporting failing platform support ###
-
-If you find that something on the master branch doesn't support your
-platform while it should, please submit an issue.

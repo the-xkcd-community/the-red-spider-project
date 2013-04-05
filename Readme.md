@@ -58,35 +58,12 @@ often into `master`. Do whatever you want in the other branches, but
 please do observe some common rules of sensibility. For example, don't
 merge everything into everything.
 
-__Building__: currently we have a crude but effective setup script
-that copies executable scripts to the right locations and pre-compiles
-Python modules. In the future, we hope to use a more professional
-build tool which can do that *and* compile things. Perhaps CMake.
-
 __Directory layout__: we chose `src`, `include`, `doc`, `test`,
 `build`, `lib`, `bin`, `config` and `work` (if the names don't tell
 you what they're meant for, don't hesitate to ask). Programs will be
 pooled enjoyably together unless a single program consists of many
 files within the same directory (for some subjective value of "many"),
 in which case we'll give it a dedicated subdirectory.
-
-__Programs__: so far concrete work has been done on `rsshell`, which
-launches a convenient environment for other Red Spider programs, as
-well as on an xkcd comic fetcher, an xkcd comic regex searcher, an
-adventure shell, an adventure web browser, a lines-of-code hacker
-level calculator, a random text generator, an ascii art generator, an
-xkcd comic wallpaper changing app and an advanced Conway's game of
-life clone. More ideas are waiting to be implemented.
-
-__Communication__: we have our little [thread at the xkcd
-forums](http://forums.xkcd.com/viewtopic.php?f=11&t=81969) for
-updates, discussion and archaeology, and there's the [issue
-tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues)
-for bugs, requests and testing. In addition you can chat away at our
-IRC channel (#redspider at irc.foonetic.net) or contribute to the
-[wiki](https://github.com/the-xkcd-community/the-red-spider-project/wiki)
-(soon to be more useful). For very specific things we sometimes
-comment on each other's commits on GitHub.
 
 
 ### How to ###
@@ -95,35 +72,6 @@ Here's the place to find, submit or edit guidelines, rules of thumb,
 suggested procedures, and so on and so forth.
 
 A general rule of thumb: look at what the others do.
-
-
-#### Obtaining the project ####
-
-Easy. Either download the source tree as a zip file from the GitHub
-project page, or install Git (if you don't have it yet) and run the
-following command in the directory of your choice:
-
-    git clone git://github.com/the-xkcd-community/the-red-spider-project.git
-
-Alternatively, if you plan to contribute to the project you may create
-a GitHub account (if you don't have one yet), fork the project and
-clone your fork to your computer instead.
-
-
-#### Installing the software ####
-
-Run `./setup.py` from the root directory of your copy of the Red
-Spider Project (you can leave out the `./` part in Windows). Read what
-it says and follow the instructions.
-
-
-#### Running the software ####
-
-Run the `rsshell` command that you installed with `setup.py`. After
-that you can run any program from the `bin` directory by just typing
-its name. Alternatively, you may also `cd` to the `src` directory and
-execute development versions of the programs in there. Leave the
-subshell with `exit`.
 
 
 #### Creating something of your own ####
@@ -146,55 +94,6 @@ Where `YYYY` starts off as the current year and
 `__authors_of_major_contributions__` starts off as you, by definition.
 More years and authors may be added later. The lines with
 acknowledgements are optional, of course.
-
-
-#### Integrating your stuff with the rest of the project ####
-
-Finally, here's the really exciting stuff. You'll need to do some or
-all of the following:
-
- -  If you wrote anything that should be copied to `bin` or `lib`
-    during installation, add it to lists at the top of `setup.py`.
- -  Push your branch to your public fork of the project.
- -  If you edited any Markdown files, check that they render correctly
-    on GitHub.
- -  Ask your fellow project participants for their opinions, if
-    relevant.
- -  Submit a test request to the issue tracker, for the platforms that
-    you couldn't test by yourself. See what happens.
- -  Once your branch works on all platforms, pull in the latest
-    changes to `master` and merge your own branch into it. Push that
-    to your public fork and request that it be pulled into the main
-    repository.
- -  Somebody will probably grant your request.
-
-Once your branch has been fully merged into the master branch, others
-can start using your work. Of course, nothing stops you from forking
-another branch to add more features in the meanwhile!
-
-
-#### Editing somebody else's stuff ####
-
-First of all, please check whether the original author is currently
-working on it. Next, create a new branch to commit your changes to.
-
-If they're not working on it: edit, have it tested, have it pulled.
-Business as usual.
-
-If you're going to cooperate with them: add their public fork as a
-remote, have them add your public fork too, discuss, and push/pull
-your changes back and forth. Other than that, business as usual.
-
-Otherwise: you're about to create a parallel alternative version, so
-be aware that something special will need to be done before you can
-merge your changes. Perhaps give your variant of the program a
-different name.
-
-Depending on the nature of your contributions, you should probably
-either add your name to the copyright notices of the files you edited
-or include it in the Authors.txt. For program source files, a guiding
-question could be the following: "Did I contribute to the program
-logic?"
 
 
 ### Credits ###
