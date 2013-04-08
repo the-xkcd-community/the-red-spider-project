@@ -29,7 +29,7 @@ src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
 
-executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py'.split()
+executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py summon.py'.split()
 python_modules = 'src/xkcd-fetch.py'.split()
 
 def main ( ):
