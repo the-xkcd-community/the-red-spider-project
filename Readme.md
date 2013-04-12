@@ -10,13 +10,6 @@ Because we like to combine our love for the xkcd comic with our love
 for coding, and we want to share the experience.
 
 
-### Who ###
-
-Currently, "we" are mostly members of the [xkcd
-forums](http://forums.xkcd.com). However, anyone is welcome to join
-in.
-
-
 ### How ###
 
 By keeping an ongoing project to which people can add programs at
@@ -33,23 +26,7 @@ infrastructure in place to keep things smooth, as we see the need.
 Other than that, it's basically liberty above all things!
 
 
-### When ###
-
-We started in March 2012. In the first few months we spent most of our
-effort on the infrastructure. In July we were treated to some splendid
-logo designs and we got a homepage. In December we launched our IRC
-channel. In the meanwhile several members have been working on various
-subprojects, mostly in short bursts of activity.
-
-In the near future we may expect wiki content, a few big improvements
-to the infrastructure, and an overarching role playing game, among
-other things.
-
-
 ### What ###
-
-**Note**: nothing is thoroughly tested, we just make sure that things
-behave as expected under expected conditions.
 
 __Branching__: `master` is our sacred branch. It's supposed to contain
 only reasonably well-behaved programs (say: more or less stable,
@@ -67,9 +44,6 @@ in which case we'll give it a dedicated subdirectory.
 
 
 ### How to ###
-
-Here's the place to find, submit or edit guidelines, rules of thumb,
-suggested procedures, and so on and so forth.
 
 A general rule of thumb: look at what the others do.
 
@@ -96,13 +70,23 @@ More years and authors may be added later. The lines with
 acknowledgements are optional, of course.
 
 
-### Credits ###
+### When ###
+
+We started in March 2012. In the first few months we spent most of our
+effort on the infrastructure. In July we were treated to some splendid
+logo designs and we got a homepage. In December we launched our IRC
+channel. In the meanwhile several members have been working on various
+subprojects, mostly in short bursts of activity.
+
+In the near future we may expect wiki content, a few big improvements
+to the infrastructure, and an overarching role playing game, among
+other things.
+
+
+### Who ###
 
 Julian coined the idea, qubital set up the GitHub repository, Neil
 wrote most of the initial infrastructure code and Joey designed the
 logo proposals. Please also refer to the copyright notices in the
 source files and to the Authors.txt, which lists all the authors who
 decided not to add their name to some file they edited.
-
-Please add your name to the Authors.txt if it isn't in there while it
-should.
