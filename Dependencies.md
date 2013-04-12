@@ -4,13 +4,14 @@ Dependencies
 [https://github.com/the-xkcd-community/the-red-spider-project]
 
 
-Strictly required:
+Strictly required for any use:
 
 - [Python 2.7](http://www.python.org/download/) (unixy systems should have a `python2` link).
 
-Soon to be required:
+Soon to be required for default installation:
 
-- [Python 3](http://www.python.org/download/) (unixy systems will need to have a `python3` link, on Windows it will be convenient to have [pylauncher](https://bitbucket.org/vinay.sajip/pylauncher) installed).
+- [Python 3](http://www.python.org/download/) (unixy systems will need to have a `python3` link, on Windows it will be convenient to have [pylauncher](https://bitbucket.org/vinay.sajip/pylauncher) installed);
+- [Tcl/Tk](http://www.tcl.tk/).
 
 Optional dependencies:
 
