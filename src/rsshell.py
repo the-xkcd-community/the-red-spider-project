@@ -43,7 +43,7 @@ def main (argv = None):
     root = get_red_spider_root()
     set_environment(root)
     if argv and len(argv) > 1:                  # call the requested program
-        result = call(argv[1:])
+        result = call('"' + '" "'.join(argv[1:]) + '"', shell = True)
     else:
         prior_location = os.getcwd()
         os.chdir(root)
