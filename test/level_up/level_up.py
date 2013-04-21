@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
+# Copyright 2012 Alex Hammel
+# Licensed under the Red Spider Project License.
+# See the License.txt that shipped with your copy of this software for details.
+
 import sys
 import os
 from tkinter import *
 import argparse
 
-# 
+#
 # Some definitions:
 #
 #   The _line count_ for a language is the number of source lines of code
@@ -257,7 +261,7 @@ def get_scores(root_folder):
 def update_score_file(line_counts, score_file, head=""):
     """Writes a table of line counts to the score_file. The head argument will
     typically be used to prepend the default directory to the score file.
-    
+
     """
     with open(score_file, 'w') as sf:
         print(head, file=sf)
@@ -329,7 +333,7 @@ def main():
                         dest='count',
                         help="Show the code line counts for the directory")
     args = parser.parse_args()
-    
+
     if args.count:
         counts = get_line_counts(args.count[0])
         for lang in sorted(counts):
