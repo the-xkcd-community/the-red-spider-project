@@ -128,7 +128,11 @@ EXTENSIONS = {".adb": "Ada",
               ".st": "Smalltalk"
               }
 
-SCORE_FILE = os.path.join(os.getenv("HOME"), ".level_up_scores")
+SCORE_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"),
+                          "work",
+                          "level_up",
+                          "scores"
+                          )
 
 class LanguageError(ValueError):
     """The exception raised when a language is not supported"""
