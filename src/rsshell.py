@@ -64,6 +64,9 @@ RED_SPIDER_ROOT = {0}
 You have been teleported there. When you exit the Red Spider shell
 you'll be delivered back to your prior location. Call "exit" to make
 that happen.
+
+(Note: in the future the teleport location will be configurable. It
+will default to $RED_SPIDER_ROOT/work.)
 """
 
 variable_wrap = ('%', '%') if os.name == 'nt' else ('$', '')
