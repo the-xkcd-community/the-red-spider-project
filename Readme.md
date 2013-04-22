@@ -38,13 +38,17 @@ When you run `rsshell` the following commands are available to you.
   Run with `-h` for help.
 - `json-parse`: Manually inspect JSON files. Undocumented.
 
-The following commands are expected to be added soon:
+The following commands are expected to be added soon.
 
 - `level_up`: An RPG-style lines-of-code counter which pops up a
   "level up" message when you pass a milestone in a programming
   language.
 - `summon`: A generic file/URL launcher which can handle any file type
   your underlying system supports.
+- `spider-life`: A Conway's Game of Life variant with two colors and
+  four different topologies for the universe.
+- `xkcd-windows-wallpaper`: A Windows app which sets your wallpaper to
+  an xkcd comic of your choosing.
 
 
 ### Where ###
@@ -66,8 +70,7 @@ members have been working on various subprojects, mostly in short
 bursts of activity.
 
 In the near future we may expect a few big improvements to the
-infrastructure and an overarching role playing game, among other
-things.
+infrastructure.
 
 
 ### Who ###
