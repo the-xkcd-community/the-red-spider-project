@@ -1,7 +1,7 @@
 The Red Spider Project
 ----------------------
 
-[http://the-xkcd-community.github.com/the-red-spider-project]
+[https://github.com/the-xkcd-community/the-red-spider-project]
 
 
 ### Why ###
@@ -22,7 +22,10 @@ For the impatient: fork the project, then
     ./setup.py
     rsshell
 
-The project is like a small, self-contained operating system layered on top of your actual operating system. People can add programs at will. It's an open-ended process without deadlines or a final goal and we're very open-minded.
+The project is like a small, self-contained operating system layered
+on top of your actual operating system. People can add programs at
+will. It's an open-ended process without deadlines or a final goal and
+we're very open-minded.
 
 
 ### What ###
@@ -58,12 +61,13 @@ The following commands are expected to be added soon:
 We started in March 2012. In the first few months we spent most of our
 effort on the infrastructure. In July we were treated to some splendid
 logo designs and we got a homepage. In December we launched our IRC
-channel. In the meanwhile several members have been working on various
-subprojects, mostly in short bursts of activity.
+channel and in March 2013 the wiki took off. In the meanwhile several
+members have been working on various subprojects, mostly in short
+bursts of activity.
 
-In the near future we may expect wiki content, a few big improvements
-to the infrastructure, and an overarching role playing game, among
-other things.
+In the near future we may expect a few big improvements to the
+infrastructure and an overarching role playing game, among other
+things.
 
 
 ### Who ###
