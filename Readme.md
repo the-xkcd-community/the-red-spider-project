@@ -44,6 +44,15 @@ The following commands are expected to be added soon:
   your underlying system supports.
 
 
+### Where ###
+
+- [Home page](http://the-xkcd-community.github.com/the-red-spider-project)
+- [Issue tracker](https://github.com/the-xkcd-community/the-red-spider-project/issues)
+- [Wiki](https://github.com/the-xkcd-community/the-red-spider-project/wiki)
+- [IRC channel: #redspider at foonetic.net](irc://irc.foonetic.net/redspider)
+- [xkcd forums thread](http://forums.xkcd.com/viewtopic.php?f=11&t=81969)
+
+
 ### When ###
 
 We started in March 2012. In the first few months we spent most of our
