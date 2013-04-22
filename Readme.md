@@ -12,18 +12,17 @@ for coding, and we want to share the experience.
 
 ### How ###
 
-By keeping an ongoing project to which people can add programs at
-will. By "program", we mean *any* program. It may be any size and it
-may be written in any programming language, though preferably
-portable. Most of the programs in our project will probably be
-amusing, interesting, touching or a combination of those, either
-because of the source code, because of the output, or both. Likely,
-most programs will also be small. Anything is welcome except malware.
+For the impatient: fork the project, then
 
-We put some emphasis on command line programs. The programs may be
-interconnected with basic plumbing. We'll put some guidelines and
-infrastructure in place to keep things smooth, as we see the need.
-Other than that, it's basically liberty above all things!
+    git clone git@github.com:yourname/the-red-spider-project.git redspider
+    cd redspider
+    git remote add upstream git://github.com/the-xkcd-community/the-red-spider-project.git
+    git config branch.master.remote upstream
+    git config branch.master.merge refs/heads/master
+    ./setup.py
+    rsshell
+
+The project is like a small, self-contained operating system layered on top of your actual operating system. People can add programs at will. It's an open-ended process without deadlines or a final goal and we're very open-minded.
 
 
 ### What ###
