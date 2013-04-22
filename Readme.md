@@ -28,46 +28,6 @@ Other than that, it's basically liberty above all things!
 
 ### What ###
 
-__Branching__: `master` is our sacred branch. It's supposed to contain
-only reasonably well-behaved programs (say: more or less stable,
-portable and easy to quit). Nonetheless you're encouraged to merge
-often into `master`. Do whatever you want in the other branches, but
-please do observe some common rules of sensibility. For example, don't
-merge everything into everything.
-
-__Directory layout__: we chose `src`, `include`, `doc`, `test`,
-`build`, `lib`, `bin`, `config` and `work` (if the names don't tell
-you what they're meant for, don't hesitate to ask). Programs will be
-pooled enjoyably together unless a single program consists of many
-files within the same directory (for some subjective value of "many"),
-in which case we'll give it a dedicated subdirectory.
-
-
-### How to ###
-
-A general rule of thumb: look at what the others do.
-
-
-#### Creating something of your own ####
-
-Pull in the latest changes to `master`, fork a new branch and hack
-away. Take your time, we don't do deadlines. :-)
-
-In source code files, please add something like the following in a
-comment at the top:
-
-    Copyright YYYY __authors_of_major_contributions__
-    Licensed under the Red Spider Project License.
-    See the License.txt that shipped with your copy of this software for details.
-
-    Acknowledgements: X provided idea A, Y provided idea B.
-    Minor contributions were made by Z/by several authors;
-    please refer to the Authors.txt that shipped with your copy of this software.
-
-Where `YYYY` starts off as the current year and
-`__authors_of_major_contributions__` starts off as you, by definition.
-More years and authors may be added later. The lines with
-acknowledgements are optional, of course.
 
 
 ### When ###
