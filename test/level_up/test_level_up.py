@@ -1,3 +1,7 @@
+# Copyright 2012, 2013 Alex Hammel
+# Licensed under the Red Spider Project License.
+# See the License.txt that shipped with your copy of this software for details.
+
 import level_up
 import unittest
 import glob

@@ -11,10 +11,20 @@ Dependencies:
 To test:
     `python3 -m unittest test_level_up.py'
 
-    If everything works, add your system information to the list below. If not, 
-    email Alex at <ahammel87@gmail.com>, or report it to the Red Spider Project
-    thread on the xkcd fora <http://forums.xkcd.com/viewtopic.php?f=11&t=81969>.
+    There are three particular scenarios for testing:
+     - You changed the program mechanics of level_up. In this case, clear the
+       list below. If the test passes, add your system information.
+     - You test on your platform by request (for an example see
+       <https://github.com/the-xkcd-community/the-red-spider-project/issues/14>
+       ). In this case please report back whether it passes. If it did pass you
+       may also add your system information to the list below.
+     - You found that level_up didn't work as expected and you wanted to help
+       the developer fix it. In this case please report your finding in a new
+       issue at
+       <https://github.com/the-xkcd-community/the-red-spider-project/issues>.
 
 This version has passed the unit test on the following systems:
 
-Arch Linux. Linux kernel 3.3.7-1. x86_64. Alex Hammel.  
+Arch Linux. Linux kernel 3.3.7-1. x86_64. Alex Hammel.
+Mac OS X 10.6.8. x86_64. Julian Gonggrijp.
+Windows 7. x86. Julian Gonggrijp.
