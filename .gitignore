@@ -17,6 +17,8 @@ __*
 .#*
 notes*
 TAGS
+*.swp
+*.swo
 
 # Haskell-related #
 ###################

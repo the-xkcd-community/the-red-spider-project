@@ -1,0 +1,30 @@
+level_up testing version 1
+
+level_up tracks your code-writing progress, giving you a cheery mesage to the
+effect that you have gained a level in a particular language whenever the
+number of lines of code in a folder you select passes an arbitrary benchmark.
+
+Dependencies:
+    python3
+    Tcl/Tk
+
+To test:
+    `python3 -m unittest test_level_up.py'
+
+    There are three particular scenarios for testing:
+     - You changed the program mechanics of level_up. In this case, clear the
+       list below. If the test passes, add your system information.
+     - You test on your platform by request (for an example see
+       <https://github.com/the-xkcd-community/the-red-spider-project/issues/14>
+       ). In this case please report back whether it passes. If it did pass you
+       may also add your system information to the list below.
+     - You found that level_up didn't work as expected and you wanted to help
+       the developer fix it. In this case please report your finding in a new
+       issue at
+       <https://github.com/the-xkcd-community/the-red-spider-project/issues>.
+
+This version has passed the unit test on the following systems:
+
+Arch Linux. Linux kernel 3.3.7-1. x86_64. Alex Hammel.
+Mac OS X 10.6.8. x86_64. Julian Gonggrijp.
+Windows 7. x86. Julian Gonggrijp.
