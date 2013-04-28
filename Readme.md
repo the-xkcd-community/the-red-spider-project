@@ -37,12 +37,12 @@ When you run `rsshell` the following commands are available to you.
 - `xkcd-search`: Searches the database from `xkcd-fetch` for keywords.
   Run with `-h` for help.
 - `json-parse`: Manually inspect JSON files. Undocumented.
+- `level_up`: An RPG-style lines-of-code counter which pops up a
+  "level up" message when you pass a milestone in a programming
+  language. Run with `-h` for help.
 
 The following commands are expected to be added soon.
 
-- `level_up`: An RPG-style lines-of-code counter which pops up a
-  "level up" message when you pass a milestone in a programming
-  language.
 - `summon`: A generic file/URL launcher which can handle any file type
   your underlying system supports.
 - `spider-life`: A Conway's Game of Life variant with two colors and
