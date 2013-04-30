@@ -1,6 +1,9 @@
 The Red Spider Project -- Authors.txt
 
-(Please add your name at the top.)
+(Please add your name at the top, if there's at least one file that
+you edited but which your authorship isn't mentioned in.)
 
+Alex Hammel
+Jordan Brown
 Harry Gilles
 Julian Gonggrijp

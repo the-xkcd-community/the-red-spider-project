@@ -29,8 +29,9 @@ src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
 
-executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py summon.py'.split()
-python_modules = 'src/xkcd-fetch.py'.split()
+executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
+                        'level_up.py', 'summon.py'  ]
+python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
 def main ( ):
     print(welcome_msg)
