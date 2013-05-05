@@ -10,7 +10,6 @@ Required for the setup script, `rsshell` and several commands:
 
 Required for the `level_up` command:
 
-- [Python 3](http://www.python.org/download/) (unixy systems will need to have a `python3` link, on Windows it will be convenient to have [pylauncher](https://bitbucket.org/vinay.sajip/pylauncher) installed);
 - [Tcl/Tk](http://www.tcl.tk/).
 
 Other dependencies:

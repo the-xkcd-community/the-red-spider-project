@@ -1,12 +1,16 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Copyright 2012 Alex Hammel
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+from __future__ import print_function
 import sys
 import os
-from tkinter import *
+try:
+    from tkinter import *
+except:
+    from Tkinter import *
 import argparse
 
 #
