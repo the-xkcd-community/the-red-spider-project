@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Copyright 2012 Alex Hammel
 # Licensed under the Red Spider Project License.
