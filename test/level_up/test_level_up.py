@@ -2,6 +2,7 @@
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+from __future__ import print_function
 import level_up
 import unittest
 import glob
