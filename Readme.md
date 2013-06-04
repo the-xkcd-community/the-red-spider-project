@@ -40,6 +40,8 @@ When you run `rsshell` the following commands are available to you.
 - `level_up`: An RPG-style lines-of-code counter which pops up a
   "level up" message when you pass a milestone in a programming
   language. Run with `-h` for help.
+- 'random-number': Generated a random number by simulating a fair dice roll. 
+  Run with '-h' for help.
 
 The following commands are expected to be added soon.
 
