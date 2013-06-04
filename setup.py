@@ -29,8 +29,8 @@ src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
 
-executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py level_up.py'.split()
-python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
+executable_scripts = 'json-parse.py xkcd-fetch.py xkcd-search.py level_up.py random-number.py'.split()
+python_modules = 'src/xkcd-fetch.py src/level_up.py src/random-number.py'.split()
 
 def main ( ):
     print(welcome_msg)
