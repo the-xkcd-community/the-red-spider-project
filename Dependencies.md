@@ -12,6 +12,11 @@ Required for the `level_up` command:
 
 - [Tcl/Tk](http://www.tcl.tk/).
 
+Required for the `fortune` command:
+
+- [lxml](http://lxml.de/)
+- [cssselect](https://pypi.python.org/pypi/cssselect)
+
 Other dependencies:
 
 - Git, in order to participate (see [GitImmersion](http://gitimmersion.com/index.html) for installation and a tutorial);

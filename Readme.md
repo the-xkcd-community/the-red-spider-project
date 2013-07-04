@@ -40,6 +40,8 @@ When you run `rsshell` the following commands are available to you.
 - `level_up`: An RPG-style lines-of-code counter which pops up a
   "level up" message when you pass a milestone in a programming
   language. Run with `-h` for help.
+- `fortune`: A command that randomly or specifically displays good
+  #xkcd IRC threads from a cache or the XKCDB website.
 
 The following commands are expected to be added soon.
 
