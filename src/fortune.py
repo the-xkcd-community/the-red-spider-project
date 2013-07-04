@@ -322,7 +322,10 @@ def genCache(numPages = 20, urlBase = 'http://www.xkcdb.com/top?page='):
             
         #log to console so users know what's going on if this takes a while
         print('Page ' + str(page) + ' of top threads was downloaded. (' + str(page * 50) + '/' + str(numPages * 50) + ')')
-        
+    
+    #create work/fortune if it doesn't already exist, to avoid an error
+    if not os.path.isdir(getCacheDir()): os.makedirs(getCacheDir())
+    
     with codecs.open(getCacheDir() + 'fortune.txt', 'w', encoding = 'utf-8') as outfile:
         #separator
         print ''
@@ -345,8 +348,9 @@ def genCache(numPages = 20, urlBase = 'http://www.xkcdb.com/top?page='):
 
 #create fortune file from copy that ships with Red Spider on first run
 #if backup copy has been deleted, issue a warning message
+#create the necessary directories, like work/fortune
     
-def setupCache(firstParam = ''):
+def setupCache():
     try:
         with open(getCacheDir() + 'fortune.txt') as file: pass
         
@@ -355,14 +359,15 @@ def setupCache(firstParam = ''):
         print('I will attempt to copy one from the backup location.')
         
         try:
+            if not os.path.isdir(getCacheDir()): os.makedirs(getCacheDir())
             shutil.copy(getCacheDir(True) + 'fortune.txt', getCacheDir())
             print('The backup cache file was succcessfully copied!\n')
             
-        except IOError:
-            if firstParam != 'cache':
-                print('\nThe cache copy was unsuccessful.')
-                print('Please run \'fortune cache\' now to create one.')
-                return False
+        except IOError, OSError:
+            print('\nThe cache copy was tragically unsuccessful.')
+            print('It is possible that the backup does not exist.')
+            print('Please run \'fortune cache\' now to create cache.\n')
+            return False
     
     return True
     
@@ -375,12 +380,11 @@ def main(argv = None):
         fetchRandom() #default behavior is to fetch random thread
         
     elif argv[0].lower() == 'fetch':
-        if not setupCache('fetch'): return False
+        if not setupCache(): return False
         try: fetchID(argv[1]) #for commands like 'fortune fetch 148', fetch the specified thread by ID
         except IndexError: fetchRandom() #fetch is alias for no parameter, e.g. 'fortune fetch' is the same as 'fortune'
     
     elif argv[0].lower() == 'cache':
-        if not setupCache('cache'): return False
         try: genCache(argv[1]) #cache argv[1] number of pages (50 threads/page) from XKCDB, e.g. 'fortune cache 30' for 1500 threads
         except IndexError: genCache() #just cache first 20 pages, which is one thousand threads, e.g. 'fortune cache'
         
