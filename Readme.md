@@ -42,6 +42,8 @@ When you run `rsshell` the following commands are available to you.
   language. Run with `-h` for help.
 - `summon`: A generic file/URL launcher which can handle any file type
   your underlying system supports. Run without arguments for help.
+- `fortune`: A command that randomly or specifically displays good
+  #xkcd IRC threads from a cache or the XKCDB website.
 
 The following commands are expected to be added soon.
 
