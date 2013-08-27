@@ -13,7 +13,7 @@ import sys
 import subprocess
 
 if sys.platform.startswith('win32'):
-    summoning_command = ['start', '""']
+    summoning_command = ['start']
 elif sys.platform.startswith('darwin'):
     summoning_command = ['open']
 else:  # linux assumed
