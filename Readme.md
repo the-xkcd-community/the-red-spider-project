@@ -40,11 +40,11 @@ When you run `rsshell` the following commands are available to you.
 - `level_up`: An RPG-style lines-of-code counter which pops up a
   "level up" message when you pass a milestone in a programming
   language. Run with `-h` for help.
+- `summon`: A generic file/URL launcher which can handle any file type
+  your underlying system supports. Run without arguments for help.
 
 The following commands are expected to be added soon.
 
-- `summon`: A generic file/URL launcher which can handle any file type
-  your underlying system supports.
 - `spider-life`: A Conway's Game of Life variant with two colors and
   four different topologies for the universe.
 - `xkcd-windows-wallpaper`: A Windows app which sets your wallpaper to
