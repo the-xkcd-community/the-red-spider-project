@@ -57,6 +57,11 @@ def factorize(n):
 
 
 def godelnumbertostring(godel):
+	'''
+	Factors the number and uses the table in the beginning of the script
+	to translate it. The base is the order in the string and the exponent
+	is the symbol.
+	'''
 	factors = sorted(factorize(int(godel)))
 	
 	inverted = {v: k for k, v in SYMBOLS_NAGEL.items()}
@@ -73,6 +78,12 @@ def godelnumbertostring(godel):
 	
 
 def stringtogodelnumber(string):
+	'''
+	Each token of the string is translated to a prime depending on the
+	order of appearence (first token is two, second is three, etc), and
+	it is exponentiated to the power that the table in the beginning of
+	the script indicates.
+	'''
 	primes = generateprimes(2*len(string))
 	
 	godelnumber = 1
@@ -94,6 +105,9 @@ def stringtogodelnumber(string):
 	
 	
 def generateprimes(limit):
+	'''
+	Generates a list of primes for the stringtogodelnumber function.
+	'''
 	primes = [2]
 	n = 3
 	while limit>=0:
@@ -131,8 +145,8 @@ def main(argv = None):
 helpMessage = '''
 This is the help message for the godel command.
 
-fortune number <godel-number> --> Translate a Gödel number to the correspondant string.
-fortune string <string> --> Translate a string to the correspondant Gödel number.
+godel number <godel-number>  --> Translate a Gödel number to the correspondant string.
+godel string <string>        --> Translate a string to the correspondant Gödel number.
 
 The script uses the numbering from the book "Gödel's Proof", by Nagel and Newman.
 
