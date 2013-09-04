@@ -44,6 +44,8 @@ When you run `rsshell` the following commands are available to you.
   your underlying system supports. Run without arguments for help.
 - `fortune`: A command that randomly or specifically displays good
   #xkcd IRC threads from a cache or the XKCDB website.
+- `godel`: Translates mathematical formulas to Gödel numbers and 
+  vice-versa.
 
 The following commands are expected to be added soon.
 
