@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#! /usr/bin/env python2
 # -*- coding: utf-8  -*-
 '''
 Godel's Numbering
@@ -27,32 +27,32 @@ SYMBOLS_NAGEL = {'~': 1,
 
 def isprime(n):
 	from math import sqrt
-	
+
 	if n==1 or n==0:
 		return False
 	elif n==2 or n==3:
 		return True
 	elif n%2==0:
 		return False
-	
+
 	for div in range(3, int(sqrt(n)+1), 2):
 		if n%div==0:
 			return False
-	
+
 	return True
-	
+
 
 def factorize(n):
 	div = 2
-	
+
 	factors = []
-	
+
 	while n!=1:
 		while n%div==0:
 			factors.append(div)
 			n/=div
 		div+=1
-	
+
 	return factors
 
 
@@ -63,19 +63,19 @@ def godelnumbertostring(godel):
 	is the symbol.
 	'''
 	factors = sorted(factorize(int(godel)))
-	
+
 	inverted = {v: k for k, v in SYMBOLS_NAGEL.items()}
-	
+
 	string = []
-	
+
 	for n in range(2, max(factors)+1):
 		if not isprime(n):
 			continue
-		
+
 		string.append(inverted[factors.count(n)])
-		
+
 	return ''.join(string)
-	
+
 
 def stringtogodelnumber(string):
 	'''
@@ -85,9 +85,9 @@ def stringtogodelnumber(string):
 	the script indicates.
 	'''
 	primes = generateprimes(2*len(string))
-	
+
 	godelnumber = 1
-	
+
 	for index in range(len(string)):
 		try:
 			prime = primes[index]
@@ -95,15 +95,15 @@ def stringtogodelnumber(string):
 			print primes
 			print index
 		token = string[index]
-		
+
 		new = prime**(SYMBOLS_NAGEL[token])
-		
+
 		godelnumber *= new
-	
+
 	return godelnumber
-		
-	
-	
+
+
+
 def generateprimes(limit):
 	'''
 	Generates a list of primes for the stringtogodelnumber function.
@@ -115,31 +115,31 @@ def generateprimes(limit):
 			primes.append(n)
 		n+=2
 		limit-=1
-	
+
 	return primes
 
 
 def main(argv = None):
 	print
-        
+
 	if not argv:
 		print helpMessage
-        
+
 	elif argv[0].lower() == 'number':
 		try:
 			print godelnumbertostring(int(argv[1]))
 		except TypeError:
 			print "Error with the number, try again"
-    
+
 	elif argv[0].lower() == 'string':
 		try:
 			print stringtogodelnumber(argv[1])
-		except: 
+		except:
 			print "Error with string, try again"
-        
+
 	else:
 		print helpMessage
-        
+
 	print
 
 helpMessage = '''
