@@ -129,13 +129,17 @@ def main(argv = None):
 		try:
 			print godelnumbertostring(int(argv[1]))
 		except TypeError:
-			print "Error with the number, try again"
+			print 'Error with the number, try again'
+		except KeyError:
+			print 'Error with the number: it doesn\'t correspond to a well-formed formula'
+		except:
+			print 'Error with the number, try again'
     
 	elif argv[0].lower() == 'string':
 		try:
 			print stringtogodelnumber(argv[1])
 		except: 
-			print "Error with string, try again"
+			print 'Error with string, try again'
         
 	else:
 		print helpMessage
