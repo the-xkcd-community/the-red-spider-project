@@ -14,6 +14,8 @@ Ideas for future changes (unordered):
     them;
  -  show a short info message on launch (more than just the root and
     'call exit if you want your normal shell back').
+    This has kinda been done with os.system("rshelp"), but feel free
+    to add more!
 '''
 
 import os
@@ -49,6 +51,7 @@ def main (argv = None):
     if argv and len(argv) > 1:                  # call the requested program
         return os.system(" ".join(argv[1:]))
     print 'Call "exit" if you want to return to your normal shell'
+    os.system("rshelp")
     if os.name == 'nt':                         # Windows
         return os.system(os.getenv('COMSPEC', 'cmd.exe'))
     else:                                       # POSIX assumed
