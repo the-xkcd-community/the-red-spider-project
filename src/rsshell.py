@@ -4,6 +4,9 @@
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+# Minor contributions were made by Wesley Aptekar-Cassels;
+# please refer to the Authors.txt that shipped with your copy of this software.
+
 '''
 Ideas for future changes (unordered):
  -  use the subprocess module instead of os.system;
