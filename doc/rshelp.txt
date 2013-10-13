@@ -1,0 +1,4 @@
+The rshelp command shows all the commands installed by the Red Spider Project.
+
+Usage:
+    rshelp
