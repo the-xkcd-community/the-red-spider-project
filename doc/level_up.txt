@@ -1,0 +1,10 @@
+usage: level_up [-h] [-i INIT] [-l COUNT]
+
+Track your coding experience
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INIT, --initialize INIT
+                        Initialize a score file for the specified folder
+  -l COUNT, --line-counts COUNT
+                        Show the code line counts for the directory

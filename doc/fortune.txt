@@ -1,0 +1,15 @@
+
+This is the help message for the fortune command.
+You are seeing this because you typed help or a nonexistent command.
+The following are some of the parameters you can use with fortune.
+
+fortune --> Grabs a random #xkcd thread from your cache file or XKCDB.
+fortune fetch --> An alias of fortune, for consistency's sake.
+fortune fetch ID --> Fetch the given thread by ID.
+fortune cache --> Grab 20 pages worth of fortunes from XKCDB, for cache.
+fortune cache pages --> Cache the given number of pages from XKCDB.
+
+If you are seeing Python error messages, your fortune file is corrupted.
+Fear not, you may simply run 'fortune cache' to generate a new cache.
+Otherwise, you may simply download a new copy from GitHub.
+

@@ -1,0 +1,17 @@
+
+
+This is the help message for the godel command.
+
+godel number <godel-number>  --> Translate a Gödel number to the correspondant string.
+godel string <string>        --> Translate a string to the correspondant Gödel number.
+
+The script uses the numbering from the book "Gödel's Proof", by Nagel and Newman.
+
+Here are the math symbols that the program understands: ~, (∨; v), ⊃, ∃, =, 0, s, (, ), :, +, *.
+
+Examples of use:
+
+godel string ~ssss0=s0*ss0
+godel number 243000000
+
+
