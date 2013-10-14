@@ -31,7 +31,7 @@ cfg_dir     = 'config'
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
-                        'random-number.py'  ]
+                        'random-number.py', 'rshelp.py'  ]
 python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
 def main ( ):
