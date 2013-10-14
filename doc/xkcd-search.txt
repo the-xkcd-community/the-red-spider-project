@@ -1,9 +1,0 @@
-usage: xkcd-search [-h] REGEX
-
-Searches cached xkcd comics, will not download new ones.
-
-positional arguments:
-  REGEX       A python regular expression
-
-optional arguments:
-  -h, --help  show this help message and exit

@@ -1,7 +1,0 @@
-4
-usage: random-number [-h]
-
-Number chosen by fair dice roll. Guaranteed to be random.
-
-optional arguments:
-  -h, --help  show this help message and exit
