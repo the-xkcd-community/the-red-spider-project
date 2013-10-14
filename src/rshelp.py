@@ -8,8 +8,8 @@ import os, sys
 
 if len(sys.argv) == 1:
     print("The following commands are available in your version of The Red Spider Project:")
-    for cmd in os.listdir(os.path.dirname(os.path.realpath(__file__))):
+    for cmd in os.listdir(os.path.join(os.getenv("RED_SPIDER_ROOT"), "bin")):
         print(cmd)
 else:
-    manfile = open(os.path.dirname(os.path.realpath(__file__)) + '/../doc/' +  sys.argv[1] + '.txt', 'r')
+    manfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "doc",  sys.argv[1] + '.txt'), 'r')
     print(manfile.read())
