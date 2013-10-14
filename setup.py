@@ -29,6 +29,14 @@ src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
 
+documented_cmds = [["xkcd-fetch",    "xkcd-fetch -h"],
+                   ["xkcd-search",   "xkcd-search -h"],
+                   ["level_up",      "level_up -h"],
+                   ["summon",        "summon"],
+                   ["fortune",       "fortune -h"],
+                   ["godel",         "godel"],
+                   ["random-number", "random-number -h"]]
+
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
                         'random-number.py', 'rshelp.py'  ]
@@ -130,6 +138,7 @@ def extend_user_env_posix (name, value, mode):
 def install ( ):
     # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
     install_rsshell()
+    install_docs(documented_cmds)
     if not exists(bin_dir):
         os.mkdir(bin_dir)
     if not exists(lib_dir):
@@ -195,6 +204,11 @@ def install_python_modules (modules):
         else:
             target_file = join(lib_dir, module_name + 'c')
             py_compile.compile(source_file, target_file)
+
+def install_docs (docs):
+    docfile = open('doc/doc.txt', 'w')
+    for cmd in documented_cmds:
+        docfile.write(cmd[0] + " " + cmd[1] + "\n")
 
 windows_rsshell_forward_script = """
 @echo off

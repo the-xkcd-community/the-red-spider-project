@@ -6,13 +6,21 @@
 
 import os, sys
 
-documentedcmds = [["xkcd-fetch", "xkcd-fetch -h"], ["xkcd-search", "xkcd-search -h"], ["level_up", "level_up -h"], ["summon", "summon"], ["fortune", "fortune -h"], ["godel", "godel"], ["random-number", "random-number -h"]] # I'm not sure if this is the best way to do this.  If you have a better idea, please fix it!
+
+documentedcmds = []
 
 if len(sys.argv) == 1:
     print("The following commands are available in your version of The Red Spider Project:")
     for cmd in os.listdir(os.path.join(os.getenv("RED_SPIDER_ROOT"), "bin")):
         print(cmd)
 else:
+    try:
+        docfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "doc") + "/doc.txt")
+        for cmd in docfile.read().splitlines():
+            documentedcmds.append(cmd.split(" ", 1))
+    except:
+        print("Hey you!\n\nI couldn't find the list of commands that I use to generate help files.  It's a shot in the dark, but the best that I can give you is this:")
+        os.system(sys.argv[1] + " -h")  # This might be a bad idea if the user does "rshelp rshelp"...
     documented = False
     for cmd in documentedcmds:
         if cmd[0] == sys.argv[1]:
