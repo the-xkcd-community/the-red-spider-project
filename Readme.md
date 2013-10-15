@@ -30,24 +30,7 @@ we're very open-minded.
 
 ### What ###
 
-When you run `rsshell` the following commands are available to you.
-
-- `xkcd-fetch`: Manages an offline xkcd comic database for you. Run
-  with `-h` for help.
-- `xkcd-search`: Searches the database from `xkcd-fetch` for keywords.
-  Run with `-h` for help.
-- `json-parse`: Manually inspect JSON files. Undocumented.
-- `level_up`: An RPG-style lines-of-code counter which pops up a
-  "level up" message when you pass a milestone in a programming
-  language. Run with `-h` for help.
-- `summon`: A generic file/URL launcher which can handle any file type
-  your underlying system supports. Run without arguments for help.
-- `fortune`: A command that randomly or specifically displays good
-  #xkcd IRC threads from a cache or the XKCDB website.
-- `godel`: Translates mathematical formulas to Gödel numbers and
-  vice-versa.
-- `random-number`: Generated a random number by simulating a fair dice
-  roll. Run with '-h' for help.
+run `rshelp` to get a list of available commands!
 
 The following commands are expected to be added soon.
 
