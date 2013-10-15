@@ -4,7 +4,7 @@ from __future__ import print_function
 ''' setup.py
 Initial setup script for the Red Spider Project
 
-Copyright 2012 Julian Gonggrijp
+Copyright 2012, 2013 Julian Gonggrijp
 Licensed under the Red Spider Project License.
 See the License.txt that shipped with your copy of this software for details.
 
@@ -28,6 +28,7 @@ build_dir   = 'build'
 src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
+work_dir    = 'work'
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
@@ -136,6 +137,8 @@ def install ( ):
         os.mkdir(lib_dir)
     if not exists(build_dir):
         os.mkdir(build_dir)
+    if not exists(work_dir):
+        os.mkdir(work_dir)
     # Installing from within Python works fine as long as we only need to copy
     # some files, but this will become unmanageable if we also have to compile
     # C++, Haskell, etcetera.
