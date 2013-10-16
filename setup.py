@@ -29,13 +29,13 @@ src_dir     = 'src'
 inc_dir     = 'include'
 cfg_dir     = 'config'
 
-documented_cmds = [["xkcd-fetch",    "xkcd-fetch -h"],
-                   ["xkcd-search",   "xkcd-search -h"],
-                   ["level_up",      "level_up -h"],
+documented_cmds = [["xkcd-fetch",    "xkcd-fetch --help"],
+                   ["xkcd-search",   "xkcd-search --help"],
+                   ["level_up",      "level_up --help"],
                    ["summon",        "summon"],
-                   ["fortune",       "fortune -h"],
+                   ["fortune",       "fortune --help"],
                    ["godel",         "godel"],
-                   ["random-number", "random-number -h"]]
+                   ["random-number", "random-number --help"]]
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
@@ -206,7 +206,7 @@ def install_python_modules (modules):
             py_compile.compile(source_file, target_file)
 
 def install_docs (docs):
-    docfile = open('doc/doc.txt', 'w')
+    docfile = open('config/doc.txt', 'w')
     for cmd in documented_cmds:
         docfile.write(cmd[0] + " " + cmd[1] + "\n")
 

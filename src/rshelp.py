@@ -15,7 +15,7 @@ if len(sys.argv) == 1:
         print(cmd)
 else:
     try:
-        docfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "doc") + "/doc.txt")
+        docfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "config", "doc.txt"))
         for cmd in docfile.read().splitlines():
             documentedcmds.append(cmd.split(" ", 1))
     except:
@@ -28,7 +28,7 @@ else:
             os.system(cmd[1])
     if not documented:
         try:
-            manfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "doc",  sys.argv[1] + '.txt'), 'r')
+            manfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "config", "doc.txt"), 'r')
             print(manfile.read())
         except FileNotFoundError:
             print("Hey you!\n\nI couldn't find any documentation for that command.  I looked in the /doc directory and did '" + sys.argv[1] + " -h', but they didn't help.\nrshelp can no longer help you, but if you master the spectral wolf, he will guide you.  Godspeed.") # http://xkcd.com/461/
