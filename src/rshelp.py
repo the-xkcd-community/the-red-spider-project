@@ -4,18 +4,15 @@
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+from __future__ import print_function
 import os, sys
-
 
 documentedcmds = []
 
 if len(sys.argv) == 1:
     print("The following commands are available in your version of The Red Spider Project:")
     for cmd in os.listdir(os.path.join(os.getenv("RED_SPIDER_ROOT"), "bin")):
-        if not os.name == 'nt': # POSIX Assumed.
-            print(cmd)
-        else:
-            print(cmd.split(".")[0]) # Assuming you won't have commands like "__AUTOEXEC.BAT.MY%20OSX%20DOCUMENTS-INSTALL.EXE.RAR.INI.TAR.DOÇX.PHPHPHP.XHTML.TML.XTL.TXXT.0DAY.HACK.ERS_(1995)_BLURAY_CAM-XVID.EXE.TAR.[SCR].LISP.MSI.LNK.ZDA.GNN.WRBT.OBJ.O.H.SWF.DPKG.APP.ZIP.TAR.TAR.CO.GZ.A.OUT.EXE", this should work.
+            print(os.path.splitext(cmd)[0]) # Assuming you won't have commands like "__AUTOEXEC.BAT.MY%20OSX%20DOCUMENTS-INSTALL.EXE.RAR.INI.TAR.DOCX.PHPHPHP.XHTML.TML.XTL.TXXT.0DAY.HACK.ERS_(1995)_BLURAY_CAM-XVID.EXE.TAR.[SCR].LISP.MSI.LNK.ZDA.GNN.WRBT.OBJ.O.H.SWF.DPKG.APP.ZIP.TAR.TAR.CO.GZ.A.OUT.EXE", this should work.
 else:
     backuphelp = False
     try:
