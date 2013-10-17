@@ -138,13 +138,10 @@ def extend_user_env_posix (name, value, mode):
 def install ( ):
     # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
     install_rsshell()
+    for dir in (bin_dir, lib_dir, build_dir, cfg_dir):
+        if not exists(dir):
+            os.mkdir(dir)
     install_docs(documented_cmds)
-    if not exists(bin_dir):
-        os.mkdir(bin_dir)
-    if not exists(lib_dir):
-        os.mkdir(lib_dir)
-    if not exists(build_dir):
-        os.mkdir(build_dir)
     # Installing from within Python works fine as long as we only need to copy
     # some files, but this will become unmanageable if we also have to compile
     # C++, Haskell, etcetera.
