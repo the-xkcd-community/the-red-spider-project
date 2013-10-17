@@ -25,7 +25,7 @@ else:
     try:
         manfile = open(os.path.join(os.getenv("RED_SPIDER_ROOT"), "doc", sys.argv[1] + ".txt"), 'r')
         print(manfile.read())
-    except FileNotFoundError:
+    except IOError:
         for cmd in documentedcmds:
             if cmd[0] == sys.argv[1]:
                 documented = True
@@ -36,4 +36,4 @@ else:
             else:
                 print("Hey you!\n\nI couldn't find the list of commands that I use to generate help files.  It's a shot in the dark, but the best that I can give you is this:")
                 os.system(sys.argv[1] + " -h")
-                
+
