@@ -30,9 +30,17 @@ inc_dir     = 'include'
 cfg_dir     = 'config'
 work_dir    = 'work'
 
+documented_cmds = [["xkcd-fetch",    "xkcd-fetch --help"],
+                   ["xkcd-search",   "xkcd-search --help"],
+                   ["level_up",      "level_up --help"],
+                   ["summon",        "summon"],
+                   ["fortune",       "fortune --help"],
+                   ["godel",         "godel"],
+                   ["random-number", "random-number --help"]]
+
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
-                        'random-number.py'  ]
+                        'random-number.py', 'rshelp.py'  ]
 python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
 def main ( ):
@@ -131,14 +139,10 @@ def extend_user_env_posix (name, value, mode):
 def install ( ):
     # invariant: RED_SPIDER_ROOT is the working directory and is read/writeable
     install_rsshell()
-    if not exists(bin_dir):
-        os.mkdir(bin_dir)
-    if not exists(lib_dir):
-        os.mkdir(lib_dir)
-    if not exists(build_dir):
-        os.mkdir(build_dir)
-    if not exists(work_dir):
-        os.mkdir(work_dir)
+    for dir in (bin_dir, lib_dir, build_dir, cfg_dir, work_dir):
+        if not exists(dir):
+            os.mkdir(dir)
+    install_docs(documented_cmds)
     # Installing from within Python works fine as long as we only need to copy
     # some files, but this will become unmanageable if we also have to compile
     # C++, Haskell, etcetera.
@@ -198,6 +202,11 @@ def install_python_modules (modules):
         else:
             target_file = join(lib_dir, module_name + 'c')
             py_compile.compile(source_file, target_file)
+
+def install_docs (docs):
+    docfile = open('config/doc.txt', 'w')
+    for cmd in documented_cmds:
+        docfile.write(cmd[0] + " " + cmd[1] + "\n")
 
 windows_rsshell_forward_script = """
 @echo off

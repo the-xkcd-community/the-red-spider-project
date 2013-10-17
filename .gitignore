@@ -4,6 +4,7 @@
 /lib
 /build
 /work
+/config
 
 # prepend '__' to create temp files/dirs
 __*

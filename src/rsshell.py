@@ -4,12 +4,19 @@
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
 
+# Minor contributions were made by Wesley Aptekar-Cassels;
+# please refer to the Authors.txt that shipped with your copy of this software.
+
 '''
 Ideas for future changes (unordered):
  -  use the argparse module;
  -  move computation of environment variables to the setup script as
     well, store them in a JSON file in config and let rsshell retrieve
-    them.
+    them;
+ -  show a short info message on launch (more than just the root and
+    'call exit if you want your normal shell back').
+    This has kinda been done with os.system("rshelp"), but feel free
+    to add more!
 '''
 
 import os
@@ -48,6 +55,7 @@ def main (argv = None):
         prior_location = os.getcwd()
         os.chdir(root)
         print welcome_msg.format(root, os.path.sep, *variable_wrap)
+        os.system("rshelp")
         if os.name == 'nt':                     # Windows
             result = call(os.getenv('COMSPEC', 'cmd.exe'))
         else:                                   # POSIX assumed
