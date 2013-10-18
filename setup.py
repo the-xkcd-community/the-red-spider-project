@@ -20,6 +20,7 @@ from os.path import exists, join, split, splitext, abspath, expanduser
 from shutil import copy2
 import py_compile
 import sys
+import stat
 
 bin_dir     = 'bin'
 extbin_dir  = 'extbin'  # stands for 'external binaries'
@@ -188,7 +189,12 @@ def install_scripts (src_names, bin_names):
         if not exists(src_file):
             print(script_not_found_msg.format(src_name))
         else:
-            copy2(src_file, join(bin_dir, bin_name))
+            bin_file = join(bin_dir, bin_name)
+            copy2(src_file, bin_file)
+            if not os.access(bin_file, os.X_OK):
+                from stat import *
+                os.chmod(bin_file,  S_IRUSR | S_IWUSR | S_IXUSR |
+                                    S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH )
 
 def install_python_modules (modules):
     # if the program reaches this point, lib_dir exists for sure
