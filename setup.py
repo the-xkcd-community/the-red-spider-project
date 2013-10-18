@@ -193,8 +193,8 @@ def install_scripts (src_names, bin_names):
             copy2(src_file, bin_file)
             if not os.access(bin_file, os.X_OK):
                 from stat import *
-                os.chmod(bin_file,  S_IRUSR | S_IWUSR | S_IXUSR |
-                                    S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH )
+								mode = os.stat(bin_file).st_mode
+                os.chmod(bin_file, mode | S_IXUSR | S_IXGRP | S_IXOTH)
 
 def install_python_modules (modules):
     # if the program reaches this point, lib_dir exists for sure
