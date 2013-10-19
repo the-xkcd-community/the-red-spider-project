@@ -193,7 +193,7 @@ def install_scripts (src_names, bin_names):
             copy2(src_file, bin_file)
             if not os.access(bin_file, os.X_OK):
                 from stat import *
-								mode = os.stat(bin_file).st_mode
+                mode = os.stat(bin_file).st_mode
                 os.chmod(bin_file, mode | S_IXUSR | S_IXGRP | S_IXOTH)
 
 def install_python_modules (modules):
