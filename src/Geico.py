@@ -34,9 +34,9 @@ else:
 		strength = raw_input("how intimidating can you look with a " + golfbag[clubchoice] + "? (1-10): ")
 		# gets scaryness data
 		if (isinstance(strength, int)) == False:
- 	   		print (strength + ' is not an integer')
-	   	else:
- 	   		int2 = True
+			print (strength + ' is not an integer')
+		else:
+			int2 = True
 # integer checking
 
 	totalcost = insurancecost * (1 - (golfbag[clubchoice][0] + (strength/100)))
