@@ -40,4 +40,3 @@ else:
 
 	totalcost = insurancecost * (1 - (golfbag[clubchoice][0] + (strength/100)))
 
-print "your insurance will cost " + totalcost + "$, but you will have to pay " + golfbag[clubchoice][1] + "$ to purchace your club.\n"
