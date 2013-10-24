@@ -32,7 +32,7 @@ while(validchoice == False):
 # making sure the user made a valid club choice
 
 try:
-    strength = int(raw_input("how intimidating can you look with a " + golfbag[clubchoice] + "? (1-10): "))
+    strength = int(raw_input("How intimidating can you look with a " + golfbag[clubchoice] + "? (1-10): "))
     # gets scaryness data
 except IndentationError:
     print("that's not an integer")
