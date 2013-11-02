@@ -14,16 +14,16 @@ errorcheck = False
 while(errorcheck == False):
     try:
         errorcheck = True
-        insurancecost = int(raw_input("How much does your insurance currently cost?: "))
-    except:
+        insurancecost = abs(int(raw_input("How much does your insurance currently cost?: ")))
+    except ValueError:
         print("That's not an integer.")
         errorcheck = False
 errorcheck = False
-print("Putter costs 175$ but saves you 10 percent on insurance.")
-print("5iron costs 100$ but saves you 15 percent on insurance.")
-print("Wood costs 225$ but saves you 22 percent on insurance.")
-print("7iron costs 100$ but saves you 17 percent on insurance.")
-print("Driver costs 350$ but saves you 26 percent on insurance.")
+print("Putter costs $175 but saves you 10 percent on insurance.")
+print("5iron costs $100 but saves you 15 percent on insurance.")
+print("Wood costs $225 but saves you 22 percent on insurance.")
+print("7iron costs $100 but saves you 17 percent on insurance.")
+print("Driver costs $350 but saves you 26 percent on insurance.")
 clubchoice = raw_input("Which golf club would you like to use to threaten your agent?: ")
 # asks user for club choice and gives info
 validchoice = False
@@ -37,9 +37,9 @@ while(validchoice == False):
 while (errorcheck == False):
     try:
         errorcheck = True
-        strength = int(raw_input("How intimidating can you look with a golf club? (1-10): "))
+        strength = abs(int(raw_input("How intimidating can you look with a golf club? (1-10): ")))
         # gets scaryness data
-    except:
+    except ValueError:
         print("That's not an integer.")
         errorcheck = False
 # integer checking
