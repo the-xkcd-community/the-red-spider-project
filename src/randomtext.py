@@ -1,3 +1,5 @@
+#! /usr/bin/env python2
+
 # XKCD The Red Spider Project
 # Random text generator
 # June, 11th 2012
@@ -42,6 +44,8 @@ class textGenerator(object):
       return
     for i in xrange(self.word_size - 2):
       yield (self.words[i], self.words[i+1], self.words[i+2])
+    yield self.words[-2], self.words[-1], self.words[0]
+    yield self.words[-1], self.words[0], self.words[1]
 
   def wordDict(self):
     for word1, word2, word3 in self.triples():
@@ -79,7 +83,7 @@ class textGenerator(object):
     return ' '.join(generated_words)
     #return ' '.join(self.appendKeywords(generated_words))
 
-def _usage():
+def usage():
   print ('Usage: python randomtext.py [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
 
 def writeFile(toWrite, path):
@@ -98,7 +102,7 @@ def openFile(path, mode):
 
 def main():
   if len(sys.argv) < 3 or len(sys.argv) > 4:
-    _usage()
+    usage()
     sys.exit(-1)
   filePath = sys.argv[1]
   while not os.path.exists(filePath):
@@ -114,7 +118,7 @@ def main():
     outputPath = sys.argv[3]
   except IndexError:
     output = False
-  if output and os.path.exists(outputPath):
+  if output:
     writeFile(randomText+'\n', outputPath)
   else:
     print randomText
