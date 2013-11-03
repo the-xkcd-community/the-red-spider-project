@@ -30,9 +30,14 @@ we're very open-minded.
 
 ### What ###
 
-When you run `rsshell` it displays a list of available commands. You can review that list at any time by running `rshelp`. `rshelp <topic>` will show you documentation for `<topic>` if available. This works for most commands.
+When you run `rsshell` it displays a list of available commands. You
+can review that list at any time by running `rshelp`. `rshelp <topic>`
+will show you documentation for `<topic>` if available. This works for
+most commands.
 
-There's always work in progress. If you want to know what is going on or you want to know what *you* can do, the issue tracker and the wiki are your places to be.
+There's always work in progress. If you want to know what is going on
+or you want to know what *you* can do, the issue tracker and the wiki
+are your places to be.
 
 
 ### Where ###
