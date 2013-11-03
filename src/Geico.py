@@ -45,4 +45,4 @@ while (errorcheck == False):
 # integer checking
 totalcost = str(insurancecost * (1 - (golfbag[clubchoice][0] + (strength/100))))
 
-print("Your insurance will cost $" + totalcost + ", but you will have to pay $" + str(golfbag[clubchoice][1]) + " to purchace your club.\n")
+print("Your insurance will cost $" + totalcost + ", but you will have to pay $" + str(golfbag[clubchoice][1]) + " to purchase your club.\n")
