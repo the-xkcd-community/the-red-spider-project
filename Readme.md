@@ -30,14 +30,9 @@ we're very open-minded.
 
 ### What ###
 
-run `rshelp` to get a list of available commands!
+When you run `rsshell` it displays a list of available commands. You can review that list at any time by running `rshelp`. `rshelp <topic>` will show you documentation for `<topic>` if available. This works for most commands.
 
-The following commands are expected to be added soon.
-
-- `spider-life`: A Conway's Game of Life variant with two colors and
-  four different topologies for the universe.
-- `xkcd-windows-wallpaper`: A Windows app which sets your wallpaper to
-  an xkcd comic of your choosing.
+There's always work in progress. If you want to know what is going on or you want to know what *you* can do, the issue tracker and the wiki are your places to be.
 
 
 ### Where ###
