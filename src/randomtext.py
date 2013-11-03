@@ -1,9 +1,13 @@
 #! /usr/bin/env python2
 
+# Copyright June 11th, 2012, leo
+# Licensed under the Red Spider Project License.
+# See the License.txt that shipped with your copy of this software for details.
+#
+# Julian Gonggrijp made some essential fixes in November 2013.
+
 # XKCD The Red Spider Project
 # Random text generator
-# June, 11th 2012
-# Author: leo
 
 """
 A random text generator class that takes in a data stream and returns a random stream from the input.
