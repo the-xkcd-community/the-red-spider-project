@@ -35,14 +35,14 @@ class textGenerator(object):
     return words
 
   def triples(self):
-    """ 
+    """
     Generates triples from the given data string.
     """
     if len(self.words) < 3: #Nothing to do here.
-      return		
+      return
     for i in xrange(self.word_size - 2):
       yield (self.words[i], self.words[i+1], self.words[i+2])
-			
+
   def wordDict(self):
     for word1, word2, word3 in self.triples():
       key = (word1, word2)
@@ -118,6 +118,6 @@ def main():
     writeFile(randomText+'\n', outputPath)
   else:
     print randomText
-  
+
 main()
 
