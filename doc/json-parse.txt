@@ -1,0 +1,24 @@
+json-parse (Red Spider Project)
+
+Usage:
+    json-parse FIELDNAME
+
+This command takes JSON objects on the standard input and a field name
+as its first arguments. It then prints the value of FIELDNAME for each
+JSON object to the standard output. It is especially useful when
+combined with pipes or file redirects.
+
+Example:
+    > xkcd-search '(?i)spider' | xkcd-fetch | json-parse comic_title
+    Red spiders
+    Red Spiders 2
+    Counter-Red Spiders
+    Five Thirty
+    Red Spiders Cometh
+    Bad Timing
+    xkcd Loves the Discovery Channel
+    Control
+    Cirith Ungol
+    Arachnoneurology
+    Questions
+    Alternate Universe
