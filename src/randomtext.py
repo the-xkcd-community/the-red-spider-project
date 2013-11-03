@@ -76,10 +76,10 @@ class textGenerator(object):
     seed_word, next_word = self.words[seed], self.words[seed+1]
     word1, word2 = seed_word, next_word
     generated_words = []
-    for i in xrange(size):
+    for i in xrange(size - 1):
       generated_words.append(word1)
       word1, word2 = word2, random.choice(self.cache[(word1, word2)])
-      generated_words.append(word2)
+    generated_words.append(word2)
     return ' '.join(generated_words)
     #return ' '.join(self.appendKeywords(generated_words))
 
