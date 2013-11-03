@@ -1,8 +1,10 @@
 # Base directories
 /bin
+/extbin
 /lib
 /build
 /work
+/config
 
 # prepend '__' to create temp files/dirs
 __*
@@ -16,6 +18,8 @@ __*
 .#*
 notes*
 TAGS
+*.swp
+*.swo
 
 # Haskell-related #
 ###################
