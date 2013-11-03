@@ -88,7 +88,7 @@ class textGenerator(object):
     #return ' '.join(self.appendKeywords(generated_words))
 
 def usage():
-  print ('Usage: python randomtext.py [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
+  print ('Usage: randomtext [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
 
 def writeFile(toWrite, path):
   try:
