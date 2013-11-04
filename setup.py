@@ -193,7 +193,7 @@ def install_scripts (src_names, bin_names):
             bin_file = join(bin_dir, bin_name)
             copy2(src_file, bin_file)
             if not os.access(bin_file, os.X_OK):
-                from stat import *
+                from stat import S_IXUSR, S_IXGRP, S_IXOTH
                 mode = os.stat(bin_file).st_mode
                 os.chmod(bin_file, mode | S_IXUSR | S_IXGRP | S_IXOTH)
 
