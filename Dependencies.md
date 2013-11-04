@@ -1,26 +1,25 @@
 Dependencies
 ------------
 
-[The Red Spider Project](https://github.com/the-xkcd-community/the-red-spider-project)
+[https://github.com/the-xkcd-community/the-red-spider-project]
 
 
-### Git ###
+Required for the setup script, `rsshell` and several commands:
 
-In order to use Git with this project, you need:
+- [Python 2.7](http://www.python.org/download/) (unixy systems should have a `python2` link).
 
- -  [Git](http://git-scm.com/), and
- -  a [GitHub account](https://github.com/).
+Required for the `level_up` command:
 
-[Git Immersion](http://gitimmersion.com/) provides a nice and quick
-Git tutorial.
+- [Tcl/Tk](http://www.tcl.tk/).
 
-**Note**: if you just want to have a copy of the source code and
-you're not planning to contribute in any way, you can do without Git
-and just download a zip file from the project page.
+Required for the `fortune` command:
 
+- [lxml](http://lxml.de/)
+- [cssselect](https://pypi.python.org/pypi/cssselect)
 
-### Programming languages ###
+Other dependencies:
 
-For now, only [Python 2.7](http://www.python.org/download/) is
-required. If you want to try the `advbrowser` program, you'll also
-need [PHP](http://www.php.net/downloads.php).
+- Git, in order to participate (see [GitImmersion](http://gitimmersion.com/index.html) for installation and a tutorial);
+- [PHP](http://www.php.net/downloads.php) for [zed0/advbrowser](https://github.com/zed0/the-red-spider-project/tree/advbrowser);
+- [Visual C#](http://msdn.microsoft.com/en-us/vstudio/hh341490.aspx) for [BRNMan/master](https://github.com/BRNMan/the-red-spider-project);
+- C++ on Windows (any compiler) for [xen-0/game-of-spiders](https://github.com/xen-0/the-red-spider-project/tree/game-of-spiders).

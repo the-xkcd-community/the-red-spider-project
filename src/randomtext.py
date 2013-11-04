@@ -1,7 +1,13 @@
+#! /usr/bin/env python2
+
+# Copyright June 11th, 2012, leo
+# Licensed under the Red Spider Project License.
+# See the License.txt that shipped with your copy of this software for details.
+#
+# Julian Gonggrijp made some essential fixes in November 2013.
+
 # XKCD The Red Spider Project
 # Random text generator
-# June, 11th 2012
-# Author: leo
 
 """
 A random text generator class that takes in a data stream and returns a random stream from the input.
@@ -35,14 +41,16 @@ class textGenerator(object):
     return words
 
   def triples(self):
-    """ 
+    """
     Generates triples from the given data string.
     """
     if len(self.words) < 3: #Nothing to do here.
-      return		
+      return
     for i in xrange(self.word_size - 2):
       yield (self.words[i], self.words[i+1], self.words[i+2])
-			
+    yield self.words[-2], self.words[-1], self.words[0]
+    yield self.words[-1], self.words[0], self.words[1]
+
   def wordDict(self):
     for word1, word2, word3 in self.triples():
       key = (word1, word2)
@@ -72,15 +80,15 @@ class textGenerator(object):
     seed_word, next_word = self.words[seed], self.words[seed+1]
     word1, word2 = seed_word, next_word
     generated_words = []
-    for i in xrange(size):
+    for i in xrange(size - 1):
       generated_words.append(word1)
       word1, word2 = word2, random.choice(self.cache[(word1, word2)])
-      generated_words.append(word2)
+    generated_words.append(word2)
     return ' '.join(generated_words)
     #return ' '.join(self.appendKeywords(generated_words))
 
-def _usage():
-  print ('Usage: python randomtext.py [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
+def usage():
+  print ('Usage: randomtext [PATH/FILE] [NUMBER OF WORDS IN THE OUTPUT] [optional: output file]')
 
 def writeFile(toWrite, path):
   try:
@@ -98,7 +106,7 @@ def openFile(path, mode):
 
 def main():
   if len(sys.argv) < 3 or len(sys.argv) > 4:
-    _usage()
+    usage()
     sys.exit(-1)
   filePath = sys.argv[1]
   while not os.path.exists(filePath):
@@ -114,10 +122,10 @@ def main():
     outputPath = sys.argv[3]
   except IndexError:
     output = False
-  if output and os.path.exists(outputPath):
+  if output:
     writeFile(randomText+'\n', outputPath)
   else:
     print randomText
-  
+
 main()
 
