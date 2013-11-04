@@ -1,7 +1,6 @@
 Geico Help:
 
-how does it work?: total cost = insurancecost * (1 - (insurance saving percent based on club choice + (strength/100)))
-
+To see the comic that this command references go to: http://www.xkcd.com/42/
 
 The Geico command was created by Rytonbay inc. and was sponsored by The XKCD Community.
 
@@ -9,5 +8,6 @@ The Geico command was designed so that users can spend more than 15 minutes and 
 
 Rytonbay inc. is not responsible for any results of using the Geico command including but not limited to; lawsuits, bruises, losing more money than was gained and your Insurance agent not being your friend anymore. Be careful when using the Geico command because threatening people with golf clubs can sometimes lead to lawsuits [citation needed], which can sometimes be expensive [citation needed].
 
-To see the comic that this command references go to: http://www.xkcd.com/42/
+how does it work?: total cost = insurancecost * (1 - (insurance saving percent based on club choice + (strength/100)))
+
 
