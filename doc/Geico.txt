@@ -1,13 +1,27 @@
 Geico Help:
 
-To see the comic that this command references go to: http://www.xkcd.com/42/
+To see the comic that this command references go to:
+http://www.xkcd.com/42/
 
-The Geico command was created by Rytonbay inc. and was sponsored by The XKCD Community.
 
-The Geico command was designed so that users can spend more than 15 minutes and save more than 15% on insurance. The Geico command was designed to help you save money on insurance by helping you pick the best golf club to threaten your agent with. The Geico command has already saved people thousands of dollars in insurance.
+The Geico command was created by Rytonbay inc. and was sponsored by
+The XKCD Community.
 
-Rytonbay inc. is not responsible for any results of using the Geico command including but not limited to; lawsuits, bruises, losing more money than was gained and your Insurance agent not being your friend anymore. Be careful when using the Geico command because threatening people with golf clubs can sometimes lead to lawsuits [citation needed], which can sometimes be expensive [citation needed].
+The Geico command was designed so that users can spend more than 15
+minutes and save more than 15% on insurance. The Geico command was
+designed to help you save money on insurance by helping you pick the
+best golf club to threaten your agent with. The Geico command has
+already saved people thousands of dollars in insurance.
 
-how does it work?: total cost = insurancecost * (1 - (insurance saving percent based on club choice + (strength/100)))
+Rytonbay inc. is not responsible for any results of using the Geico
+command including but not limited to; lawsuits, bruises, losing more
+money than was gained and your Insurance agent not being your friend
+anymore. Be careful when using the Geico command because threatening
+people with golf clubs can sometimes lead to lawsuits [citation
+needed], which can sometimes be expensive [citation needed].
 
-
+how does it work?:
+
+ total cost = insurancecost * (1 - (insurance saving percent based on club choice + (strength/100)))
+
+
