@@ -30,14 +30,14 @@ we're very open-minded.
 
 ### What ###
 
-run `rshelp` to get a list of available commands!
+When you run `rsshell` it displays a list of available commands. You
+can review that list at any time by running `rshelp`. `rshelp <topic>`
+will show you documentation for `<topic>` if available. This works for
+most commands.
 
-The following commands are expected to be added soon.
-
-- `spider-life`: A Conway's Game of Life variant with two colors and
-  four different topologies for the universe.
-- `xkcd-windows-wallpaper`: A Windows app which sets your wallpaper to
-  an xkcd comic of your choosing.
+There's always work in progress. If you want to know what is going on
+or you want to know what *you* can do, the issue tracker and the wiki
+are your places to be.
 
 
 ### Where ###
@@ -54,12 +54,8 @@ The following commands are expected to be added soon.
 We started in March 2012. In the first few months we spent most of our
 effort on the infrastructure. In July we were treated to some splendid
 logo designs and we got a homepage. In December we launched our IRC
-channel and in March 2013 the wiki took off. In the meanwhile several
-members have been working on various subprojects, mostly in short
-bursts of activity.
-
-In the near future we may expect a few big improvements to the
-infrastructure.
+channel and in March 2013 the wiki took off. The builtin documentation
+was introduced in October 2013.
 
 
 ### Who ###
