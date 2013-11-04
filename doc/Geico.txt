@@ -20,7 +20,7 @@ anymore. Be careful when using the Geico command because threatening
 people with golf clubs can sometimes lead to lawsuits [citation
 needed], which can sometimes be expensive [citation needed].
 
-how does it work?:
+How does it work:
 
  total cost = insurancecost * (1 - (insurance saving percent based on club choice + (strength/100)))
 
