@@ -54,7 +54,7 @@ def main ( ):
     user_pref = raw_input(
         reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
     ).strip().lower()
-    if not set(user_pref) ^ set("y"):
+    if user_pref.startswith('y'):
         install()
     print(farewell_msg)
 
