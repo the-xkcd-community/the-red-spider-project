@@ -40,6 +40,7 @@ def set_environment (rs_root):
     env_prepend('NODE_PATH', include_dir)
     if os.name == 'nt':  # Windows
         env_append('PATHEXT', '.py')
+        env_append('PATHEXT', '.coffee')
     os.putenv('RED_SPIDER_ROOT', rs_root)
 
 def env_prepend (varname, addition):

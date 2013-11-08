@@ -21,6 +21,7 @@ from shutil import copy2
 import py_compile
 import sys
 import stat
+from subprocess import call
 
 bin_dir     = 'bin'
 extbin_dir  = 'extbin'  # stands for 'external binaries'
@@ -158,7 +159,11 @@ def install ( ):
                             map(lambda x: splitext(x)[0], executable_scripts)
                         )
     install_python_modules(python_modules)
+    install_submodules()
     # add more of such steps if that's feasible and no build system is available
+
+def install_submodules ( ):
+    call(["git", "submodule", "update"])
 
 def install_rsshell ( ):
     if not exists(src_dir):
