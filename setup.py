@@ -53,8 +53,8 @@ def main ( ):
     # existence of the build dir is the natural indicator of a previous install
     user_pref = raw_input(
         reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
-    )
-    if 'y' in user_pref or 'Y' in user_pref:
+    ).strip().lower()
+    if not set(user_pref) ^ set("y"):
         install()
     print(farewell_msg)
 
