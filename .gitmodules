@@ -1,0 +1,3 @@
+[submodule "include/redbot"]
+	path = include/redbot
+	url = https://github.com/mrhmouse/redbot.git

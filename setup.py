@@ -21,6 +21,7 @@ from shutil import copy2
 import py_compile
 import sys
 import stat
+from subprocess import call
 
 bin_dir     = 'bin'
 extbin_dir  = 'extbin'  # stands for 'external binaries'
@@ -41,7 +42,7 @@ documented_cmds = [["xkcd-fetch",    "xkcd-fetch --help"],
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
-                        'random-number.py', 'rshelp.py', 'geico.py' ]
+                        'random-number.py', 'rshelp.py', 'geico.py', 'redbot.coffee' ]
 
 python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
@@ -158,7 +159,11 @@ def install ( ):
                             map(lambda x: splitext(x)[0], executable_scripts)
                         )
     install_python_modules(python_modules)
+    install_submodules()
     # add more of such steps if that's feasible and no build system is available
+
+def install_submodules ( ):
+    call(["git", "submodule", "update"])
 
 def install_rsshell ( ):
     if not exists(src_dir):

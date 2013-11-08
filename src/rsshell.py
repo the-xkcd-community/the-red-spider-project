@@ -34,10 +34,13 @@ def get_red_spider_root():
 def set_environment (rs_root):
     bin_dir = join(rs_root, 'bin')
     lib_dir = join(rs_root, 'lib')
+    include_dir = join(rs_root, 'include')
     env_prepend('PATH', bin_dir)
     env_prepend('PYTHONPATH', lib_dir)
+    env_prepend('NODE_PATH', include_dir)
     if os.name == 'nt':  # Windows
         env_append('PATHEXT', '.py')
+        env_append('PATHEXT', '.coffee')
     os.putenv('RED_SPIDER_ROOT', rs_root)
 
 def env_prepend (varname, addition):
