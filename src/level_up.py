@@ -297,6 +297,9 @@ def initialize_score_file(root_dir, score_file):
     to the score_file.
 
     """
+    work_dir = os.path.split(score_file)[0]
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
     line_counts = get_line_counts(root_dir)
     for lang in line_counts:
         line_counts[lang] /= C_EQUIV_KLOC[lang]
