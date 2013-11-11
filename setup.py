@@ -53,8 +53,8 @@ def main ( ):
     # existence of the build dir is the natural indicator of a previous install
     user_pref = raw_input(
         reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
-    ).strip().lower()
-    if user_pref.startswith('y'):
+    )
+    if parse_yes_no(user_pref):
         install()
     print(farewell_msg)
 
@@ -74,6 +74,16 @@ def verify_root ( ):
         print(root_rw_fail_message)
         sys.exit(2)
     return root_path
+
+def parse_yes_no(inp):
+    validation = [
+                "y", "aye", "affirmative", "okay", "kay", "sure", "fine", 
+                "all right", "by all means", "certainly", "definitely", 
+                "gladly", "naturally", "of course", "very well",
+                "undoubtedly", "willingly"
+                ]
+    inp = inp.strip().lower()
+    return any(map(inp.startswith, validation))
 
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
