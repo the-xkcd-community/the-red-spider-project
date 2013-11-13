@@ -4,22 +4,34 @@
 
 import Image
 import random
+import os
+import time
 from bisect import bisect
 from subprocess import call
 
 
 def img2ascii(iimg):
-    greyscale = [
-                " ",
-                " ",
-                ".,-",
-                "_ivc=!/|\\~",
-                "gjez2]/(YL)t[+T7Vf",
-                "mdK4ZGbNDXY5P*Q",
-                "W8KMA",
-                "#%$"
-                ]
+    #greyscale = [
+    #            " ",
+    #            " ",
+    #            ".,-",
+    #            "_ivc=!/|\\~",
+    #            "gjez2]/(YL)t[+T7Vf",
+    #            "mdK4ZGbNDXY5P*Q",
+    #            "W8KMA",
+    #            "#%$"
+    #            ]
 
+    greyscale = [
+                "#",
+                "8",
+                "Z",
+                "+",
+                "=",
+                ".",
+                " ",
+                " "
+                ]
 
     zonebounds=[36,72,108,144,180,216,252]
 
@@ -44,4 +56,19 @@ def vid2frames(vid):
     call(["ffmpeg", "-i", vid, "/tmp/vid/image%d.jpg"])
 
 vid2frames(r"vid/vid.mp4")
-print img2ascii(r"img.jpg")
+
+nxtframe = ""
+
+for imgfile in os.listdir(r"/tmp/vid/")[::-1]:
+    print nxtframe
+    nxtframe = img2ascii("/tmp/vid/" + imgfile)
+    time.sleep(0.01)
+    call(["clear"])
+
+
+###########
+# Cleanup #
+###########
+
+call(["rm", "-R", "/tmp/vid"])
+
