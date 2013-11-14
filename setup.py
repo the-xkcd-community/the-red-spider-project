@@ -45,16 +45,32 @@ executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
 
 python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
+
+class SomeChoice:
+    def __init__(self, hint, *responses):
+        self.validation = [hint] + list(responses)
+        self.hint = hint
+
+    def __call__(self, check):
+        check = check.strip().lower()
+        if check in self.validation:
+            return self
+
+YES = SomeChoice(
+    "y", "ye", "yes", "aye", "affirmative", "roger", "okay", "kay", 
+    "sure", "fine", "all right", "certainly", "definitely"
+    )
+NO = SomeChoice("n", "no", "hell no")
+
+
 def main ( ):
     print(welcome_msg)
     red_spider_root = verify_root()
     extend_user_env('RED_SPIDER_ROOT', red_spider_root, 'o')
     os.chdir(red_spider_root)
     # existence of the build dir is the natural indicator of a previous install
-    user_pref = raw_input(
-        reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
-    )
-    if parse_yes_no(user_pref):
+    prompt = reinstall_choice_msg if exists(build_dir) else new_install_choice_msg
+    if input_choice(prompt) is YES:
         install()
     print(farewell_msg)
 
@@ -75,15 +91,16 @@ def verify_root ( ):
         sys.exit(2)
     return root_path
 
-def parse_yes_no(inp):
-    validation = [
-                "y", "aye", "affirmative", "okay", "kay", "sure", "fine", 
-                "all right", "by all means", "certainly", "definitely", 
-                "gladly", "naturally", "of course", "very well",
-                "undoubtedly", "willingly"
-                ]
-    inp = inp.strip().lower()
-    return any(map(inp.startswith, validation))
+def input_choice(prompt, gate=[YES, NO], timeout=4):
+    prod = "/".join([x.hint for x in gate])
+    prompt = prompt.format(prod)
+    for i in range(timeout):
+        inp = raw_input(prompt)
+        choice = filter(None, [chk(inp) for chk in gate])
+        if choice:break
+    else:
+        print("\nWell, you stumped me...\n")
+    return choice[0] if len(choice) == 1 else None
 
 def check_rs_root_contents (candidate_path):
     # insert checks for directory contents if you want
@@ -256,11 +273,11 @@ That ends it, then.
 
 reinstall_choice_msg = """
 It seems that you have run the installer before.
-Would you like me to reinstall everything anyway? (y/n) --> """
+Would you like me to reinstall everything anyway? ({}) --> """
 
 new_install_choice_msg = """
 I think you haven't run the installer before (at least not in this
-root). Would you like me to do it now? (y/n) --> """
+root). Would you like me to do it now? ({}) --> """
 
 no_src_panic_msg = """
 Oh my. There is no '{0}' subdirectory within the root?!
