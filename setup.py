@@ -60,7 +60,10 @@ YES = SomeChoice(
     "y", "ye", "yes", "aye", "affirmative", "roger", "okay", "kay", 
     "sure", "fine", "all right", "certainly", "definitely"
     )
-NO = SomeChoice("n", "no", "hell no")
+NO = SomeChoice(
+    "n", "no", "nope", "nay", "nah", "naw", "hell no", "no way",
+    "negative", "absolutely not"
+    )
 
 
 def main ( ):
