@@ -46,7 +46,7 @@ def parse_date(date):
         raise ValueError("Invalid date format.")
 
 def store_defaults(args, filepath):
-    if not (os.path.exists(filepath) or os.path.isfile(filepath)):
+    if not os.path.exists(os.path.split(filepath)[0]):
         os.makedirs(os.path.split(filepath)[0])
     with open(filepath, "w") as fp:
         json.dump(args._get_kwargs(), fp)
@@ -57,7 +57,8 @@ def set_defaults(args, filepath):
             defaults = json.load(fp)
         for key, value in defaults:
             if hasattr(args, key):
-                if getattr(args, key) != value:
+                chk = getattr(args, key)
+                if not chk and chk != value:
                     print("Default {} = {}".format(key, value , getattr(args, key)))
                     setattr(args, key, value)
         print()
@@ -117,6 +118,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if not args.no_defaults:
+        del args.no_defaults
         set_defaults(args, DEFAULTS_FILE)
     
     if args.store_defaults:
