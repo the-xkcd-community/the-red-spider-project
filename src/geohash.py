@@ -56,8 +56,7 @@ def set_defaults(args, filepath):
             defaults = json.load(fp)
         for key, value in defaults:
             if hasattr(args, key):
-                chk = getattr(args, key)
-                if chk is None and chk != value:
+                if getattr(args, key) != value:
                     print("Default {} = {}".format(key, value , getattr(args, key)))
                     setattr(args, key, value)
         print()
