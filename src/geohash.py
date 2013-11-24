@@ -11,11 +11,12 @@ import time
 import datetime
 import argparse
 import json
-#~ import webbrowser
+import webbrowser
     
     
 DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
+MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 
 def geohash(latitude, longitude, datedow):
     '''Compute geohash() using the Munroe algorithm.
@@ -95,7 +96,7 @@ def get_dow(date):
 
 def get_location_coords(gen_location):
     #TODO implement location lookup
-    return (37.421542, -122.085589)
+    return [37.421542, -122.085589]
     
 
 if __name__ == "__main__":
@@ -111,9 +112,9 @@ if __name__ == "__main__":
                         default=None)
     parser.add_argument("-n", "--no-defaults", action="store_true")                    
     parser.add_argument("-s", "--store-defaults", action="store_true")
+    parser.add_argument("-m", "--maps", action="store_true")
 
     args = parser.parse_args()
-    maps = "https://maps.google.com/maps?q={:f},{:f}"
     
     if not args.no_defaults:
         set_defaults(args, DEFAULTS_FILE)
@@ -123,29 +124,30 @@ if __name__ == "__main__":
         store_defaults(args, DEFAULTS_FILE)
 
     if not args.location:
-        if args.gen_location:
-            args.location = get_location_coords(args.gen_location)
-        else:
-            print("LONGITUDE, LATITUDE and LOCATION aren't set.")
-    else:
+        args.location = get_location_coords(args.gen_location)
+    
+    if args.location:
         assert len(args.location) == 2
+        date = parse_date(args.date) if args.date else time.localtime()
+        date_of_dow = get_date_of_dow(date, args.location)
+        datedow = None
     
-    date = parse_date(args.date) if args.date else time.localtime()
-    date_of_dow = get_date_of_dow(date, args.location)
-    datedow = None
-    
-    if not args.dow:
-        print("Fetching DOW from the web..")
-        args.dow = get_dow(date_of_dow)
-    
-    if args.dow:
-        datedow = make_datedow(date_of_dow, args.dow)
+        if not args.dow:
+            print("Fetching DOW from the web..")
+            args.dow = get_dow(date_of_dow)
+        
+        if args.dow:
+            datedow = make_datedow(date_of_dow, args.dow)
+            
+            print()
+            print("Input: {}".format(datedow))
+            unpack = args.location + [datedow]
+            geo_location = geohash(*unpack)
+            print("Output: {}, {}".format(*geo_location))
+            if args.maps:
+                webbrowser.open(MAPS.format(*geo_location))
+        else:
+            print("drats!")
     else:
-        print("drats!")
+        print("LONGITUDE, LATITUDE and LOCATION aren't set.")
     
-    if args.location and datedow:
-        print()
-        print("Input: {}".format(datedow))
-        unpack = args.location + [datedow]
-        geo_location = geohash(*unpack)
-        print("Output: {}, {}".format(*geo_location))
