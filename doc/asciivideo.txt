@@ -1,0 +1,6 @@
+asciivideo plays a video file by rendering it in ascii art, and printing it to the terminal one frame at a time.
+
+Usage:
+asciivideo <video file>
+
+It requires ffmpeg, and will extract *all* of the frames of the video before displaying *any* of the frames.  This might create a problem if you try it on a huge video, otherwise, it should be fine.
