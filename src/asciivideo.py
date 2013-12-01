@@ -53,13 +53,17 @@ def vid2frames(vid):
 vid2frames(sys.argv[1])
 
 nxtframe = ""
-
-for imgfile in os.listdir(r"/tmp/vid/")[::-1]:
-    print nxtframe
-    nxtframe = img2ascii("/tmp/vid/" + imgfile)
-    time.sleep(0.01) #@TODO: Make fps shit work
-    call(["clear"])  # My hands are typing stuff and I shouldnt be operating a keyboard with this little sleep.  HAAAAAAAAAAAAAAAANNNNNNDDDSSSS!
-    time.sleep(6/10) # Replace 10 w/ the value of the -r option.
+try:
+    for imgfile in os.listdir(r"/tmp/vid/")[::-1]:
+        print nxtframe
+        nxtframe = img2ascii("/tmp/vid/" + imgfile)
+        time.sleep(0.01)
+        call(["clear"])  # My hands are typing stuff and I shouldnt be operating a keyboard with this little sleep.  HAAAAAAAAAAAAAAAANNNNNNDDDSSSS!
+        time.sleep(6/10) # Replace 10 w/ the value of the -r option.
+except:
+    print "Cleaning up..."
+    call(["rm", "-R", "/tmp/vid"])
+    print "kthxbai."
 
 ###########
 # Cleanup #
