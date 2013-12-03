@@ -37,11 +37,12 @@ documented_cmds = [["xkcd-fetch",    "xkcd-fetch --help"],
                    ["summon",        "summon"],
                    ["fortune",       "fortune --help"],
                    ["godel",         "godel"],
-                   ["random-number", "random-number --help"]]
+                   ["random-number", "random-number --help"],
+                   ["randomtext",    "randomtext"]]
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
-                        'random-number.py', 'rshelp.py', 'Geico.py' ]
+                        'random-number.py', 'rshelp.py', 'Geico.py', 'randomtext.py' ]
 
 python_modules = 'src/xkcd-fetch.py src/level_up.py'.split()
 
