@@ -1,0 +1,14 @@
+Myentity is a simple Python tool that can translate HTML entity codes
+to plain text. To use it from within your own Python code, you can do
+something like the following:
+
+    import myentity
+    
+    s1 = # some string containing HTML entity codes
+    s2 = myentity.entityToASCII(s)
+    # s2 now contains the same string as s1,
+    # but with entity codes replaced by Unicode characters.
+
+The tool can also be called as a standalone program. It will echo text
+that it receives on the standard input to the standard output while
+replacing HTML entity codes by Unicode characters.
