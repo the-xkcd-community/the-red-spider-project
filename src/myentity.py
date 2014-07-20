@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # Copyright 2013 PM 2Ring
 # Licensed under the Red Spider Project License.
 # See the License.txt that shipped with your copy of this software for details.
