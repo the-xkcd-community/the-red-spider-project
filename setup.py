@@ -159,15 +159,28 @@ def extend_user_env_windows (name, value, mode):
 def extend_user_env_posix (name, value, mode):
     '''NEVER call this function directly.
     Use the safer and platform-neutral 'extend_user_env' instead.'''
-    # It's sloppy to just append another export statement, but it
-    # works for the time being.
-    profile = open(expanduser('~/.profile'), 'a')
+    # I might have groked this at some point, but I forget.
+    # I balme past me for not commenting it, thus it's his fault if it breaks, not mine :)
+    if exists(expanduser("~/.zshrc")):  # More obscure shells come first.  Chances are that zsh users still have a .bashrc around somewhere.
+        envdir = raw_input(posix_env_msg.format("~/.zshrc")) or "~/.zshrc"
+    elif exists(expanduser("~/.bashrc")):
+        envdir = raw_input(posix_env_msg.format("~/.bashrc")) or "~/.bashrc"
+    elif exists(expanduser("~/.profile")):
+        envdir = raw_input(posix_env_msg.format("~/.profile")) or "~/.profile"
+    else:
+        envdir = raw_input(posix_env_dunno_msg) or "~/.profile"
+    profile = open(expanduser(envdir), 'a')
+    profiletext = open(expanduser(envdir), 'r').read()
     if mode == 'a':
-        profile.write('\nexport {0}=${0}:{1}\n'.format(name, value))
+        if (not '\nexport {0}=${0}:{1}\n'.format(name, value) in profiletext):
+            profile.write('\nexport {0}=${0}:{1}\n'.format(name, value))
     elif mode == 'p':
-        profile.write('\nexport {0}={1}:${0}\n'.format(name, value))
+        if (not '\nexport {0}={1}:${0}\n'.format(name, value) in profiletext):
+            profile.write('\nexport {0}={1}:${0}\n'.format(name, value))
     else: # mode == 'o'
-        profile.write('\nexport {0}={1}\n'.format(name, value))
+        if (not '\nexport {0}={1}\n'.format(name, value) in profiletext):
+            profile.write('\nexport {0}={1}\n'.format(name, value))
+
     profile.close()
 
 def install ( ):
@@ -262,6 +275,18 @@ is the root directory of your copy of the Red Spider Project.
 If I'm wrong please enter the correct path, otherwise just hit enter.
 --> """
 
+posix_env_msg = """
+I think that {0} is your env file.
+Type the name of the file where you want to save your env.
+If you're not sure, just press enter, and I'll default to {0}.
+--> """
+
+posix_env_dunno_msg = """
+I dont't see any common env file locations.
+Where should I put the env file?
+If you just press enter, I'll use ~/.profile.
+--> """
+
 user_path_fail_msg = """
 Sorry, I can't open {0} .
 Care to try again?
@@ -304,9 +329,10 @@ programs rely on.
 In addition the root has been saved to RED_SPIDER_ROOT, so after your
 next logon that one will be permanently available as well.
 
-Note for unixy systems: opening a new terminal window might count as a
-new logon. If you run me often, you may want to clean up ~/.profile
-once in a while..."""
+Note for unixy systems: opening a new terminal window will count as a
+new logon.  If you don't use your ~/.bashrc, then you will need to
+copy ~/.bashrc to ~/.profile.  If you don't know what that means,
+don't worry."""
 
 install_patience_msg = """
 Please wait while I install the rest..."""
