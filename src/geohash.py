@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+from sys import version_info
 import os
 import hashlib
 import re
@@ -13,6 +14,9 @@ import argparse
 import json
 import webbrowser
     
+
+if version_info[0] == 3:
+    basestring = str
     
 DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
@@ -65,7 +69,7 @@ def set_defaults(args, filepath):
 
 def make_datedow(date, dow):
     date = time.strftime("%Y-%m-%d", date)
-    if type(dow) is str or unicode:
+    if isinstance(dow, basestring):
         dow = float(dow)
     return "{}-{:.2f}".format(date, dow)
 
