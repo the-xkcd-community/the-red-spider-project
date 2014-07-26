@@ -39,16 +39,17 @@ def geohash(latitude, longitude, datedow):
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
 
 def parse_date(date):
-    formats = ("%Y-%m-%d","%d-%m-%Y", "%m-%d-%Y")
+    formats = ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
     # deal with date delimiters
     datefract = re.findall("\d+|\w+", date)
     assert len(datefract) == 3
     check_date = "-".join(datefract)
     for check_format in formats:
-        try:
-            return time.strptime(check_date, check_format)
-        except:
-            pass
+        for month in {"%m", "%b", "%B"}:
+            try:
+                return time.strptime(check_date, check_format.format(m=month))
+            except:
+                pass
     else:
         raise ValueError("Invalid date format.")
 
