@@ -6,7 +6,6 @@ from sys import version_info
 import os
 import hashlib
 import re
-from urllib import urlopen
 
 import time
 import datetime
@@ -16,7 +15,10 @@ import webbrowser
     
 
 if version_info[0] == 3:
+    from urllib.request import urlopen
     basestring = str
+else:
+    from urllib import urlopen
     
 DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
@@ -31,6 +33,7 @@ def geohash(latitude, longitude, datedow):
     '''
     # http://xkcd.com/426/
     # adapted from antigravity.py
+    datedow = datedow.encode("utf-8")
     h = hashlib.md5(datedow).hexdigest()
     p, q = [('%f' % float.fromhex('0.' + x)) for x in (h[:16], h[16:32])]
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
@@ -92,7 +95,7 @@ def get_dow(date):
         startdate = enddate - datetime.timedelta(weeks=1)
         request = URL_DOW.format(*[x.strftime(time_format) for x in (startdate, enddate)])
         req = urlopen(request)
-        page = req.read()
+        page = req.read().decode("utf-8")
         req.close()
         dow = float(regex.search(page).groups()[0].replace(",", ""))
         return dow
