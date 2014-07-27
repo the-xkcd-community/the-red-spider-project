@@ -42,9 +42,9 @@ NO = SomeChoice(
     "negative", "absolutely not"
     )
     
-    
-DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
-CACHE_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "cache")
+GEO_ROOT = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash")
+DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
+CACHE_FILE = os.path.join(GEO_ROOT, "cache")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
@@ -197,6 +197,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     args.gen_location = " ".join(args.gen_location)
+    
+    if not os.path.exists(GEO_ROOT):
+        os.makedirs(GEO_ROOT)
     
     if args.clear_cache:
         try:
