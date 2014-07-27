@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-from sys import version_info
+from sys import version_info, exit
 import os
 import hashlib
 import re
@@ -44,6 +44,7 @@ NO = SomeChoice(
     
     
 DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
+CACHE_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "cache")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
@@ -62,6 +63,28 @@ def geohash(latitude, longitude, datedow):
     p, q = [('%f' % float.fromhex('0.' + x)) for x in (h[:16], h[16:32])]
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
 
+def memoize_to_disk(filename, invalid=set()):
+    def decorator(func):
+        try:
+            with open(filename, "r") as fp:
+                cache = json.load(fp)
+        except (IOError, ValueError):
+            cache = {}
+            
+        def memoize(*args):
+            chk = str(args)
+            if chk not in cache:
+                ret = func(*args)
+                if not ret in invalid:
+                    cache[chk] = ret
+                    with open(filename, "w") as fp:
+                        json.dump(cache, fp)
+                return ret
+            else:
+                return cache[chk]
+        return memoize
+    return decorator
+    
 def input_choice(prompt, gate=[YES, NO], timeout=4):
     prod = "/".join([x.hint for x in gate])
     prompt = prompt.format(prod)
@@ -119,9 +142,10 @@ def get_date_of_dow(date, coords):
     wkday = date.weekday()
     if wkday > 4:
         date -= datetime.timedelta(wkday - 4)
-    date = date.timetuple()
+    date = tuple(date.timetuple())
     return date
 
+@memoize_to_disk(CACHE_FILE, invalid={None,})
 def get_dow(date):
     try:
         regex = '<td class="lm">.*{}.*{}\n<.+>(.+)'.format(date[2], date[0])
@@ -168,11 +192,19 @@ if __name__ == "__main__":
                         default=None)
     parser.add_argument("-n", "--no-defaults", action="store_true")                    
     parser.add_argument("-s", "--store-defaults", action="store_true")
+    parser.add_argument("-cc", "--clear-cache", action="store_true")
     parser.add_argument("-m", "--maps", action="store_true")
 
     args = parser.parse_args()
     args.gen_location = " ".join(args.gen_location)
     
+    if args.clear_cache:
+        try:
+            os.remove(CACHE_FILE)
+        except OSError:
+            pass
+        exit()
+
     if args.no_defaults:
         del args.no_defaults
     else:
