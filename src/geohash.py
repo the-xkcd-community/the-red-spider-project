@@ -158,7 +158,7 @@ def get_location_coords(gen_location):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a geohash based on the Munroe Algorithm.")
     parser.add_argument("-ll", dest="location", 
-                        metavar=("LONGITUDE","LATITUDE"),nargs=2,
+                        metavar=("LATITUDE", "LONGITUDE"),nargs=2,
                         default=None, type=float)
     parser.add_argument("-l", dest="gen_location", metavar=("LOCATION"),
                         default="", nargs="+")
