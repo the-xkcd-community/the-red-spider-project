@@ -16,13 +16,37 @@ import webbrowser
 
 if version_info[0] == 3:
     from urllib.request import urlopen
+    from urllib.parse import quote
     basestring = str
+    raw_input = input
 else:
-    from urllib import urlopen
+    from urllib import urlopen, quote
+
+
+class SomeChoice:
+    def __init__(self, hint, *responses):
+        self.validation = [hint] + list(responses)
+        self.hint = hint
+
+    def __call__(self, check):
+        check = check.strip().lower()
+        if check in self.validation:
+            return self
+
+YES = SomeChoice(
+    "y", "ye", "yes", "aye", "affirmative", "roger", "okay", "kay", 
+    "sure", "fine", "all right", "certainly", "definitely"
+    )
+NO = SomeChoice(
+    "n", "no", "nope", "nay", "nah", "naw", "hell no", "no way",
+    "negative", "absolutely not"
+    )
+    
     
 DEFAULTS_FILE = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash", "defaults")
 URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
+MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
 
 def geohash(latitude, longitude, datedow):
     '''Compute geohash() using the Munroe algorithm.
@@ -37,6 +61,17 @@ def geohash(latitude, longitude, datedow):
     h = hashlib.md5(datedow).hexdigest()
     p, q = [('%f' % float.fromhex('0.' + x)) for x in (h[:16], h[16:32])]
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
+
+def input_choice(prompt, gate=[YES, NO], timeout=4):
+    prod = "/".join([x.hint for x in gate])
+    prompt = prompt.format(prod)
+    for i in range(timeout):
+        inp = raw_input(prompt)
+        choice = tuple(filter(None, [chk(inp) for chk in gate]))
+        if choice:break
+    else:
+        print("\n???!")
+    return choice[0] if len(choice) == 1 else None
 
 def parse_date(date):
     formats = ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
@@ -104,8 +139,20 @@ def get_dow(date):
         return
 
 def get_location_coords(gen_location):
-    #TODO implement location lookup
-    return [37.421542, -122.085589]
+    re_coords = re.compile(r"\s*(\d+\.?\d*)\s+(\d+\.?\d*)\s*$")
+    prompt = "Do you want to use google maps to get your coordinates? ({}): "
+    response = input_choice(prompt)
+    if response:
+        if response is YES:
+            webbrowser.open(MAPS_LOOKUP.format( quote(gen_location) ))
+        prompt = "[q] to abort. Enter LATITUDE LONGITUDE: "
+        while True:
+            inp = raw_input(prompt)
+            coords = re_coords.match(inp)
+            if coords:
+                return list(float(x) for x in coords.groups())
+            if inp in {"q", "quit"}:
+                return
     
 
 if __name__ == "__main__":
@@ -114,7 +161,7 @@ if __name__ == "__main__":
                         metavar=("LONGITUDE","LATITUDE"),nargs=2,
                         default=None, type=float)
     parser.add_argument("-l", dest="gen_location", metavar=("LOCATION"),
-                        default=None)
+                        default="", nargs="+")
     parser.add_argument("-t", dest="date", metavar=("DATE"), 
                         default=None)
     parser.add_argument("-d", dest="dow", metavar=("DOW"), 
@@ -124,6 +171,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--maps", action="store_true")
 
     args = parser.parse_args()
+    args.gen_location = " ".join(args.gen_location)
     
     if not args.no_defaults:
         del args.no_defaults
@@ -158,6 +206,4 @@ if __name__ == "__main__":
                 webbrowser.open(MAPS.format(*geo_location))
         else:
             print("drats!")
-    else:
-        print("LONGITUDE, LATITUDE and LOCATION aren't set.")
     
