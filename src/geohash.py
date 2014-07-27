@@ -57,17 +57,17 @@ def store_defaults(args, filepath):
     if not os.path.exists(os.path.split(filepath)[0]):
         os.makedirs(os.path.split(filepath)[0])
     with open(filepath, "w") as fp:
-        json.dump(args._get_kwargs(), fp)
+        json.dump(args.__dict__, fp)
 
 def set_defaults(args, filepath):
     if os.path.exists(filepath) and os.path.isfile(filepath):
         with open(filepath, "r") as fp:
             defaults = json.load(fp)
-        for key, value in defaults:
-            if hasattr(args, key):
+        for key, value in defaults.items():
+            if key in args.__dict__:
                 chk = getattr(args, key)
                 if not chk and chk != value:
-                    print("Default {} = {}".format(key, value , getattr(args, key)))
+                    print("Default {} = {}".format( key, value ))
                     setattr(args, key, value)
         print()
 
