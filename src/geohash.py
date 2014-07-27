@@ -173,10 +173,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.gen_location = " ".join(args.gen_location)
     
-    if not args.no_defaults:
+    if args.no_defaults:
         del args.no_defaults
+    else:
         set_defaults(args, DEFAULTS_FILE)
-    
+        
     if args.store_defaults:
         del args.store_defaults
         store_defaults(args, DEFAULTS_FILE)
