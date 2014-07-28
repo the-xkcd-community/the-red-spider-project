@@ -6,6 +6,7 @@ from sys import version_info, exit
 import os
 import hashlib
 import re
+from numbers import Number
 
 import time
 import datetime
@@ -22,26 +23,8 @@ if version_info[0] == 3:
 else:
     from urllib import urlopen, quote
 
+pyinput = lambda x: eval(raw_input(x), {}, {})
 
-class SomeChoice:
-    def __init__(self, hint, *responses):
-        self.validation = [hint] + list(responses)
-        self.hint = hint
-
-    def __call__(self, check):
-        check = check.strip().lower()
-        if check in self.validation:
-            return self
-
-YES = SomeChoice(
-    "y", "ye", "yes", "aye", "affirmative", "roger", "okay", "kay", 
-    "sure", "fine", "all right", "certainly", "definitely"
-    )
-NO = SomeChoice(
-    "n", "no", "nope", "nay", "nah", "naw", "hell no", "no way",
-    "negative", "absolutely not"
-    )
-    
 GEO_ROOT = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash")
 DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
 CACHE_FILE = os.path.join(GEO_ROOT, "cache")
@@ -85,17 +68,6 @@ def memoize_to_disk(filename, invalid=set()):
         return memoize
     return decorator
     
-def input_choice(prompt, gate=[YES, NO], timeout=4):
-    prod = "/".join([x.hint for x in gate])
-    prompt = prompt.format(prod)
-    for i in range(timeout):
-        inp = raw_input(prompt)
-        choice = tuple(filter(None, [chk(inp) for chk in gate]))
-        if choice:break
-    else:
-        print("\n???!")
-    return choice[0] if len(choice) == 1 else None
-
 def parse_date(date):
     formats = ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
     # deal with date delimiters
@@ -157,21 +129,20 @@ def get_dow(date):
         return
 
 def get_location_coords(gen_location):
-    re_coords = re.compile(r"\s*(\d+\.?\d*)\s+(\d+\.?\d*)\s*$")
-    prompt = "Do you want to use google maps to get your coordinates? ({}): "
-    response = input_choice(prompt)
-    if response:
-        if response is YES:
-            webbrowser.open(MAPS_LOOKUP.format( quote(gen_location) ))
-        prompt = "[q] to abort. Enter LATITUDE LONGITUDE: "
+    webbrowser.open(MAPS_LOOKUP.format( quote(gen_location) ))
+    print("`exit()` to abort.")
+    prompt = "Please enter {}: "
+    coords = []
+    for req in ("LATITUDE", "LONGITUDE"):
         while True:
-            inp = raw_input(prompt)
-            coords = re_coords.match(inp)
-            if coords:
-                return list(float(x) for x in coords.groups())
-            if inp in {"q", "quit"}:
-                return
-    
+            try:
+                x = pyinput( prompt.format(req) )
+                if isinstance(x, Number):
+                    break
+            except Exception as exc:
+                pass
+        coords += [x]
+    return coords
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a geohash based on the Munroe Algorithm.")
@@ -179,7 +150,7 @@ if __name__ == "__main__":
                         metavar=("LATITUDE", "LONGITUDE"),nargs=2,
                         default=None, type=float)
     parser.add_argument("-l", dest="gen_location", metavar=("LOCATION"),
-                        default="", nargs="+")
+                        default="", nargs="*")
     parser.add_argument("-t", dest="date", metavar=("DATE"), 
                         default=None)
     parser.add_argument("-d", dest="dow", metavar=("DOW"), 
@@ -190,6 +161,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--maps", action="store_true")
 
     args = parser.parse_args()
+    flag_location = True if type(args.gen_location) is list else False
     args.gen_location = " ".join(args.gen_location)
     
     if not os.path.exists(GEO_ROOT):
@@ -211,7 +183,7 @@ if __name__ == "__main__":
         del args.store_defaults
         store_defaults(args, DEFAULTS_FILE)
 
-    if not args.location:
+    if not args.location and flag_location:
         args.location = get_location_coords(args.gen_location)
     
     if args.location:
