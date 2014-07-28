@@ -97,7 +97,7 @@ def set_defaults(args, filepath):
             if key in args.__dict__:
                 chk = getattr(args, key)
                 if not chk and chk != value:
-                    print("Default {} = {}".format( key, value ))
+                    puts("Default {} = {}".format( key, value ))
                     setattr(args, key, value)
 
 def make_datedow(date, dow):
@@ -123,14 +123,14 @@ def get_dow(date):
     page = req.read().decode("utf-8")
     req.close()
     if page == u"error\ndata not available yet":
-        print("DJIA for this date is not available (yet?)")
+        puts("DJIA for this date is not available (yet?)")
         return
     dow = float(page)
     return dow
 
 def get_location_coords(gen_location):
     webbrowser.open(MAPS_LOOKUP.format( quote(gen_location) ))
-    print("`exit()` to abort.")
+    puts("`exit()` to abort.")
     prompt = "{: <9} >>> "
     coords = []
     for req in ("LATITUDE", "LONGITUDE"):
@@ -163,11 +163,14 @@ if __name__ == "__main__":
                         help="Empty the DJIA cache")
     parser.add_argument("-m", "--maps", action="store_true",
                         help="Show the geohash coordinates in google.maps")
+    parser.add_argument("-j", "--json", action="store_true",
+                        help="Write geohash coordinates to stdout as json array")
 
     args = parser.parse_args()
     flag_location = True if type(args.gen_location) is list else False
     args.gen_location = " ".join(args.gen_location)
-    
+    puts = (lambda *x:None) if args.json else print
+
     if not os.path.exists(GEO_ROOT):
         os.makedirs(GEO_ROOT)
     
@@ -197,16 +200,18 @@ if __name__ == "__main__":
         datedow = None
     
         if not args.dow:
-            print("\nRetrieving DJIA..")
+            puts("\nRetrieving DJIA..")
             args.dow = get_dow(date_of_dow)
 
         if args.dow:
             datedow = make_datedow(date_of_dow, args.dow)
             
-            print()
-            print("Input: {}".format(datedow))
+            puts()
+            puts("Input: {}".format(datedow))
             unpack = args.location + [datedow]
             geo_location = geohash(*unpack)
-            print("Output: {}, {}".format(*geo_location))
+            puts("Output: {}, {}".format(*geo_location))
+            if args.json:
+                print(json.dumps(geo_location))
             if args.maps:
                 webbrowser.open(MAPS.format(*geo_location))
