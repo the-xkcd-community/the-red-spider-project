@@ -99,7 +99,6 @@ def set_defaults(args, filepath):
                 if not chk and chk != value:
                     print("Default {} = {}".format( key, value ))
                     setattr(args, key, value)
-        print()
 
 def make_datedow(date, dow):
     date = time.strftime("%Y-%m-%d", date)
@@ -119,19 +118,20 @@ def get_date_of_dow(date, coords):
 
 @memoize_to_disk(CACHE_FILE, invalid={None,})
 def get_dow(date):
-    try:
-        request = URL_DOW.format(year=date[0], month=date[1], day=date[2])
-        req = urlopen(request)
-        dow = float(req.read().decode("utf-8"))
-        req.close()
-        return dow
-    except:
+    request = URL_DOW.format(year=date[0], month=date[1], day=date[2])
+    req = urlopen(request)
+    page = req.read().decode("utf-8")
+    req.close()
+    if page == u"error\ndata not available yet":
+        print("DJIA for this date is not available (yet?)")
         return
+    dow = float(page)
+    return dow
 
 def get_location_coords(gen_location):
     webbrowser.open(MAPS_LOOKUP.format( quote(gen_location) ))
     print("`exit()` to abort.")
-    prompt = "Please enter {}: "
+    prompt = "{: <9} >>> "
     coords = []
     for req in ("LATITUDE", "LONGITUDE"):
         while True:
@@ -197,7 +197,7 @@ if __name__ == "__main__":
         datedow = None
     
         if not args.dow:
-            print("Fetching DOW from the web..")
+            print("\nRetrieving DJIA..")
             args.dow = get_dow(date_of_dow)
 
         if args.dow:
@@ -210,5 +210,3 @@ if __name__ == "__main__":
             print("Output: {}, {}".format(*geo_location))
             if args.maps:
                 webbrowser.open(MAPS.format(*geo_location))
-        else:
-            print("drats!")
