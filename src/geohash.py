@@ -45,7 +45,7 @@ NO = SomeChoice(
 GEO_ROOT = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash")
 DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
 CACHE_FILE = os.path.join(GEO_ROOT, "cache")
-URL_DOW = r"https://www.google.com/finance/historical?cid=983582&startdate={}&enddate={}"
+URL_DOW = r"http://geo.crox.net/djia/{year:d}/{month:02d}/{day:02d}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
 
@@ -148,16 +148,10 @@ def get_date_of_dow(date, coords):
 @memoize_to_disk(CACHE_FILE, invalid={None,})
 def get_dow(date):
     try:
-        regex = '<td class="lm">.*{}.*{}\n<.+>(.+)'.format(date[2], date[0])
-        regex = re.compile(regex)
-        time_format = "%Y%m%d"
-        enddate = datetime.date(*date[:3])
-        startdate = enddate - datetime.timedelta(weeks=1)
-        request = URL_DOW.format(*[x.strftime(time_format) for x in (startdate, enddate)])
+        request = URL_DOW.format(year=date[0], month=date[1], day=date[2])
         req = urlopen(request)
-        page = req.read().decode("utf-8")
+        dow = float(req.read().decode("utf-8"))
         req.close()
-        dow = float(regex.search(page).groups()[0].replace(",", ""))
         return dow
     except:
         return
