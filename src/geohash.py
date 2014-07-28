@@ -148,17 +148,21 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a geohash based on the Munroe Algorithm.")
     parser.add_argument("-ll", dest="location", 
                         metavar=("LATITUDE", "LONGITUDE"),nargs=2,
-                        default=None, type=float)
+                        default=None, type=float, help="Coordinates to complement the geohashing algorithm")
     parser.add_argument("-l", dest="gen_location", metavar=("LOCATION"),
-                        default="", nargs="*")
+                        default="", nargs="*", help="Look up a locations coordinates in google.maps")
     parser.add_argument("-t", dest="date", metavar=("DATE"), 
-                        default=None)
-    parser.add_argument("-d", dest="dow", metavar=("DOW"), 
-                        default=None)
-    parser.add_argument("-n", "--no-defaults", action="store_true")                    
-    parser.add_argument("-s", "--store-defaults", action="store_true")
-    parser.add_argument("-cc", "--clear-cache", action="store_true")
-    parser.add_argument("-m", "--maps", action="store_true")
+                        default=None, help="Date for which the geohash is valid")
+    parser.add_argument("-d", dest="dow", metavar=("DJIA"), 
+                        default=None, help="Dow Jones Industrial Average required for hashing")
+    parser.add_argument("-s", "--store-defaults", action="store_true",
+                        help="Save the supplied command line arguments as defaults")
+    parser.add_argument("-n", "--no-defaults", action="store_true",
+                        help="Ignore default command line arguments")
+    parser.add_argument("-cc", "--clear-cache", action="store_true",
+                        help="Empty the DJIA cache")
+    parser.add_argument("-m", "--maps", action="store_true",
+                        help="Show the geohash coordinates in google.maps")
 
     args = parser.parse_args()
     flag_location = True if type(args.gen_location) is list else False
@@ -195,7 +199,7 @@ if __name__ == "__main__":
         if not args.dow:
             print("Fetching DOW from the web..")
             args.dow = get_dow(date_of_dow)
-        
+
         if args.dow:
             datedow = make_datedow(date_of_dow, args.dow)
             
@@ -208,4 +212,3 @@ if __name__ == "__main__":
                 webbrowser.open(MAPS.format(*geo_location))
         else:
             print("drats!")
-    
