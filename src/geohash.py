@@ -69,15 +69,26 @@ def memoize_to_disk(filename, invalid=set()):
     return decorator
     
 def parse_date(date):
-    formats = ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
-    # deal with date delimiters
     datefract = re.findall("\d+|\w+", date)
-    assert len(datefract) == 3
+    fid = len(datefract) - 1
+    formats =  (
+                ("%d",),
+                ("%d-{m}","%b-%d", "%B-%d"),
+                ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
+    )
+    # deal with date delimiters
     check_date = "-".join(datefract)
-    for check_format in formats:
-        for month in {"%m", "%b", "%B"}:
+    months = {"%m", "%b", "%B"}
+    for check_format in formats[fid]:
+        for month in months if fid else {None}:
             try:
-                return time.strptime(check_date, check_format.format(m=month))
+                date = list(time.strptime(check_date, check_format.format(m=month)))[:3]
+                if fid < 2:
+                    cur = time.localtime()
+                    date[0] = cur.tm_year
+                    if not month:
+                        date[1] = cur.tm_mon
+                return date[:3]
             except:
                 pass
     else:
