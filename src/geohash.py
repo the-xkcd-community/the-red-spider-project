@@ -201,7 +201,7 @@ if __name__ == "__main__":
         del args.store_defaults
         store_defaults(args, DEFAULTS_FILE)
 
-    if not args.location and flag_location:
+    if not (args.location or args.json) and flag_location:
         args.location = get_location_coords(args.gen_location)
     
     if args.location:
