@@ -142,7 +142,7 @@ def get_dow(date):
     try:
         req = urlopen(request)
         page = req.read().decode("utf-8")
-        if page == u"error\ndata not available yet":
+        if page == "error\ndata not available yet":
             raise HTTPError
     except HTTPError:
         puts("DJIA for this date is not available (yet?)")
