@@ -13,15 +13,16 @@ import datetime
 import argparse
 import json
 import webbrowser
-    
+
 
 if version_info[0] == 3:
     from urllib.request import urlopen
     from urllib.parse import quote
     basestring = str
     raw_input = input
+    from urllib.error import HTTPError
 else:
-    from urllib import urlopen, quote
+    from urllib2 import urlopen, quote, HTTPError
 
 pyinput = lambda x: eval(raw_input(x), {}, {})
 
@@ -138,12 +139,15 @@ def get_date_of_dow(date, coords):
 @memoize_to_disk(CACHE_FILE, invalid={None,})
 def get_dow(date):
     request = URL_DOW.format(year=date.year, month=date.month, day=date.day)
-    req = urlopen(request)
-    page = req.read().decode("utf-8")
-    req.close()
-    if page == u"error\ndata not available yet":
+    try:
+        req = urlopen(request)
+        page = req.read().decode("utf-8")
+        if page == u"error\ndata not available yet":
+            raise HTTPError
+    except HTTPError:
         puts("DJIA for this date is not available (yet?)")
         return
+    
     dow = float(page)
     return dow
 
