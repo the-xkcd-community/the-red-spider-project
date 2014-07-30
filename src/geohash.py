@@ -32,6 +32,12 @@ URL_DOW = r"http://geo.crox.net/djia/{year:d}/{month:02d}/{day:02d}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
 
+
+class Date(datetime.date):
+    def __repr__(self):
+        return "{}-{:02}-{:02}".format(*self.timetuple())
+
+
 def geohash(latitude, longitude, datedow):
     '''Compute geohash() using the Munroe algorithm.
 
@@ -112,24 +118,24 @@ def set_defaults(args, filepath):
                     setattr(args, key, value)
 
 def make_datedow(date, dow):
-    date = time.strftime("%Y-%m-%d", date)
+    date = time.strftime("%Y-%m-%d", date.timetuple())
     if isinstance(dow, basestring):
         dow = float(dow)
     return "{}-{:.2f}".format(date, dow)
 
 def get_date_of_dow(date, coords):
-    date = datetime.date(*date[:3])
+    date = Date(*date[:3])
     if 0 > coords[1] > -30:
         date -= datetime.timedelta(days=1)
     wkday = date.weekday()
     if wkday > 4:
         date -= datetime.timedelta(wkday - 4)
-    date = tuple(date.timetuple())
+    date = Date(*date.timetuple()[:3])
     return date
 
 @memoize_to_disk(CACHE_FILE, invalid={None,})
 def get_dow(date):
-    request = URL_DOW.format(year=date[0], month=date[1], day=date[2])
+    request = URL_DOW.format(year=date.year, month=date.month, day=date.day)
     req = urlopen(request)
     page = req.read().decode("utf-8")
     req.close()
