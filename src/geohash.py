@@ -239,3 +239,5 @@ if __name__ == "__main__":
                 print(json.dumps(geo_location))
             if args.maps:
                 webbrowser.open(MAPS.format(*geo_location))
+    else:
+        parser.print_usage()
