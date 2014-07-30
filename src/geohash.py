@@ -107,6 +107,7 @@ def store_defaults(args, filepath):
         json.dump(args.__dict__, fp)
 
 def set_defaults(args, filepath):
+    loaded = dict()
     if os.path.exists(filepath) and os.path.isfile(filepath):
         with open(filepath, "r") as fp:
             defaults = json.load(fp)
@@ -114,8 +115,9 @@ def set_defaults(args, filepath):
             if key in args.__dict__:
                 chk = getattr(args, key)
                 if not chk and chk != value:
-                    puts("Default {} = {}".format( key, value ))
+                    loaded[key] = value
                     setattr(args, key, value)
+    return loaded
 
 def make_datedow(date, dow):
     date = time.strftime("%Y-%m-%d", date.timetuple())
@@ -184,13 +186,23 @@ if __name__ == "__main__":
                         help="Write geohash coordinates to stdout as json array")
 
     args = parser.parse_args()
-    flag_location = True if type(args.gen_location) is list else False
-    args.gen_location = " ".join(args.gen_location)
-    puts = (lambda *x:None) if args.json else print
 
     if not os.path.exists(GEO_ROOT):
         os.makedirs(GEO_ROOT)
     
+    if args.no_defaults:
+        del args.no_defaults
+        loaded = dict()
+    else:
+        loaded = set_defaults(args, DEFAULTS_FILE)
+
+    flag_location = True if type(args.gen_location) is list else False
+    args.gen_location = " ".join(args.gen_location)
+    puts = (lambda *x:None) if args.json else print
+
+    for key, value in loaded.items():
+        puts("Default {} = {}".format( key, value ))
+
     if args.clear_cache:
         try:
             os.remove(CACHE_FILE)
@@ -198,11 +210,6 @@ if __name__ == "__main__":
             pass
         exit()
 
-    if args.no_defaults:
-        del args.no_defaults
-    else:
-        set_defaults(args, DEFAULTS_FILE)
-        
     if args.store_defaults:
         del args.store_defaults
         store_defaults(args, DEFAULTS_FILE)
