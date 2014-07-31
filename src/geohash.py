@@ -53,7 +53,7 @@ def geohash(latitude, longitude, datedow):
     p, q = [('%f' % float.fromhex('0.' + x)) for x in (h[:16], h[16:32])]
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
 
-def memoize_to_disk(filename, invalid=set()):
+def memoize_to_disk(filename, invalid=set(), indent=None):
     def decorator(func):
         try:
             with open(filename, "r") as fp:
@@ -62,13 +62,13 @@ def memoize_to_disk(filename, invalid=set()):
             cache = {}
             
         def memoize(*args):
-            chk = str(args)
+            chk = str(args[0] if len(args) == 1 else args)
             if chk not in cache:
                 ret = func(*args)
                 if not ret in invalid:
                     cache[chk] = ret
                     with open(filename, "w") as fp:
-                        json.dump(cache, fp)
+                        json.dump(cache, fp, indent=indent)
                 return ret
             else:
                 return cache[chk]
@@ -136,7 +136,7 @@ def get_date_of_dow(date, coords):
     date = Date(*date.timetuple()[:3])
     return date
 
-@memoize_to_disk(CACHE_FILE, invalid={None,})
+@memoize_to_disk(CACHE_FILE, invalid={None,}, indent=0)
 def get_dow(date):
     request = URL_DOW.format(year=date.year, month=date.month, day=date.day)
     try:
