@@ -76,6 +76,7 @@ def memoize_to_disk(filename, invalid=set(), indent=None):
     return decorator
     
 def parse_date(date):
+    # deal with date delimiters
     datefract = re.findall("\d+|\w+", date)
     fid = len(datefract) - 1
     formats =  (
@@ -83,7 +84,6 @@ def parse_date(date):
                 ("%d-{m}","%b-%d", "%B-%d"),
                 ("%x", "%Y-{m}-%d","%d-{m}-%Y", "{m}-%d-%Y")
     )
-    # deal with date delimiters
     check_date = "-".join(datefract)
     months = {"%m", "%b", "%B"}
     for check_format in formats[fid]:
@@ -95,8 +95,8 @@ def parse_date(date):
                     date[0] = cur.tm_year
                     if not month:
                         date[1] = cur.tm_mon
-                return date[:3]
-            except:
+                return Date(*date[:3])
+            except ValueError:
                 pass
     else:
         raise ValueError("Invalid date format.")
@@ -127,8 +127,7 @@ def make_datedow(date, dow):
     return "{}-{:.2f}".format(date, dow)
 
 def get_date_of_dow(date, coords):
-    date = Date(*date[:3])
-    if 0 > coords[1] > -30:
+    if coords[1] > -30:
         date -= datetime.timedelta(days=1)
     wkday = date.weekday()
     if wkday > 4:
@@ -223,7 +222,7 @@ if __name__ == "__main__":
     
     if args.location:
         assert len(args.location) == 2
-        date = parse_date(args.date) if args.date else time.localtime()
+        date = parse_date(args.date) if args.date else Date(*time.localtime()[:3])
         date_of_dow = get_date_of_dow(date, args.location)
         datedow = None
     
@@ -232,7 +231,7 @@ if __name__ == "__main__":
             args.dow = get_dow(date_of_dow)
 
         if args.dow:
-            datedow = make_datedow(date_of_dow, args.dow)
+            datedow = make_datedow(date, args.dow)
             
             puts()
             puts("Input: {}".format(datedow))
