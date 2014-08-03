@@ -7,6 +7,7 @@ from sys import exit
 import os
 import hashlib
 import re
+from functools import wraps
 from numbers import Number
 
 import time
@@ -55,23 +56,35 @@ def geohash(latitude, longitude, datedow):
 
 def memoize_to_disk(filename, invalid=set(), indent=None):
     def decorator(func):
-        try:
-            with open(filename, "r") as fp:
-                cache = json.load(fp)
-        except (IOError, ValueError):
-            cache = {}
-            
+        @wraps(func)
         def memoize(*args):
             chk = str(args[0] if len(args) == 1 else args)
-            if chk not in cache:
+            if chk not in memoize.cache:
                 ret = func(*args)
                 if not ret in invalid:
-                    cache[chk] = ret
-                    with open(filename, "w") as fp:
-                        json.dump(cache, fp, indent=indent)
+                    memoize.cache[chk] = ret
+                    with open(memoize.cache_path, "w") as fp:
+                        json.dump(memoize.cache, fp, indent=indent)
                 return ret
             else:
-                return cache[chk]
+                return memoize.cache[chk]
+        def cache_load(filename=filename):
+            memoize.cache_path = filename
+            try:
+                with open(memoize.cache_path, "r") as fp:
+                    memoize.cache = json.load(fp)
+            except (IOError, ValueError):
+                memoize.cache = {}
+        def cache_clear():
+            try:
+                os.remove(memoize.cache_path)
+                memoize.cache = {}
+                return True
+            except OSError:
+                return True
+        memoize.cache_load = cache_load
+        memoize.cache_clear = cache_clear
+        cache_load()
         return memoize
     return decorator
     
@@ -105,7 +118,7 @@ def store_defaults(args, filepath):
     if not os.path.exists(os.path.split(filepath)[0]):
         os.makedirs(os.path.split(filepath)[0])
     with open(filepath, "w") as fp:
-        json.dump(args.__dict__, fp)
+        json.dump(vars(args), fp)
 
 def set_defaults(args, filepath):
     loaded = dict()
@@ -113,7 +126,7 @@ def set_defaults(args, filepath):
         with open(filepath, "r") as fp:
             defaults = json.load(fp)
         for key, value in defaults.items():
-            if key in args.__dict__:
+            if key in vars(args):
                 chk = getattr(args, key)
                 if not chk and chk != value:
                     loaded[key] = value
@@ -146,7 +159,7 @@ def get_dow(date):
     except HTTPError:
         puts("DJIA for this date is not available (yet?)")
         return
-    
+
     dow = float(page)
     return dow
 
@@ -190,7 +203,8 @@ def create_parser():
     return parser
 
 def main(argv=None):
-    args = create_parser().parse_args(argv)
+    parser = create_parser()
+    args = parser.parse_args(argv)
 
     if not os.path.exists(GEO_ROOT):
         os.makedirs(GEO_ROOT)
@@ -209,10 +223,7 @@ def main(argv=None):
         puts("Default {} = {}".format( key, value ))
 
     if args.clear_cache:
-        try:
-            os.remove(CACHE_FILE)
-        except OSError:
-            pass
+        get_dow.cache_clear()
         exit()
 
     if args.store_defaults:
@@ -221,7 +232,6 @@ def main(argv=None):
 
     if not (args.location or args.json) and flag_location:
         args.location = get_location_coords(args.gen_location)
-    
     if args.location:
         assert len(args.location) == 2
         date = parse_date(args.date) if args.date else Date(*time.localtime()[:3])
@@ -244,9 +254,8 @@ def main(argv=None):
                 print(json.dumps(geo_location))
             if args.maps:
                 webbrowser.open(MAPS.format(*geo_location))
-    else:
+    elif not any(vars(args).values()):
         parser.print_usage()
     
-
 if __name__ == "__main__":
     main(sys.argv[1:])
