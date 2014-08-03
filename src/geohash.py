@@ -2,7 +2,8 @@
 
 from __future__ import print_function
 
-from sys import version_info, exit
+import sys
+from sys import exit
 import os
 import hashlib
 import re
@@ -15,7 +16,7 @@ import json
 import webbrowser
 
 
-if version_info[0] == 3:
+if sys.version_info[0] == 3:
     from urllib.request import urlopen
     from urllib.parse import quote
     basestring = str
@@ -37,7 +38,6 @@ MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
 class Date(datetime.date):
     def __repr__(self):
         return "{}-{:02}-{:02}".format(*self.timetuple())
-
 
 def geohash(latitude, longitude, datedow):
     '''Compute geohash() using the Munroe algorithm.
@@ -166,7 +166,7 @@ def get_location_coords(gen_location):
         coords += [x]
     return coords
 
-if __name__ == "__main__":
+def create_parser():
     parser = argparse.ArgumentParser(description="Generate a geohash based on the Munroe Algorithm.")
     parser.add_argument("-ll", dest="location", 
                         metavar=("LATITUDE", "LONGITUDE"),nargs=2,
@@ -187,8 +187,10 @@ if __name__ == "__main__":
                         help="Show the geohash coordinates in google.maps")
     parser.add_argument("-j", "--json", action="store_true",
                         help="Write geohash coordinates to stdout as json array")
+    return parser
 
-    args = parser.parse_args()
+def main(argv=None):
+    args = create_parser().parse_args(argv)
 
     if not os.path.exists(GEO_ROOT):
         os.makedirs(GEO_ROOT)
@@ -244,3 +246,7 @@ if __name__ == "__main__":
                 webbrowser.open(MAPS.format(*geo_location))
     else:
         parser.print_usage()
+    
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
