@@ -55,6 +55,10 @@ def geohash(latitude, longitude, datedow):
     p, q = [('%f' % float.fromhex('0.' + x)) for x in (h[:16], h[16:32])]
     return [float("{}{}".format(int(x), y[1:])) for x, y in ((latitude, p), (longitude, q))]
 
+def globalhash(datedow):
+    lat, lng = geohash(0, 0, datedow)
+    return (lat*180-90, lng*360-180)
+    
 def memoize_to_disk(filename, invalid=set(), indent=None):
     def decorator(func):
         @wraps(func)
@@ -141,8 +145,8 @@ def make_datedow(date, dow):
         dow = float(dow)
     return "{}-{:.2f}".format(date, dow)
 
-def get_date_of_dow(date, coords):
-    if coords[1] > -30:
+def get_date_of_dow(date, coords, glob_hash=False):
+    if (coords[1] > -30 and (date - Date(2008, 5, 26)).days > 0) or glob_hash:
         date -= datetime.timedelta(days=1)
     wkday = date.weekday()
     if wkday > 4:
@@ -192,6 +196,8 @@ def create_parser():
                         default=None, help="Date for which the geohash is valid")
     parser.add_argument("-d", dest="dow", metavar=("DJIA"), 
                         default=None, help="Dow Jones Industrial Average required for hashing")
+    parser.add_argument("-g", "--global", action="store_true", dest="globalhash",
+                        help="Calculate the globalhash")
     parser.add_argument("-s", "--store-defaults", action="store_true",
                         help="Save the supplied command line arguments as defaults")
     parser.add_argument("-n", "--no-defaults", action="store_true",
@@ -233,12 +239,13 @@ def main(argv=None):
         del args.store_defaults
         store_defaults(args, DEFAULTS_FILE)
 
-    if not (args.location or args.json) and flag_location:
+    if not (args.location or args.json or args.globalhash) and flag_location:
         args.location = get_location_coords(args.gen_location)
-    if args.location:
+        
+    if args.location or args.globalhash:
         assert len(args.location) == 2
         date = parse_date(args.date) if args.date else Date(*time.localtime()[:3])
-        date_of_dow = get_date_of_dow(date, args.location)
+        date_of_dow = get_date_of_dow(date, args.location, args.globalhash)
         datedow = None
     
         if not args.dow:
@@ -251,7 +258,7 @@ def main(argv=None):
             puts()
             puts("Input: {}".format(datedow))
             unpack = args.location + [datedow]
-            geo_location = geohash(*unpack)
+            geo_location = globalhash(datedow) if args.globalhash else geohash(*unpack)
             puts("Output: {}, {}".format(*geo_location))
             if args.json:
                 print(json.dumps(geo_location))
