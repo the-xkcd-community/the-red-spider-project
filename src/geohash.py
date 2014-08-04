@@ -27,6 +27,7 @@ else:
     from urllib2 import urlopen, quote, HTTPError
 
 pyinput = lambda x: eval(raw_input(x), {}, {})
+puts = print
 
 GEO_ROOT = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash")
 DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
@@ -37,7 +38,7 @@ MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
 
 
 class Date(datetime.date):
-    def __repr__(self):
+    def __str__(self):
         return "{}-{:02}-{:02}".format(*self.timetuple())
 
 def geohash(latitude, longitude, datedow):
@@ -68,8 +69,9 @@ def memoize_to_disk(filename, invalid=set(), indent=None):
                 return ret
             else:
                 return memoize.cache[chk]
-        def cache_load(filename=filename):
-            memoize.cache_path = filename
+        def cache_load(filename=None):
+            if filename:
+                memoize.cache_path = filename
             try:
                 with open(memoize.cache_path, "r") as fp:
                     memoize.cache = json.load(fp)
@@ -84,7 +86,7 @@ def memoize_to_disk(filename, invalid=set(), indent=None):
                 return True
         memoize.cache_load = cache_load
         memoize.cache_clear = cache_clear
-        cache_load()
+        cache_load(filename)
         return memoize
     return decorator
     
@@ -217,6 +219,7 @@ def main(argv=None):
 
     flag_location = True if type(args.gen_location) is list else False
     args.gen_location = " ".join(args.gen_location)
+    global puts
     puts = (lambda *x:None) if args.json else print
 
     for key, value in loaded.items():
