@@ -29,12 +29,21 @@ else:
 pyinput = lambda x: eval(raw_input(x), {}, {})
 puts = print
 
-GEO_ROOT = os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash")
-DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
-CACHE_FILE = os.path.join(GEO_ROOT, "cache")
 URL_DOW = r"http://geo.crox.net/djia/{year:d}/{month:02d}/{day:02d}"
 MAPS = "https://maps.google.com/maps?q={:f},{:f}"
 MAPS_LOOKUP = "https://maps.google.com/maps?q={}"
+
+def set_root(dpath):
+    global GEO_ROOT, DEFAULTS_FILE, CACHE_FILE
+    GEO_ROOT = dpath
+    DEFAULTS_FILE = os.path.join(GEO_ROOT, "defaults")
+    CACHE_FILE = os.path.join(GEO_ROOT, "cache")
+    try:
+        get_dow.cache_load(CACHE_FILE)
+    except NameError:
+        pass
+
+set_root( os.path.join(os.getenv("RED_SPIDER_ROOT"), "work", "geohash") )
 
 
 class Date(datetime.date):
@@ -68,6 +77,9 @@ def memoize_to_disk(filename, invalid=set(), indent=None):
                 ret = func(*args)
                 if not ret in invalid:
                     memoize.cache[chk] = ret
+                    cache_dir = os.path.split(memoize.cache_path)[0]
+                    if not os.path.exists(cache_dir):
+                        os.makedirs(cache_dir)
                     with open(memoize.cache_path, "w") as fp:
                         json.dump(memoize.cache, fp, indent=indent)
                 return ret
@@ -120,13 +132,17 @@ def parse_date(date):
     else:
         raise ValueError("Invalid date format.")
 
-def store_defaults(args, filepath):
+def store_defaults(args, filepath=None):
+    if not filepath:
+        filepath = DEFAULTS_FILE
     if not os.path.exists(os.path.split(filepath)[0]):
         os.makedirs(os.path.split(filepath)[0])
     with open(filepath, "w") as fp:
         json.dump(vars(args), fp)
 
-def set_defaults(args, filepath):
+def set_defaults(args, filepath=None):
+    if not filepath:
+        filepath = DEFAULTS_FILE
     loaded = dict()
     if os.path.exists(filepath) and os.path.isfile(filepath):
         with open(filepath, "r") as fp:
