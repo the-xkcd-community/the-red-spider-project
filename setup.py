@@ -40,12 +40,12 @@ documented_cmds = [["xkcd-fetch",       "xkcd-fetch --help"],
                    ["random-number",    "random-number --help"],
                    ["randomtext",       "randomtext"],
                    ["phpBBthreadfetch", "phpBBthreadfetch -h"],
-				   ["counterstrike",	"counterstrike"]]
+                   ["counterstrike",    "counterstrike"]]
 
 executable_scripts = [  'json-parse.py', 'xkcd-fetch.py', 'xkcd-search.py',
                         'level_up.py', 'summon.py', 'fortune.py', 'godel.py',
                         'random-number.py', 'rshelp.py', 'Geico.py', 'randomtext.py', 
-						'phpBBthreadfetch.py', 'myentity.py', 'counterstrike.py' ]
+                        'phpBBthreadfetch.py', 'myentity.py', 'counterstrike.py' ]
 
 python_modules = 'src/xkcd-fetch.py src/level_up.py src/myentity.py'.split()
 
