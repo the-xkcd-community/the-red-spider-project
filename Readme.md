@@ -1,7 +1,7 @@
 The Red Spider Project
 ----------------------
 
-[https://github.com/the-xkcd-community/the-red-spider-project]
+https://github.com/the-xkcd-community/the-red-spider-project
 
 
 ### Why ###
@@ -25,7 +25,7 @@ For the impatient: fork the project, then
 The project is like a small, self-contained operating system layered
 on top of your actual operating system. People can add programs at
 will. It's an open-ended process without deadlines or a final goal and
-we're very open-minded.
+we're very open-minded. Anyone who wants to contribute can join.
 
 
 ### What ###
