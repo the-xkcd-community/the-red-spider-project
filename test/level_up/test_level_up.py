@@ -3,10 +3,19 @@
 # See the License.txt that shipped with your copy of this software for details.
 
 from __future__ import print_function
-import level_up
-import unittest
 import glob
 import os
+import sys
+
+# The project moved level_up.py into src/, so make it importable when this
+# test file is run directly from test/level_up as documented in Readme.
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(TEST_DIR, "..", ".."))
+os.environ.setdefault("RED_SPIDER_ROOT", PROJECT_ROOT)
+sys.path.insert(0, os.path.join(PROJECT_ROOT, "src"))
+
+import level_up
+import unittest
 
 test_files = glob.glob(os.path.join("test", "*"))
 
